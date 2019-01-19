@@ -2,11 +2,11 @@
 #include "../RVO/Agent.h"
 #include "GLM/glm.hpp"
 
-class CAgent
+class IAgent
 {
 public:
-	CAgent();
-	virtual ~CAgent();
+	IAgent();
+	virtual ~IAgent();
 
 private:
 	int m_Index;

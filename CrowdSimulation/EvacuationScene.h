@@ -3,7 +3,7 @@
 #include "GLM/glm.hpp"
 #include "GraphAdapter.h"
 
-// 管理疏散场景的通行区域信息，可通行区域的连接结构图
+// 管理疏散场景的通行区域信息(出口/障碍物)，可通行区域的连接结构图
 class CEvacuationScene
 {
 public:
@@ -20,19 +20,18 @@ public:
 	void addObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 	void removeObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 	
+	std::vector<glm::vec2> getExits() const { return m_Exits; }
+	void addExit(const glm::vec2& vExit);
+	void removeExit(const glm::vec2& vExit);
+
 	void setGraphAdapter(CGraphAdapter* pAdapter) { m_pGraphAdapter = pAdapter; }
-	void addNode(const glm::vec2& vPos);
-	void addEdge(const glm::vec2& vPos1, const glm::vec2& vPos2);
-	void removeNode(const glm::vec2& vPos);
-	void removeEdge(const glm::vec2& vPos1, const glm::vec2& vPos2);
-	double getEdgeWeight(const glm::vec2& vPos1, const glm::vec2& vPos2) const;
-	void updateEdgeWeight(const glm::vec2& vPos1, const glm::vec2& vPos2);
-	std::stack<glm::vec2> findShortestPath(const glm::vec2& vFromPos, const glm::vec2& vToPos) const;
+	CGraphAdapter* getGraphAdapter() const { return m_pGraphAdapter; }
 
 private:
 	int m_Width;
 	int m_Height;
 	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
+	std::vector<glm::vec2> m_Exits;
 	CGraphAdapter* m_pGraphAdapter = nullptr;
 };
 

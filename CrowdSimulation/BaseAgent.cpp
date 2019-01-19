@@ -1,6 +1,4 @@
-#include "Agent.h"
-
-
+#include "BaseAgent.h"
 
 CAgent::CAgent()
 {

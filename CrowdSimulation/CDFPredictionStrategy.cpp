@@ -1,6 +1,4 @@
-#include "CCDFPredictionStrategy.h"
-
-
+#include "CDFPredictionStrategy.h"
 
 CCDFPredictionStrategy::CCDFPredictionStrategy()
 {

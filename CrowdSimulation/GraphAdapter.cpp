@@ -47,6 +47,21 @@ std::stack<glm::vec2> CGraphAdapter::findShortestPath(const glm::vec2 & vFromPos
 	return std::stack<glm::vec2>();
 }
 
+int CGraphAdapter::getNumAdjNodes(const glm::vec2 & vPos) const
+{
+	return 0;
+}
+
+std::vector<std::pair<glm::vec2, EdgeWeight>> CGraphAdapter::dumpAdjNodeSet(const glm::vec2 & vFromPos) const
+{
+	return std::vector<std::pair<glm::vec2, EdgeWeight>>();
+}
+
+std::vector<glm::vec2> CGraphAdapter::dumpAllNodePos() const
+{
+	return std::vector<glm::vec2>();
+}
+
 int CGraphAdapter::getIdx4Pos(const glm::vec2 & vPos) const
 {
 	return 0;

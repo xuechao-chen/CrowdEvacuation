@@ -1,6 +1,6 @@
 #pragma once
 #include "EvacuationScene.h"
-#include "Agent.h"
+#include "BaseAgent.h"
 
 // 人群在场景中的运动和疏散算法
 class IEvacuationStrategy
@@ -16,8 +16,8 @@ private:
 	void __initScene(const std::string& vSceneConfig);
 	void __initAgents(const std::string& vAgentConfig);
 
-private:
+protected:
 	CEvacuationScene* m_pScene = nullptr;
-	std::vector<CAgent*> m_Agents;
+	std::vector<IAgent*> m_Agents;
 };
 

@@ -29,6 +29,12 @@ public:
 	void removeEdge(const glm::vec2& vPos1, const glm::vec2& vPos2);
 	double getEdgeWeight(const glm::vec2& vPos1, const glm::vec2& vPos2) const;
 	void updateEdgeWeight(const glm::vec2& vPos1, const glm::vec2& vPos2);
+
+	int getNumNodes() const { return CWeightedGraph::getNumNodes(); }
+	int getNumEdges() const { return CWeightedGraph::getNumEdges(); }
+	int getNumAdjNodes(const glm::vec2& vPos) const;
+	std::vector<std::pair<glm::vec2, EdgeWeight>> dumpAdjNodeSet(const glm::vec2& vFromPos) const;
+	std::vector<glm::vec2> dumpAllNodePos() const;
 	std::stack<glm::vec2> findShortestPath(const glm::vec2& vFromPos, const glm::vec2& vToPos) const;
 
 	int getIdx4Pos(const glm::vec2& vPos) const;
