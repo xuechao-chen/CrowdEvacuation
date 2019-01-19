@@ -42,9 +42,9 @@ void CGraphAdapter::updateEdgeWeight(const glm::vec2 & vPos1, const glm::vec2 & 
 {
 }
 
-std::stack<glm::vec2> CGraphAdapter::findShortestPath(const glm::vec2 & vFromPos, const glm::vec2 & vToPos) const
+std::vector<glm::vec2> CGraphAdapter::findShortestPath(const glm::vec2 & vFromPos, const glm::vec2 & vToPos) const
 {
-	return std::stack<glm::vec2>();
+	return std::vector<glm::vec2>();
 }
 
 int CGraphAdapter::getNumAdjNodes(const glm::vec2 & vPos) const

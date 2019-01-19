@@ -2,7 +2,6 @@
 #include "WeightedGraph.h"
 #include <unordered_map>
 #include "GLM/glm.hpp"
-#include <stack>
 
 class HashFunc4Vec2
 {
@@ -15,7 +14,7 @@ public:
 	}
 };
 
-class CGraphAdapter : public CWeightedGraph
+class CGraphAdapter : protected CWeightedGraph
 {
 public:
 	CGraphAdapter();
@@ -35,7 +34,7 @@ public:
 	int getNumAdjNodes(const glm::vec2& vPos) const;
 	std::vector<std::pair<glm::vec2, EdgeWeight>> dumpAdjNodeSet(const glm::vec2& vFromPos) const;
 	std::vector<glm::vec2> dumpAllNodePos() const;
-	std::stack<glm::vec2> findShortestPath(const glm::vec2& vFromPos, const glm::vec2& vToPos) const;
+	std::vector<glm::vec2> findShortestPath(const glm::vec2& vFromPos, const glm::vec2& vToPos) const;
 
 	int getIdx4Pos(const glm::vec2& vPos) const;
 	glm::vec2 getPos4Idx(int vIdx) const;

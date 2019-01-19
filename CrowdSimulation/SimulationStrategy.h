@@ -12,12 +12,11 @@ public:
 	void run() override;
 
 private:
-
-	void __initPathSet();
-	void __updatePathSet();
+	void __initPaths();
+	void __updatePaths();
 	
 private:
 	int m_IterationTime;
-	std::vector<Path> m_PathSet;
+	std::unordered_map<int, Path> m_Paths;
 };
 
