@@ -1,0 +1,26 @@
+<Node>
+  <Item> 1 1 </Item>
+  <Item> 4 1 </Item>
+  <Item> 7 1 </Item>
+  <Item> 1 3 </Item>
+  <Item> 4 3 </Item>
+  <Item> 7 3 </Item>
+  <Item> 1 7 </Item>
+  <Item> 4 7 </Item>
+  <Item> 7 7 </Item>
+</Node>
+
+<Edge>
+  <Item> 1 1 4 1 </Item>
+  <Item> 4 1 7 1 </Item>
+  <Item> 1 3 4 3 </Item>
+  <Item> 4 3 7 3 </Item>
+  <Item> 1 7 4 7 </Item>
+  <Item> 4 7 7 7 </Item>
+  <Item> 1 1 1 3 </Item>
+  <Item> 1 3 1 7 </Item>
+  <Item> 4 1 4 3 </Item>
+  <Item> 4 3 4 7 </Item>
+  <Item> 7 1 7 3 </Item>
+  <Item> 7 3 7 7 </Item>
+</Edge>
