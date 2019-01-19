@@ -1,39 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="EvacuationStrategy">
+      <UniqueIdentifier>{ab6a3d23-86e9-469b-8262-2d8fb3c2cd16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="EvacuationScene">
+      <UniqueIdentifier>{ce4d8b70-6ef3-43ef-b039-5084b47054c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Config">
+      <UniqueIdentifier>{ae1706ba-6741-4d9e-92c0-627b435986cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EvacuationStrategy\SimulationStrategy">
+      <UniqueIdentifier>{ffd46f96-9bb7-4e91-a22d-0f65aac7d05e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WeightedGraph.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="BaseEvacuationStrategy.h">
+      <Filter>EvacuationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="CCDFPredictionStrategy.h">
+      <Filter>EvacuationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="DensityStrategy.h">
+      <Filter>EvacuationStrategy</Filter>
     </ClInclude>
     <ClInclude Include="EvacuationScene.h">
-      <Filter>头文件</Filter>
+      <Filter>EvacuationScene</Filter>
     </ClInclude>
     <ClInclude Include="GraphAdapter.h">
-      <Filter>头文件</Filter>
+      <Filter>EvacuationScene</Filter>
+    </ClInclude>
+    <ClInclude Include="WeightedGraph.h">
+      <Filter>EvacuationScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>EvacuationScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CrowdSimulationInterface.h" />
+    <ClInclude Include="SimulationStrategy.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WeightedGraph.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="BaseEvacuationStrategy.cpp">
+      <Filter>EvacuationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="DensityStrategy.cpp">
+      <Filter>EvacuationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="CCDFPredictionStrategy.cpp">
+      <Filter>EvacuationStrategy</Filter>
     </ClCompile>
     <ClCompile Include="EvacuationScene.cpp">
-      <Filter>源文件</Filter>
+      <Filter>EvacuationScene</Filter>
     </ClCompile>
     <ClCompile Include="GraphAdapter.cpp">
-      <Filter>源文件</Filter>
+      <Filter>EvacuationScene</Filter>
+    </ClCompile>
+    <ClCompile Include="WeightedGraph.cpp">
+      <Filter>EvacuationScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>EvacuationScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CrowdSimulationInterface.cpp" />
+    <ClCompile Include="SimulationStrategy.cpp">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

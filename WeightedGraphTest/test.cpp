@@ -208,4 +208,7 @@ TEST_F(TestWeightedGraph, FindShortestPath)
 
 	auto& Path2 = pGraph->findShortestPath(3, 9);
 	validShortestPath(Path2, 4, 3, 5, 7, 9);
+
+	auto& Path3 = pGraph->findShortestPath(1, 1);
+	validShortestPath(Path3, 1, 1);
 }

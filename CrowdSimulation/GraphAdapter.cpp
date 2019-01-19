@@ -47,12 +47,12 @@ std::stack<glm::vec2> CGraphAdapter::findShortestPath(const glm::vec2 & vFromPos
 	return std::stack<glm::vec2>();
 }
 
-int CGraphAdapter::getIdx4Pos() const
+int CGraphAdapter::getIdx4Pos(const glm::vec2 & vPos) const
 {
 	return 0;
 }
 
-glm::vec2 CGraphAdapter::getPos4Idx() const
+glm::vec2 CGraphAdapter::getPos4Idx(int vIdx) const
 {
 	return glm::vec2();
 }

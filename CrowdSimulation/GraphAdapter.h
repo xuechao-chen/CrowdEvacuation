@@ -4,6 +4,17 @@
 #include "GLM/glm.hpp"
 #include <stack>
 
+class HashFunc4Vec2
+{
+public:
+	size_t operator()(const glm::vec2& vPos) const 
+	{
+		//use *cantor pairing function* for hash value
+		//see [cantor pairing function](https://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function)
+		return (vPos.x + vPos.y)*(vPos.x + vPos.y + 1)/2 + vPos.y;
+	}
+};
+
 class CGraphAdapter : public CWeightedGraph
 {
 public:
@@ -20,11 +31,11 @@ public:
 	void updateEdgeWeight(const glm::vec2& vPos1, const glm::vec2& vPos2);
 	std::stack<glm::vec2> findShortestPath(const glm::vec2& vFromPos, const glm::vec2& vToPos) const;
 
-	int getIdx4Pos() const;
-	glm::vec2 getPos4Idx() const;
+	int getIdx4Pos(const glm::vec2& vPos) const;
+	glm::vec2 getPos4Idx(int vIdx) const;
 
 private:
 	std::unordered_map<int, glm::vec2> m_Idx2PosMap;
-	std::unordered_map<glm::vec2, int> m_Pos2IdxMap;
+	std::unordered_map<glm::vec2, int, HashFunc4Vec2> m_Pos2IdxMap;
 };
 

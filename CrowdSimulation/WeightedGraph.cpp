@@ -119,6 +119,8 @@ AdjNodeSet CWeightedGraph::dumpAdjNodeSet(int vFromNodeIdx) const
 			return it->second;
 		}
 	}
+
+	return AdjNodeSet();
 }
 
 std::vector<int> CWeightedGraph::dumpAllNodeIdx() const
@@ -190,11 +192,10 @@ std::stack<int> CWeightedGraph::findShortestPath(int vFromNodeIdx, int vToNodeId
 			}
 		}
 
-		if (PreviousMap[vToNodeIdx] != -1)
+		if (PreviousMap[vToNodeIdx] != -1 || vToNodeIdx == vFromNodeIdx)
 		{
 			while (vToNodeIdx != -1)
 			{
-				std::cout << vToNodeIdx;
 				Path.push(vToNodeIdx);
 				vToNodeIdx = PreviousMap[vToNodeIdx];
 			}
