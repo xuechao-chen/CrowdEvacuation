@@ -13,15 +13,15 @@
     <Filter Include="EvacuationStrategy\SimulationStrategy">
       <UniqueIdentifier>{ffd46f96-9bb7-4e91-a22d-0f65aac7d05e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EvacuationStrategy\CDFPredictionStratedy">
+      <UniqueIdentifier>{7f90ca5f-835b-456e-b9ca-8217c5ce14d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EvacuationStrategy\DensityStrategy">
+      <UniqueIdentifier>{9bf89441-7f23-4028-b5df-071346754749}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseEvacuationStrategy.h">
-      <Filter>EvacuationStrategy</Filter>
-    </ClInclude>
-    <ClInclude Include="CCDFPredictionStrategy.h">
-      <Filter>EvacuationStrategy</Filter>
-    </ClInclude>
-    <ClInclude Include="DensityStrategy.h">
       <Filter>EvacuationStrategy</Filter>
     </ClInclude>
     <ClInclude Include="EvacuationScene.h">
@@ -33,22 +33,26 @@
     <ClInclude Include="WeightedGraph.h">
       <Filter>EvacuationScene</Filter>
     </ClInclude>
-    <ClInclude Include="Agent.h">
-      <Filter>EvacuationScene</Filter>
-    </ClInclude>
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="SimulationStrategy.h">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClInclude>
+    <ClInclude Include="ConvergeCondition.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="CDFPredictionStrategy.h">
+      <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
+    </ClInclude>
+    <ClInclude Include="DensityStrategy.h">
+      <Filter>EvacuationStrategy\DensityStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAgent.h">
+      <Filter>EvacuationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="SimAgent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseEvacuationStrategy.cpp">
-      <Filter>EvacuationStrategy</Filter>
-    </ClCompile>
-    <ClCompile Include="DensityStrategy.cpp">
-      <Filter>EvacuationStrategy</Filter>
-    </ClCompile>
-    <ClCompile Include="CCDFPredictionStrategy.cpp">
       <Filter>EvacuationStrategy</Filter>
     </ClCompile>
     <ClCompile Include="EvacuationScene.cpp">
@@ -60,12 +64,22 @@
     <ClCompile Include="WeightedGraph.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
-    <ClCompile Include="Agent.cpp">
-      <Filter>EvacuationScene</Filter>
-    </ClCompile>
     <ClCompile Include="CrowdSimulationInterface.cpp" />
     <ClCompile Include="SimulationStrategy.cpp">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
+    <ClCompile Include="ConvergeCondition.cpp">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="CDFPredictionStrategy.cpp">
+      <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
+    </ClCompile>
+    <ClCompile Include="DensityStrategy.cpp">
+      <Filter>EvacuationStrategy\DensityStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAgent.cpp">
+      <Filter>EvacuationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="SimAgent.cpp" />
   </ItemGroup>
 </Project>

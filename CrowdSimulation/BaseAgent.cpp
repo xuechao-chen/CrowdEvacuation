@@ -1,10 +1,10 @@
 #include "BaseAgent.h"
 
-CAgent::CAgent()
+IAgent::IAgent()
 {
 }
 
 
-CAgent::~CAgent()
+IAgent::~IAgent()
 {
 }

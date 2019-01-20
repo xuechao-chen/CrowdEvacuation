@@ -16,5 +16,7 @@ private:
 	int m_RoadmapIndex;
 	glm::vec2  m_InitPosition;
 	std::vector<glm::vec2> m_Roadmap;
+
+	RVO::Agent* m_pRVOAgent = nullptr;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "EvacuationScene.h"
 #include "BaseAgent.h"
+#include "../RVO/RVOSimulator.h"
 
 // 人群在场景中的运动和疏散算法
 class IEvacuationStrategy
@@ -17,7 +18,9 @@ private:
 	void __initAgents(const std::string& vAgentConfig);
 
 protected:
-	CEvacuationScene* m_pScene = nullptr;
 	std::vector<IAgent*> m_Agents;
+	CEvacuationScene* m_pScene = nullptr;
+	RVO::RVOSimulator* m_pSimulator = nullptr;
 };
+
 

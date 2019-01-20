@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseEvacuationStrategy.h"
-
-using Path = std::vector<glm::vec2>;
+#include "SimNode.h"
 
 class CSimulationStrategy : public IEvacuationStrategy
 {
@@ -12,11 +11,9 @@ public:
 	void run() override;
 
 private:
-	void __initPaths();
-	void __updatePaths();
+	void __initEvacuationDirection();
+	void __updateEvacuationDirection();
 	
 private:
-	int m_IterationTime;
-	std::unordered_map<int, Path> m_Paths;
+	std::vector<ISimNode*> m_NodeSet;
 };
-
