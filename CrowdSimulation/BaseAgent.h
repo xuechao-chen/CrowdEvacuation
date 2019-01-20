@@ -8,6 +8,7 @@ public:
 	IAgent();
 	virtual ~IAgent();
 
+
 private:
 	int m_Index;
 	float m_Speed;
@@ -19,4 +20,3 @@ private:
 
 	RVO::Agent* m_pRVOAgent = nullptr;
 };
-

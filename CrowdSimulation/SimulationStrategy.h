@@ -13,7 +13,11 @@ public:
 private:
 	void __initEvacuationDirection();
 	void __updateEvacuationDirection();
+	void __assignAgentNavNode();
+	bool __isConverged() const;
+	void __doSimulation();
 	
 private:
-	std::vector<ISimNode*> m_NodeSet;
+	std::vector<SimNode*> m_NodeSet;
+	int m_MaxIterationNum = 0;
 };

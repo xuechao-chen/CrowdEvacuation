@@ -8,10 +8,10 @@ public:
 	CSimAgent();
 	~CSimAgent();
 
-	void setNavNode(const ISimNode* pNavNode) { m_NavNode = pNavNode; }
-	const ISimNode* getNavNode() const { return m_NavNode; }
+	void setNavNode(const SimNode* pNavNode) { m_NavNode = pNavNode; }
+	const SimNode* getNavNode() const { return m_NavNode; }
 
 private:
-	const ISimNode* m_NavNode = nullptr;
+	const SimNode* m_NavNode = nullptr;
 };
 

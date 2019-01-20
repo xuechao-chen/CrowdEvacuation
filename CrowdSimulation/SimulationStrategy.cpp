@@ -11,32 +11,35 @@ CSimulationStrategy::~CSimulationStrategy()
 
 void CSimulationStrategy::run()
 {
-	
-}
-
-void CSimulationStrategy::__initPaths()
-{
-	auto Adapter = m_pScene->getGraphAdapter();
-	auto AllNodePos = Adapter->dumpAllNodePos();
-
-	std::set<int> VisitedNode;
-	for (auto& NodePos : AllNodePos)
+	auto Count = 0;
+	__initEvacuationDirection();
+	do
 	{
-		auto NodeIdx = Adapter->getIdx4Pos(NodePos);
-		if (VisitedNode.find(NodeIdx) == VisitedNode.end()) continue;
-
-		auto Exits = m_pScene->getExits();
-		for (auto& Exit : Exits)
-		{
-			if (NodeIdx == Adapter->getIdx4Pos(Exit)) continue;
-
-			auto Path = Adapter->findShortestPath(NodePos, Exit);
-			for (auto& NodeOfPath : Path) VisitedNode.insert(Adapter->getIdx4Pos(NodeOfPath));
-
-		}
-	}
+		__assignAgentNavNode();
+		__doSimulation();
+		if (__isConverged()) break;
+		__updateEvacuationDirection();
+	} while (Count == m_MaxIterationNum);
 }
 
-void CSimulationStrategy::__updatePaths()
+void CSimulationStrategy::__initEvacuationDirection()
+{
+	auto Graph = m_pScene->getGraph();
+}
+
+void CSimulationStrategy::__updateEvacuationDirection()
+{
+}
+
+void CSimulationStrategy::__assignAgentNavNode()
+{
+}
+
+bool CSimulationStrategy::__isConverged() const
+{
+	return false;
+}
+
+void CSimulationStrategy::__doSimulation()
 {
 }

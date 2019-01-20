@@ -27,17 +27,11 @@
     <ClInclude Include="EvacuationScene.h">
       <Filter>EvacuationScene</Filter>
     </ClInclude>
-    <ClInclude Include="GraphAdapter.h">
-      <Filter>EvacuationScene</Filter>
-    </ClInclude>
     <ClInclude Include="WeightedGraph.h">
       <Filter>EvacuationScene</Filter>
     </ClInclude>
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="SimulationStrategy.h">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClInclude>
-    <ClInclude Include="ConvergeCondition.h">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClInclude>
     <ClInclude Include="CDFPredictionStrategy.h">
@@ -49,7 +43,12 @@
     <ClInclude Include="BaseAgent.h">
       <Filter>EvacuationStrategy</Filter>
     </ClInclude>
-    <ClInclude Include="SimAgent.h" />
+    <ClInclude Include="SimAgent.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="SimNode.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseEvacuationStrategy.cpp">
@@ -58,17 +57,11 @@
     <ClCompile Include="EvacuationScene.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
-    <ClCompile Include="GraphAdapter.cpp">
-      <Filter>EvacuationScene</Filter>
-    </ClCompile>
     <ClCompile Include="WeightedGraph.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
     <ClCompile Include="CrowdSimulationInterface.cpp" />
     <ClCompile Include="SimulationStrategy.cpp">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClCompile>
-    <ClCompile Include="ConvergeCondition.cpp">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
     <ClCompile Include="CDFPredictionStrategy.cpp">
@@ -80,6 +73,9 @@
     <ClCompile Include="BaseAgent.cpp">
       <Filter>EvacuationStrategy</Filter>
     </ClCompile>
-    <ClCompile Include="SimAgent.cpp" />
+    <ClCompile Include="SimAgent.cpp">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="SimNode.cpp" />
   </ItemGroup>
 </Project>

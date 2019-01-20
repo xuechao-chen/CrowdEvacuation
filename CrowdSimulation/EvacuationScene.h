@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "GLM/glm.hpp"
-#include "GraphAdapter.h"
 #include "WeightedGraph.h"
 
 // 管理疏散场景的通行区域信息(出口/障碍物)，可通行区域的连接结构图
