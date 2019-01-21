@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -33,6 +33,8 @@
     <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="DensityStrategy.h" />
+    <ClInclude Include="DistributionNode.h" />
+    <ClInclude Include="DivideNode.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="SimAgent.h" />
