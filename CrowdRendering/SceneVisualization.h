@@ -15,6 +15,7 @@ namespace hiveCrowdRendering
 		void drawObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 		void display();
 		void pause();
+		void clear();
 
 	private:
 		CSceneVisualization() {}

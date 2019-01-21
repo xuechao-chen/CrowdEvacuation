@@ -36,12 +36,22 @@ void CSceneVisualization::drawObstacle(const glm::vec2& vLeftTop, const glm::vec
 void CSceneVisualization::display()
 {
 	cv::imshow("Scene", m_Scene);
-	cv::waitKey(1);
+	cv::waitKey(1);//一直绘制的时候，需要等待1ms，否则会太快了以至于看不到
 }
 
 void CSceneVisualization::pause()
 {
-	cvWaitKey(0);
+	cvWaitKey(0);//调用pause以后，按下任何按键都会暂停，再按下任何按键，会继续
+}
+
+void hiveCrowdRendering::CSceneVisualization::clear()
+{
+	cv::Mat newScene;
+	int r, g, b;
+	std::tie(r, g, b) = m_BgColor;
+	newScene = cv::Mat(m_Width, m_Height, CV_8SC3, cv::Scalar(r, g, b));
+	cv::waitKey(1000);
+	cv::imshow("Scene", newScene);
 }
 
 void CSceneVisualization::__parseConfig(const std::string& vConfig)
