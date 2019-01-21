@@ -17,7 +17,7 @@ protected:
 
 	void constructGraph()
 	{
-		pGraph->constructGraph("D:\\git\\CrowdEvacuation-master\\GraphTest\\Config.xml");
+		pGraph->constructGraph("Config.xml");
 	}
 
 	void validNumOfNodeAndEdge(int vNumNodes, int vNumEdges)
