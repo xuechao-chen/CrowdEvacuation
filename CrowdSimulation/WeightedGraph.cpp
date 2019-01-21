@@ -1,323 +1,268 @@
+#include <algorithm>
 #include "WeightedGraph.h"
-#include <queue>
-#include <set>
-//
-//void CWeightedGraph::addNode(int vNodeIdx)
-//{
-//	_ASSERTE(m_NodeSet.find(vNodeIdx) == m_NodeSet.end());
-//
-//	m_NodeSet[vNodeIdx] = AdjNodeSet();
-//}
-//
-//void CWeightedGraph::addEdge(int vNodeIdx1, int vNodeIdx2, double vWeight)
-//{
-//	_ASSERTE(m_NodeSet.find(vNodeIdx1) != m_NodeSet.end() && m_NodeSet.find(vNodeIdx2) != m_NodeSet.end());
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if (it->first == vNodeIdx1)
-//		{
-//			it->second.push_back(std::make_pair(vNodeIdx2, vWeight));
-//		}
-//		if (it->first == vNodeIdx2)
-//		{
-//			it->second.push_back(std::make_pair(vNodeIdx1, vWeight));
-//		}
-//	}
-//}
-//
-//void CWeightedGraph::removeNode(int vNodeIdx)
-//{
-//	_ASSERTE(m_NodeSet.find(vNodeIdx) == m_NodeSet.end());
-//
-//	const AdjNodeSet& NodeSet = dumpAdjNodeSet(vNodeIdx);
-//	for (auto& AdjNode : NodeSet)
-//	{
-//		removeEdge(vNodeIdx, AdjNode.first);
-//	}
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if ((*it).first == vNodeIdx)
-//		{
-//			m_NodeSet.erase(it);
-//			break;
-//		}
-//	}
-//}
-//
-//void CWeightedGraph::removeEdge(int vNodeIdx1, int vNodeIdx2)
-//{
-//	_ASSERTE(m_NodeSet.find(vNodeIdx1) != m_NodeSet.end() && m_NodeSet.find(vNodeIdx2) != m_NodeSet.end());
-//
-//	__removeAdjNode(vNodeIdx1, vNodeIdx2);
-//	__removeAdjNode(vNodeIdx2, vNodeIdx1);
-//}
-//
-//void CWeightedGraph::initGraph(int vNumOfNode)
-//{
-//	m_NodeSet.clear();
-//
-//	for (auto i = 0; i < vNumOfNode; i++)
-//	{
-//		m_NodeSet[i] = AdjNodeSet();
-//	}
-//}
-//
-//int CWeightedGraph::getNumEdges() const
-//{
-//	auto Num = 0;
-//	for (auto& Node : m_NodeSet)
-//	{
-//		Num += Node.second.size();
-//	}
-//	_ASSERTE(Num % 2 == 0);
-//	return Num / 2;
-//}
-//
-//int CWeightedGraph::getNumAdjNodes(int vNodeIdx) const
-//{
-//	_ASSERTE(m_NodeSet.find(vNodeIdx) != m_NodeSet.end());
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if (it->first == vNodeIdx)
-//			return it->second.size();
-//	}
-//	return -1;
-//}
-//
-//double CWeightedGraph::getEdgeWeight(int vFromNodeIdx, int vToNodeIdx) const
-//{
-//	_ASSERTE(m_NodeSet.find(vFromNodeIdx) != m_NodeSet.end() && m_NodeSet.find(vToNodeIdx) != m_NodeSet.end());
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if (it->first == vFromNodeIdx)
-//		{
-//			for (auto& AdjNode : it->second)
-//			{
-//				if (AdjNode.first == vToNodeIdx)
-//				{
-//					return AdjNode.second;
-//				}
-//			}
-//		}
-//	}
-//
-//	return -1;
-//}
-//
-//AdjNodeSet CWeightedGraph::dumpAdjNodeSet(int vFromNodeIdx) const
-//{
-//	_ASSERTE(m_NodeSet.find(vSourceNodeIdx) != m_NodeSet.end());
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if (it->first == vFromNodeIdx)
-//		{
-//			return it->second;
-//		}
-//	}
-//
-//	return AdjNodeSet();
-//}
-//
-//std::vector<int> CWeightedGraph::dumpAllNodeIdx() const
-//{
-//	auto NodeIdxSet = std::vector<int>();
-//	for (auto& Node : m_NodeSet)
-//	{
-//		NodeIdxSet.push_back(Node.first);
-//	}
-//	return NodeIdxSet;
-//}
-//
-//void CWeightedGraph::updateEdgeWeight(int vFromNodeIdx, int vToNodeIdx, double vWeight)
-//{
-//	_ASSERTE(m_NodeSet.find(vFromNodeIdx) != m_NodeSet.end() && m_NodeSet.find(vToNodeIdx) != m_NodeSet.end());
-//
-//	for (auto it = m_NodeSet.begin(); it != m_NodeSet.end(); ++it)
-//	{
-//		if (it->first == vFromNodeIdx || it->first == vToNodeIdx)
-//		{
-//			for (auto& AdjNode : it->second)
-//			{
-//				if (AdjNode.first == vToNodeIdx || AdjNode.first == vFromNodeIdx)
-//				{
-//					AdjNode.second = vWeight;
-//				}
-//			}
-//		}
-//	}
-//
-//	return;
-//}
-//
-//std::stack<int> CWeightedGraph::findShortestPath(int vFromNodeIdx, int vToNodeIdx) const
-//{
-//	auto Path = std::stack<int>();
-//	std::set<int> Q;
-//	auto PreviousMap = std::unordered_map<int, int>();
-//	auto DistMap = std::unordered_map<int,  double>();
-//
-//	const auto& NodeIdxSet = dumpAllNodeIdx();
-//	for (auto NodeIdx : NodeIdxSet)
-//	{
-//		DistMap[NodeIdx] = FLT_MAX;
-//		PreviousMap[NodeIdx] = -1;
-//		Q.insert(NodeIdx);
-//	}
-//
-//	DistMap[vFromNodeIdx] = 0;
-//
-//	while (!Q.empty())
-//	{
-//		auto Min = FLT_MAX;
-//		auto u = -1;
-//		for (auto it = Q.begin(); it != Q.end(); ++it)
-//		{
-//			if (DistMap[*it] < Min)
-//			{
-//				Min = *it;
-//				u = *it;
-//			}
-//		}
-//		
-//		for (auto it = Q.begin(); it != Q.end(); ++it)
-//		{
-//			if (*it == u)
-//			{
-//				Q.erase(it);
-//			}
-//		}
-//
-//		if (PreviousMap[vToNodeIdx] != -1 || vToNodeIdx == vFromNodeIdx)
-//		{
-//			while (vToNodeIdx != -1)
-//			{
-//				Path.push(vToNodeIdx);
-//				vToNodeIdx = PreviousMap[vToNodeIdx];
-//			}
-//			return Path;
-//		}
-//
-//		const auto& AdjNodeSet = dumpAdjNodeSet(u);
-//		for (auto& Node : AdjNodeSet)
-//		{
-//			auto v = Node.first;
-//			auto Distance = getEdgeWeight(u, v);
-//			auto Alt = DistMap[u] + Distance;
-//			if (DistMap[v] > Alt)
-//			{
-//				DistMap[v] = Alt;
-//				PreviousMap[v] = u;
-//			}
-//		}
-//	}
-//	
-//	return Path;
-//}
-//
-//void CWeightedGraph::show()
-//{
-//	std::cout << "Graph size: " << m_NodeSet.size() << std::endl;
-//	for (auto& Node : m_NodeSet)
-//	{
-//		std::cout << Node.first << " : ";
-//		AdjNodeSet& NodeSet = Node.second;
-//		for (auto& AdjNode : NodeSet)
-//		{
-//			std::cout << "(" << AdjNode.first << ", " << AdjNode.second << ")";
-//		}
-//		std::cout << std::endl;
-//	}
-//}
-//
-//void CWeightedGraph::__removeAdjNode(int vFromNodeIdx, int vAdjNodeIdx)
-//{
-//	_ASSERTE(m_NodeSet.find(vFromNodeIdx) != m_NodeSet.end() && m_NodeSet.find(vAdjNodeIdx) != m_NodeSet.end());
-//
-//	AdjNodeSet& NodeSet = m_NodeSet[vFromNodeIdx];
-//	for (auto it = NodeSet.begin(); it != NodeSet.end(); ++it)
-//	{
-//		if ((*it).first == vAdjNodeIdx)
-//		{
-//			NodeSet.erase(it);
-//			break;
-//		}
-//	}
-//}
+#include "ConfigParser.h"
+#include <vector>
+
+CWeightedGraph::CWeightedGraph()
+{
+}
+
+CWeightedGraph::CWeightedGraph(const std::string & vConfig)
+{
+	constructGraph(vConfig);
+}
+
+
+CWeightedGraph::~CWeightedGraph()
+{
+
+}
 
 void CWeightedGraph::constructGraph(const std::string & vConfig)
 {
+	clearGraph();
+	CConfigParser::getInstance()->parseGraph(vConfig, m_NodePosMap);
 }
 
-void CWeightedGraph::addNode(const glm::vec2 & vNode)
+
+
+void CWeightedGraph::clearGraph()
 {
+	m_NodePosMap.clear();
 }
 
-void CWeightedGraph::addEdge(const glm::vec2 & vNode1, const glm::vec2 & vNode2)
+void CWeightedGraph::addNode(const glm::vec2& vPos)
 {
+	if (m_NodePosMap.find(vPos) == m_NodePosMap.end())
+	{
+		m_NodePosMap[vPos] = AdjNodePosSet();
+
+	}
+	else
+	{
+		std::cout << "the pos is already has a node" << std::endl;
+	}
 }
 
-void CWeightedGraph::removeNode(const glm::vec2 & vNode)
+void CWeightedGraph::addEdge(const glm::vec2& vNodePos1, const glm::vec2& vNodePos2, double vWeight)
 {
+	if (m_NodePosMap.find(vNodePos1) == m_NodePosMap.end() || m_NodePosMap.find(vNodePos2) == m_NodePosMap.end() || vNodePos1 == vNodePos2 || vWeight < 0)
+		return;
+	for (auto& it : m_NodePosMap[vNodePos1])
+	{
+		if (it.first == vNodePos2)
+			return;
+	}
+
+	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
+	{
+		if (it->first == vNodePos1)
+		{
+			it->second.push_back(std::make_pair(vNodePos2, vWeight));
+		}
+		if (it->first == vNodePos2)
+		{
+			it->second.push_back(std::make_pair(vNodePos1, vWeight));
+		}
+	}
 }
 
-void CWeightedGraph::removeEdge(const glm::vec2 & vNode1, const glm::vec2 & vNode2)
+void CWeightedGraph::removeNode(const glm::vec2& vNodePos)
 {
+	if (m_NodePosMap.find(vNodePos) == m_NodePosMap.end())
+	{
+		std::cout << "the pos is doesn't have a node" << std::endl;
+	}
+	else
+	{
+		for (auto& it : m_NodePosMap)
+		{
+			if (it.first != vNodePos)
+			{
+				removeEdge(vNodePos, it.first);
+			}
+		}
+		for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); it++)
+		{
+			if (it->first == vNodePos)
+			{
+				m_NodePosMap.erase(it);
+				break;
+			}
+		}
+	}
 }
 
-int CWeightedGraph::getNumNodes() const
+void CWeightedGraph::removeEdge(const glm::vec2& vNodePos1, const glm::vec2& vNodePos2)
 {
-	return 0;
+	if (m_NodePosMap.find(vNodePos1) == m_NodePosMap.end() || m_NodePosMap.find(vNodePos2) == m_NodePosMap.end() || vNodePos1 == vNodePos2)
+		return;
+	for (auto it = m_NodePosMap[vNodePos1].begin(); it != m_NodePosMap[vNodePos1].end(); it++)
+	{
+		if (it->first == vNodePos2)
+		{
+			__removeAdjNode(vNodePos1, vNodePos2);
+			__removeAdjNode(vNodePos2, vNodePos1);
+			break;
+		}
+	}
 }
 
-int CWeightedGraph::getNumEdges() const
+double CWeightedGraph::getEdgeWeight(const glm::vec2& vFromNodePos, const glm::vec2& vToNodePos) const
 {
-	return 0;
-}
 
-int CWeightedGraph::getNumAdjNodes(const glm::vec2 & vNode) const
-{
-	return 0;
-}
-
-double CWeightedGraph::getEdgeWeight(const glm::vec2 & vNode1, const glm::vec2 & vNode2) const
-{
+	for (const auto& itMap : m_NodePosMap)
+	{
+		if (itMap.first == vFromNodePos)
+		{
+			for (const auto& itVec : itMap.second)
+			{
+				if (itVec.first == vToNodePos)
+				{
+					return itVec.second;
+				}
+			}
+		}
+	}
 	return 0.0;
 }
 
-void CWeightedGraph::updateEdgeWeight(const glm::vec2 & vNode1, const glm::vec2 & vNode2)
+AdjNodePosSet CWeightedGraph::dumpAdjNodeSet(const glm::vec2& vFromNodePos) const
 {
+	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
+	{
+		if (it->first == vFromNodePos)
+		{
+			return it->second;
+		}
+	}
+	return AdjNodePosSet();
 }
 
-std::vector<std::pair<glm::vec2, EdgeWeight>> CWeightedGraph::dumpAdjNodeSet(const glm::vec2 & vFromNode) const
+std::vector<glm::vec2> CWeightedGraph::findShortestPath(const glm::vec2& vFromNodePos, const glm::vec2& vToNodePos) const
 {
-	return std::vector<std::pair<glm::vec2, EdgeWeight>>();
+	auto Path = std::vector<glm::vec2>();
+	std::vector<glm::vec2> Q;
+	auto PreviousMap = std::unordered_map<glm::vec2, glm::vec2, HashFunc4Vec2>();
+	auto DistMap = std::unordered_map<glm::vec2, double, HashFunc4Vec2>();
+	glm::vec2 toNodePos = vToNodePos;
+	const auto& NodePosSet = dumpAllNodes();
+	for (auto NodePos : NodePosSet)
+	{
+		DistMap[NodePos] = FLT_MAX;
+		PreviousMap[NodePos] = glm::vec2(-1, -1);
+		Q.push_back(NodePos);//set 不支持vec2类型
+	}
+
+	//std::cout << fromNodeIdx << std::endl;
+	//std::cout << toNodeIdx << std::endl;
+
+	DistMap[vFromNodePos] = 0;
+
+	while (!Q.empty())
+	{
+		auto Min = FLT_MAX;
+		auto u = glm::vec2(-1, -1);
+		for (auto it = Q.begin(); it != Q.end(); ++it)
+		{
+			if (DistMap[*it] < Min)
+			{
+				Min = DistMap[*it];
+				u = *it;
+			}
+		}
+
+		for (auto it = Q.begin(); it != Q.end(); ++it)
+		{
+			if (*it == u)
+			{
+				Q.erase(it);
+			}
+		}
+
+		if (PreviousMap[toNodePos] != glm::vec2(-1, -1) || toNodePos == vFromNodePos)
+		{
+			while (toNodePos != glm::vec2(-1, -1))
+			{
+				Path.push_back(toNodePos);
+				toNodePos = PreviousMap[toNodePos];
+			}
+			std::reverse(Path.begin(), Path.end());
+			return Path;
+		}
+
+		const auto& AdjNodeSet = dumpAdjNodeSet(u);
+		for (auto& Node : AdjNodeSet)
+		{
+			auto v = Node.first;
+			auto Distance = getEdgeWeight(u, v);
+			auto Alt = DistMap[u] + Distance;
+			if (DistMap[v] > Alt)
+			{
+				DistMap[v] = Alt;
+				PreviousMap[v] = u;
+			}
+		}
+	}
+	std::reverse(Path.begin(), Path.end());
+	return Path;
 }
 
-std::vector<glm::vec2> CWeightedGraph::dumpAllNodeNode() const
+void CWeightedGraph::updateEdgeWeight(const glm::vec2& vFromNodePos, const glm::vec2& vToNodePos, double vWeight)
 {
-	return std::vector<glm::vec2>();
+	if (m_NodePosMap.find(vFromNodePos) == m_NodePosMap.end() || m_NodePosMap.find(vToNodePos) == m_NodePosMap.end() || vFromNodePos == vToNodePos || vWeight < 0)
+		return;
+	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
+	{
+		if (it->first == vFromNodePos || it->first == vToNodePos)
+		{
+			for (auto& AdjNode : it->second)
+			{
+				if (AdjNode.first == vToNodePos || AdjNode.first == vFromNodePos)
+				{
+					AdjNode.second = vWeight;
+					return;
+				}
+			}
+		}
+	}
 }
 
-std::vector<glm::vec2> CWeightedGraph::findShortestPath(const glm::vec2 & vFromNode, const glm::vec2 & vToNode) const
+
+int CWeightedGraph::getNumEdges() const
 {
-	return std::vector<glm::vec2>();
+	int Num = 0;
+	for (auto& Node : m_NodePosMap)
+	{
+		Num += Node.second.size();
+	}
+	Num /= 2;
+	return Num;
 }
 
-int CWeightedGraph::getIdx4Node(const glm::vec2 & vNode) const
+std::vector<glm::vec2> CWeightedGraph::dumpAllNodes() const
 {
-	return 0;
+	auto NodePosSet = std::vector<glm::vec2>();
+	for (auto& Node : m_NodePosMap)
+	{
+		NodePosSet.push_back(Node.first);
+	}
+	return NodePosSet;
 }
 
-glm::vec2 CWeightedGraph::getNode4Idx(int vIdx) const
+void CWeightedGraph::__removeAdjNode(const glm::vec2& vAdjFromNodePos, const glm::vec2& vAdjToNodePos)
 {
-	return glm::vec2();
-}
-
-void CWeightedGraph::__removeAdjNode(int vFromNode, int vAdjNode)
-{
+	if (m_NodePosMap.find(vAdjFromNodePos) == m_NodePosMap.end())
+		return;
+	AdjNodePosSet& NodePosSet = m_NodePosMap[vAdjFromNodePos];
+	if (NodePosSet.size() == 0)
+		return;
+	for (auto it = NodePosSet.begin(); it != NodePosSet.end(); ++it)
+	{
+		if (it->first == vAdjToNodePos)
+		{
+			NodePosSet.erase(it);
+			break;
+		}
+	}
 }

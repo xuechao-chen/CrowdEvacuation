@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseAgent.h"
-#include "SimNode.h"
+
+class SimNode;
 
 class CSimAgent : public IAgent
 {
@@ -8,10 +9,10 @@ public:
 	CSimAgent();
 	~CSimAgent();
 
-	void setNavNode(const SimNode* pNavNode) { m_NavNode = pNavNode; }
+	void setNavNode(SimNode* pNavNode) { m_NavNode = pNavNode; }
 	const SimNode* getNavNode() const { return m_NavNode; }
 
 private:
-	const SimNode* m_NavNode = nullptr;
+	SimNode* m_NavNode = nullptr;
 };
 

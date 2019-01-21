@@ -4,7 +4,7 @@
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
-	__init();
+	//__init();
 }
 
 

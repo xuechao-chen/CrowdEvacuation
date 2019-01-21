@@ -49,6 +49,12 @@
     <ClInclude Include="SimNode.h">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigParser.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphConfig.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseEvacuationStrategy.cpp">
@@ -76,6 +82,11 @@
     <ClCompile Include="SimAgent.cpp">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
-    <ClCompile Include="SimNode.cpp" />
+    <ClCompile Include="ConfigParser.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphConfig.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
