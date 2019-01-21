@@ -30,9 +30,11 @@
     <ClInclude Include="BaseAgent.h" />
     <ClInclude Include="BaseEvacuationStrategy.h" />
     <ClInclude Include="CDFPredictionStrategy.h" />
+    <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="DensityStrategy.h" />
     <ClInclude Include="EvacuationScene.h" />
+    <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="SimAgent.h" />
     <ClInclude Include="SimNode.h" />
     <ClInclude Include="SimulationStrategy.h" />
@@ -42,11 +44,12 @@
     <ClCompile Include="BaseAgent.cpp" />
     <ClCompile Include="BaseEvacuationStrategy.cpp" />
     <ClCompile Include="CDFPredictionStrategy.cpp" />
+    <ClCompile Include="ConfigParser.cpp" />
     <ClCompile Include="CrowdSimulationInterface.cpp" />
     <ClCompile Include="DensityStrategy.cpp" />
     <ClCompile Include="EvacuationScene.cpp" />
+    <ClCompile Include="GraphConfig.cpp" />
     <ClCompile Include="SimAgent.cpp" />
-    <ClCompile Include="SimNode.cpp" />
     <ClCompile Include="SimulationStrategy.cpp" />
     <ClCompile Include="WeightedGraph.cpp" />
   </ItemGroup>
