@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "GLM/glm.hpp"
-#include "WeightedGraph.h"
+#include "SceneGraph.h"
 
 // 管理疏散场景的通行区域信息(出口/障碍物)，可通行区域的连接结构图
 class CEvacuationScene
@@ -24,14 +24,14 @@ public:
 	void addExit(const glm::vec2& vExit);
 	void removeExit(const glm::vec2& vExit);
 
-	void setGraph(CWeightedGraph* pGraph) { m_pGraph = pGraph; }
-	CWeightedGraph* getGraph() const { return m_pGraph; }
+	void setGraph(CSceneGraph* pGraph) { m_pGraph = pGraph; }
+	CSceneGraph* getGraph() const { return m_pGraph; }
 
 private:
 	int m_Width;
 	int m_Height;
 	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
 	std::vector<glm::vec2> m_Exits;
-	CWeightedGraph* m_pGraph = nullptr;
+	CSceneGraph* m_pGraph = nullptr;
 };
 

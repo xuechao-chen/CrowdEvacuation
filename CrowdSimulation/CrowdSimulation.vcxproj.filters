@@ -19,15 +19,12 @@
     <Filter Include="EvacuationStrategy\DensityStrategy">
       <UniqueIdentifier>{9bf89441-7f23-4028-b5df-071346754749}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EvacuationStrategy\ShortestStrategy">
+      <UniqueIdentifier>{2a89da0c-e5ba-4de1-8eee-1dfbbe3c3b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseEvacuationStrategy.h">
-      <Filter>EvacuationStrategy</Filter>
-    </ClInclude>
     <ClInclude Include="EvacuationScene.h">
-      <Filter>EvacuationScene</Filter>
-    </ClInclude>
-    <ClInclude Include="WeightedGraph.h">
       <Filter>EvacuationScene</Filter>
     </ClInclude>
     <ClInclude Include="CrowdSimulationInterface.h" />
@@ -55,15 +52,25 @@
     <ClInclude Include="GraphConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
+    <ClInclude Include="DistributionNode.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="DivideNode.h">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ShortestStrategy.h">
+      <Filter>EvacuationStrategy\ShortestStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseStrategy.h">
+      <Filter>EvacuationStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph.h">
+      <Filter>EvacuationScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CrowdSimulationExport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseEvacuationStrategy.cpp">
-      <Filter>EvacuationStrategy</Filter>
-    </ClCompile>
     <ClCompile Include="EvacuationScene.cpp">
-      <Filter>EvacuationScene</Filter>
-    </ClCompile>
-    <ClCompile Include="WeightedGraph.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
     <ClCompile Include="CrowdSimulationInterface.cpp" />
@@ -88,5 +95,17 @@
     <ClCompile Include="GraphConfig.cpp">
       <Filter>Config</Filter>
     </ClCompile>
+    <ClCompile Include="ShortestStrategy.cpp">
+      <Filter>EvacuationStrategy\ShortestStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseStrategy.cpp">
+      <Filter>EvacuationStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph.cpp">
+      <Filter>EvacuationScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

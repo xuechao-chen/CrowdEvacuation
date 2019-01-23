@@ -8,7 +8,7 @@ class TestGraph :public testing::Test
 protected:
 	virtual void SetUp() override
 	{
-		pGraph = new CWeightedGraph();
+		pGraph = new CSceneGraph();
 	}
 	virtual void TearDown() override
 	{
@@ -60,7 +60,7 @@ protected:
 		va_end(args);
 	}
 
-	CWeightedGraph* pGraph = nullptr;
+	CSceneGraph* pGraph = nullptr;
 };
 
 TEST_F(TestGraph, defaultInitiallization)

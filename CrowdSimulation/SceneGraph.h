@@ -3,11 +3,11 @@
 #include "common/HiveCommonMicro.h"
 #include "GLM/glm.hpp"
 
-
 using Node = glm::vec2;
 using EdgeWeight = double;
-using AdjNodePosSet = std::vector<std::pair<Node, EdgeWeight>>;
-class HashFunc4Vec2
+using AdjNodeSet = std::vector<std::pair<Node, EdgeWeight>>;
+
+class HashFunc4Node
 {
 public:
 	size_t operator()(glm::vec2 vNode) const
@@ -18,12 +18,12 @@ public:
 	}
 };
 
-class CWeightedGraph
+class CSceneGraph
 {
 public:
-	CWeightedGraph();
-	CWeightedGraph(const std::string& vConfig);
-	~CWeightedGraph();
+	CSceneGraph();
+	CSceneGraph(const std::string& vConfig);
+	~CSceneGraph();
 
 	void constructGraph(const std::string& vConfig);
 	void clearGraph();
@@ -36,7 +36,7 @@ public:
 	void updateEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight);
 
 	std::vector<glm::vec2> dumpAllNodes() const;
-	AdjNodePosSet dumpAdjNodeSet(const glm::vec2& vFromNode) const;
+	AdjNodeSet dumpAdjNodeSet(const glm::vec2& vFromNode) const;
 	std::vector<glm::vec2> findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const;
 
 	int getNumNodes() const { return m_NodePosMap.size(); }
@@ -46,5 +46,5 @@ private:
 	void __removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode);
 
 private:
-	std::unordered_map<Node, AdjNodePosSet, HashFunc4Vec2> m_NodePosMap;
+	std::unordered_map<Node, AdjNodeSet, HashFunc4Node> m_NodePosMap;
 };

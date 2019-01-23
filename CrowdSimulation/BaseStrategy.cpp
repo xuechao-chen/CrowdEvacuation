@@ -1,6 +1,4 @@
-#include "BaseEvacuationStrategy.h"
-
-
+#include "BaseStrategy.h"
 
 IEvacuationStrategy::IEvacuationStrategy()
 {

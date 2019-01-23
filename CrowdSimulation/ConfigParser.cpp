@@ -10,7 +10,7 @@ CConfigParser::~CConfigParser()
 {
 }
 
-void CConfigParser::parseGraph(const std::string & vConfig, std::unordered_map<Node, AdjNodePosSet, HashFunc4Vec2>& vNodePosMap)
+void CConfigParser::parseGraph(const std::string & vConfig, std::unordered_map<Node, AdjNodeSet, HashFunc4Node>& vNodePosMap)
 {
 	auto pAdaptConfig = CGraphConfig::getInstance();
 
@@ -36,7 +36,7 @@ void CConfigParser::parseGraph(const std::string & vConfig, std::unordered_map<N
 	}
 	for (int i = 0; i < nodeNum; i++)
 	{
-		AdjNodePosSet tmpNodeSet;
+		AdjNodeSet tmpNodeSet;
 		for (auto it = tmpEdgeVec.cbegin(); it != tmpEdgeVec.cend(); it++)
 		{
 			if (boost::get<0>(*it) == i || boost::get<1>(*it) == i)

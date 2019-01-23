@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseEvacuationStrategy.h"
+#include "BaseStrategy.h"
 #include "SimNode.h"
 
 class CSimulationStrategy : public IEvacuationStrategy
