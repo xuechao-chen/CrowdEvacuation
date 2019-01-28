@@ -9,19 +9,10 @@ CSceneGraph::CSceneGraph()
 
 CSceneGraph::CSceneGraph(const std::string & vConfig)
 {
-	constructGraph(vConfig);
 }
-
 
 CSceneGraph::~CSceneGraph()
 {
-
-}
-
-void CSceneGraph::constructGraph(const std::string & vConfig)
-{
-	clearGraph();
-	CConfigParser::getInstance()->parseGraph(vConfig, m_NodePosMap);
 }
 
 void CSceneGraph::clearGraph()
@@ -31,28 +22,20 @@ void CSceneGraph::clearGraph()
 
 void CSceneGraph::addNode(const glm::vec2& vNode)
 {
-	if (m_NodePosMap.find(vNode) == m_NodePosMap.end())
-	{
-		m_NodePosMap[vNode] = AdjNodeSet();
-
-	}
-	else
-	{
-		std::cout << "the pos is already has a node" << std::endl;
-	}
+	_ASSERTE(m_NodePosMap.find(vNode) == m_NodePosMap.end());
+	
+	m_NodePosMap[vNode] = AdjNodeSet();
 }
 
 void CSceneGraph::addEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight)
 {
-	if (m_NodePosMap.find(vNode1) == m_NodePosMap.end() ||
-		m_NodePosMap.find(vNode2) == m_NodePosMap.end() ||
-		vNode1 == vNode2 || 
-		vWeight < 0) { return; }
+	_ASSERTE(m_NodePosMap.find(vNode1) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vNode2) != m_NodePosMap.end());
+	_ASSERTE(vWeight >= 0);
 
 	for (auto& it : m_NodePosMap[vNode1])
 	{
-		if (it.first == vNode2)
-			return;
+		if (it.first == vNode2) _ASSERTE(false);
 	}
 
 	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
@@ -70,34 +53,30 @@ void CSceneGraph::addEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, doub
 
 void CSceneGraph::removeNode(const glm::vec2& vNode)
 {
-	if (m_NodePosMap.find(vNode) == m_NodePosMap.end())
+	_ASSERTE(m_NodePosMap.find(vNode) != m_NodePosMap.end());
+	
+	for (auto& it : m_NodePosMap)
 	{
-		std::cout << "the pos is doesn't have a node" << std::endl;
-	}
-	else
-	{
-		for (auto& it : m_NodePosMap)
+		if (it.first != vNode)
 		{
-			if (it.first != vNode)
-			{
-				removeEdge(vNode, it.first);
-			}
+			removeEdge(vNode, it.first);
 		}
-		for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); it++)
+	}
+	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
+	{
+		if (it->first == vNode)
 		{
-			if (it->first == vNode)
-			{
-				m_NodePosMap.erase(it);
-				break;
-			}
+			m_NodePosMap.erase(it);
+			break;
 		}
 	}
 }
 
 void CSceneGraph::removeEdge(const glm::vec2& vNode1, const glm::vec2& vNode2)
 {
-	if (m_NodePosMap.find(vNode1) == m_NodePosMap.end() || m_NodePosMap.find(vNode2) == m_NodePosMap.end() || vNode1 == vNode2)
-		return;
+	_ASSERTE(m_NodePosMap.find(vNode1) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vNode2) != m_NodePosMap.end());
+
 	for (auto it = m_NodePosMap[vNode1].begin(); it != m_NodePosMap[vNode1].end(); it++)
 	{
 		if (it->first == vNode2)
@@ -109,27 +88,32 @@ void CSceneGraph::removeEdge(const glm::vec2& vNode1, const glm::vec2& vNode2)
 	}
 }
 
-double CSceneGraph::getEdgeWeight(const glm::vec2& vFromNode, const glm::vec2& vToNode) const
+double CSceneGraph::getEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2) const
 {
+	_ASSERTE(m_NodePosMap.find(vNode1) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vNode2) != m_NodePosMap.end());
 
 	for (const auto& itMap : m_NodePosMap)
 	{
-		if (itMap.first == vFromNode)
+		if (itMap.first == vNode1)
 		{
 			for (const auto& itVec : itMap.second)
 			{
-				if (itVec.first == vToNode)
+				if (itVec.first == vNode2)
 				{
 					return itVec.second;
 				}
 			}
 		}
 	}
+
 	return 0.0;
 }
 
 AdjNodeSet CSceneGraph::dumpAdjNodeSet(const glm::vec2& vFromNode) const
 {
+	_ASSERTE(m_NodePosMap.find(vFromNode) != m_NodePosMap.end());
+
 	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
 	{
 		if (it->first == vFromNode)
@@ -137,11 +121,15 @@ AdjNodeSet CSceneGraph::dumpAdjNodeSet(const glm::vec2& vFromNode) const
 			return it->second;
 		}
 	}
+
 	return AdjNodeSet();
 }
 
 std::vector<glm::vec2> CSceneGraph::findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const
 {
+	_ASSERTE(m_NodePosMap.find(vFromNode) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vToNode) != m_NodePosMap.end());
+
 	auto Path = std::vector<glm::vec2>();
 	std::vector<glm::vec2> Q;
 	auto PreviousMap = std::unordered_map<glm::vec2, glm::vec2, HashFunc4Node>();
@@ -207,23 +195,22 @@ std::vector<glm::vec2> CSceneGraph::findShortestPath(const glm::vec2& vFromNode,
 	return Path;
 }
 
-void CSceneGraph::updateEdgeWeight(const glm::vec2& vFromNode, const glm::vec2& vToNode, double vWeight)
+void CSceneGraph::updateEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight)
 {
-	if (m_NodePosMap.find(vFromNode) == m_NodePosMap.end() ||
-		m_NodePosMap.find(vToNode) == m_NodePosMap.end() ||
-		vFromNode == vToNode ||
-		vWeight < 0) { return; }
+	_ASSERTE(m_NodePosMap.find(vNode1) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vNode2) != m_NodePosMap.end());
+	_ASSERTE(vWeight >= 0);
 
 	for (auto it = m_NodePosMap.begin(); it != m_NodePosMap.end(); ++it)
 	{
-		if (it->first == vFromNode || it->first == vToNode)
+		if (it->first == vNode1 || it->first == vNode2)
 		{
 			for (auto& AdjNode : it->second)
 			{
-				if (AdjNode.first == vToNode || AdjNode.first == vFromNode)
+				if (AdjNode.first == vNode2 || AdjNode.first == vNode1)
 				{
 					AdjNode.second = vWeight;
-					return;
+					break;
 				}
 			}
 		}
@@ -253,11 +240,10 @@ std::vector<glm::vec2> CSceneGraph::dumpAllNodes() const
 
 void CSceneGraph::__removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode)
 {
-	if (m_NodePosMap.find(vAdjFromNode) == m_NodePosMap.end())
-		return;
+	_ASSERTE(m_NodePosMap.find(vAdjFromNode) != m_NodePosMap.end());
+	_ASSERTE(m_NodePosMap.find(vAdjToNode) != m_NodePosMap.end());
+
 	AdjNodeSet& NodeSet = m_NodePosMap[vAdjFromNode];
-	if (NodeSet.size() == 0)
-		return;
 	for (auto it = NodeSet.begin(); it != NodeSet.end(); ++it)
 	{
 		if (it->first == vAdjToNode)

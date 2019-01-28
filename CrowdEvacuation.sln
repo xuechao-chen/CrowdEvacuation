@@ -14,7 +14,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCase-001", "TestCase-00
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrowdSimulation", "CrowdSimulation\CrowdSimulation.vcxproj", "{14F45DEB-2FDD-461D-8A6D-55279E4D0342}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WeightedGraphTest", "WeightedGraphTest\WeightedGraphTest.vcxproj", "{2E12DF95-EC53-4B35-AAAF-3B0447F0A678}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneGraphTest", "WeightedGraphTest\WeightedGraphTest.vcxproj", "{2E12DF95-EC53-4B35-AAAF-3B0447F0A678}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14F45DEB-2FDD-461D-8A6D-55279E4D0342} = {14F45DEB-2FDD-461D-8A6D-55279E4D0342}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{8961A5EA-6E86-47D6-AE45-56C52A41478C}"
 EndProject
@@ -54,8 +57,8 @@ Global
 		{BE3B803B-2115-4134-955A-D6D75EA3B584}.Release|x64.Build.0 = Release|x64
 		{BE3B803B-2115-4134-955A-D6D75EA3B584}.Release|x86.ActiveCfg = Release|Win32
 		{BE3B803B-2115-4134-955A-D6D75EA3B584}.Release|x86.Build.0 = Release|Win32
-		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x64.ActiveCfg = Release|x64
-		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x64.Build.0 = Release|x64
+		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x64.ActiveCfg = Debug|x64
+		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x64.Build.0 = Debug|x64
 		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x86.ActiveCfg = Debug|Win32
 		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Debug|x86.Build.0 = Debug|Win32
 		{14F45DEB-2FDD-461D-8A6D-55279E4D0342}.Release|x64.ActiveCfg = Release|x64

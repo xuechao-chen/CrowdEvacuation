@@ -25,7 +25,6 @@ public:
 	CSceneGraph(const std::string& vConfig);
 	~CSceneGraph();
 
-	void constructGraph(const std::string& vConfig);
 	void clearGraph();
 
 	void addNode(const glm::vec2& vNode);

@@ -43,15 +43,8 @@ int main(int, char*[])
 
 	hiveCrowdRendering::drawObstacles(ObstaclesPosVec);
 	hiveCrowdRendering::drawAgents(AgentsPosVec);
-	while (true)
-	{
-		hiveCrowdRendering::display();
-	}
-	//hiveCrowdRendering::display();
-	hiveCrowdRendering::clear();
-
+	hiveCrowdRendering::display();
 	hiveCrowdRendering::pause();
-
 
 	return 0;
 }

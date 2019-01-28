@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <stdarg.h>
-#include "../CrowdSimulation/WeightedGraph.h"
+#include "../CrowdSimulation/SceneGraph.h"
 #include "common/HiveCommonMicro.h"
 
 class TestGraph :public testing::Test
@@ -8,27 +8,35 @@ class TestGraph :public testing::Test
 protected:
 	virtual void SetUp() override
 	{
-		pGraph = new CSceneGraph();
+		m_pGraph = new CSceneGraph();
 	}
 	virtual void TearDown() override
 	{
-		_SAFE_DELETE(pGraph);
+		_SAFE_DELETE(m_pGraph);
 	}
 
 	void constructGraph()
 	{
-		pGraph->constructGraph("Config.xml");
+		for (auto& Node : m_NodeSet)
+		{
+			m_pGraph->addNode(Node);
+		}
+		m_pGraph->addEdge(m_NodeSet[0], m_NodeSet[1], 5);
+		m_pGraph->addEdge(m_NodeSet[0], m_NodeSet[2], 10);
+		m_pGraph->addEdge(m_NodeSet[1], m_NodeSet[3], 10);
+		m_pGraph->addEdge(m_NodeSet[2], m_NodeSet[3], 10);
+		m_pGraph->addEdge(m_NodeSet[3], m_NodeSet[4], 10);
 	}
 
 	void validNumOfNodeAndEdge(int vNumNodes, int vNumEdges)
 	{
-		EXPECT_EQ(vNumNodes, pGraph->getNumNodes());
-		EXPECT_EQ(vNumEdges, pGraph->getNumEdges());
+		EXPECT_EQ(vNumNodes, m_pGraph->getNumNodes());
+		EXPECT_EQ(vNumEdges, m_pGraph->getNumEdges());
 	}
 
-	void validGetEdgeWeight(double vExceptedNum, glm::vec2 vFromNodePos, glm::vec2 vToNodePos)
+	void validEdgeWeight(double vExceptedVal, glm::vec2 vFromNode, glm::vec2 vToNode)
 	{
-		EXPECT_NEAR(vExceptedNum, pGraph->getEdgeWeight(vFromNodePos, vToNodePos), 0.0001);
+		EXPECT_FLOAT_EQ(vExceptedVal, m_pGraph->getEdgeWeight(vFromNode, vToNode));
 	}
 
 	void validShortestPath(std::vector<glm::vec2>& vPath, int vExpectedNum, ...)
@@ -45,122 +53,102 @@ protected:
 		va_end(args);
 	}
 
-	void validAdjNodeSet(glm::vec2 vFromNodePos, int vExpectedNum, ...)
+	void validAdjNodeSet(glm::vec2 vFromNode, int vExpectedNum, ...)
 	{
-		auto AdjNodePosSet = pGraph->dumpAdjNodeSet(vFromNodePos);
-		ASSERT_EQ(vExpectedNum, AdjNodePosSet.size());
+		auto AdjNodeSet = m_pGraph->dumpAdjNodeSet(vFromNode);
+		ASSERT_EQ(vExpectedNum, AdjNodeSet.size());
 
 		va_list args;
 		va_start(args, vExpectedNum);
 		for (auto i = 0; i < vExpectedNum; i++)
 		{
-			auto NodePos = va_arg(args, glm::vec2);
-			EXPECT_EQ(NodePos, AdjNodePosSet[i].first);
+			auto Node = va_arg(args, glm::vec2);
+			EXPECT_EQ(Node, AdjNodeSet[i].first);
 		}
 		va_end(args);
 	}
 
-	CSceneGraph* pGraph = nullptr;
+	CSceneGraph* m_pGraph = nullptr;
+	std::vector<glm::vec2> m_NodeSet = { {1,1}, {2,2}, {3,3}, {4,4}, {5,5} };
 };
 
-TEST_F(TestGraph, defaultInitiallization)
+TEST_F(TestGraph, DefaultInitialization)
 {
 	validNumOfNodeAndEdge(0, 0);
 }
 
-TEST_F(TestGraph, initiallization)
+TEST_F(TestGraph, InitializationWithPreConstruction)
 {
 	constructGraph();
-	validNumOfNodeAndEdge(6, 7);
-	validAdjNodeSet(glm::vec2(1, 1), 3, glm::vec2(4, 1), glm::vec2(7, 1), glm::vec2(1, 3));
-	validGetEdgeWeight(3, glm::vec2(1, 1), glm::vec2(4, 1));
-	validGetEdgeWeight(6, glm::vec2(1, 1), glm::vec2(7, 1));
-	validGetEdgeWeight(2, glm::vec2(1, 1), glm::vec2(1, 3));
-	validGetEdgeWeight(sqrt(13), glm::vec2(7, 1), glm::vec2(4, 3));
+	validNumOfNodeAndEdge(5, 5);
 }
 
-TEST_F(TestGraph, DumpAdjNodePosSet)
+TEST_F(TestGraph, DumpAdjNodeSet)
 {
 	constructGraph();
-	auto& AdjNodePosSet = pGraph->dumpAdjNodeSet(glm::vec2(1, 1));
-	ASSERT_EQ(3, AdjNodePosSet.size());
-	EXPECT_EQ(glm::vec2(4, 1), AdjNodePosSet[0].first);
-	EXPECT_EQ(glm::vec2(7, 1), AdjNodePosSet[1].first);
-	EXPECT_EQ(glm::vec2(1, 3), AdjNodePosSet[2].first);
+	auto& AdjNodeSet = m_pGraph->dumpAdjNodeSet(m_NodeSet[0]);
+
+	ASSERT_EQ(2, AdjNodeSet.size());
+	EXPECT_EQ(m_NodeSet[1], AdjNodeSet[0].first);
+	EXPECT_EQ(m_NodeSet[2], AdjNodeSet[1].first);
 }
 
 TEST_F(TestGraph, AddNode)
 {
 	constructGraph();
-	validNumOfNodeAndEdge(6, 7);
-	pGraph->addNode(glm::vec2(1, 1));
-	validNumOfNodeAndEdge(6, 7);
 
-	pGraph->addNode(glm::vec2(8, 3));
-	validNumOfNodeAndEdge(7, 7);
-	auto& AdjNodePosSet = pGraph->dumpAdjNodeSet(glm::vec2(8, 3));
-	ASSERT_EQ(0, AdjNodePosSet.size());
+	m_pGraph->addNode({6,6});
+	validNumOfNodeAndEdge(6, 5);
+
+	m_pGraph->addNode(glm::vec2(7, 7));
+	validNumOfNodeAndEdge(7, 5);
 }
 
 TEST_F(TestGraph, RemoveNode)
 {
 	constructGraph();
-	validNumOfNodeAndEdge(6, 7);
-	pGraph->removeNode(glm::vec2(1, 1));
-	validNumOfNodeAndEdge(5, 4);
-	auto& AdjNodePosSet = pGraph->dumpAdjNodeSet(glm::vec2(1, 1));
-	EXPECT_EQ(0, AdjNodePosSet.size());
-	AdjNodePosSet = pGraph->dumpAdjNodeSet(glm::vec2(4, 1));
-	EXPECT_EQ(1, AdjNodePosSet.size());
 
-	pGraph->removeNode(glm::vec2(8, 3));
-	validNumOfNodeAndEdge(5, 4);
+	m_pGraph->removeNode(m_NodeSet[4]);
+	validNumOfNodeAndEdge(4, 4);
+
+	m_pGraph->removeNode(m_NodeSet[0]);
+	validNumOfNodeAndEdge(3, 2);
 }
 
 TEST_F(TestGraph, AddEdge)
 {
 	constructGraph();
-	validNumOfNodeAndEdge(6, 7);
-	pGraph->addEdge(glm::vec2(4, 1), glm::vec2(7, 1), 5);
-	validNumOfNodeAndEdge(6, 8);
-	pGraph->addEdge(glm::vec2(4, 1), glm::vec2(7, 1), 5);
-	validNumOfNodeAndEdge(6, 8);
+
+	m_pGraph->addEdge(m_NodeSet[1], m_NodeSet[2], 10);
+	validNumOfNodeAndEdge(5, 6);
 }
 
 TEST_F(TestGraph, RemoveEdge)
 {
 	constructGraph();
-	validNumOfNodeAndEdge(6, 7);
 
-	pGraph->removeEdge(glm::vec2(1, 1), glm::vec2(4, 1));
-	validNumOfNodeAndEdge(6, 6);
-	validAdjNodeSet(glm::vec2(1, 1), 2, glm::vec2(7, 1), glm::vec2(1, 3));
+	m_pGraph->removeEdge(m_NodeSet[0], m_NodeSet[1]);
+	validNumOfNodeAndEdge(5, 4);
 
-	pGraph->removeEdge(glm::vec2(1, 1), glm::vec2(4, 1));
-	validNumOfNodeAndEdge(6, 6);
-	validAdjNodeSet(glm::vec2(1, 1), 2, glm::vec2(7, 1), glm::vec2(1, 3));
+	m_pGraph->removeEdge(m_NodeSet[0], m_NodeSet[2]);
+	validNumOfNodeAndEdge(5, 3);
 }
 
 TEST_F(TestGraph, UpdateEdgeWeight)
 {
 	constructGraph();
 
-	pGraph->updateEdgeWeight(glm::vec2(1, 1), glm::vec2(4, 1), 10);
-	validGetEdgeWeight(10, glm::vec2(1, 1), glm::vec2(4, 1));
-	pGraph->updateEdgeWeight(glm::vec2(1, 1), glm::vec2(4, 1), -1);
-	validGetEdgeWeight(10, glm::vec2(1, 1), glm::vec2(4, 1));
+	m_pGraph->updateEdgeWeight(m_NodeSet[0], m_NodeSet[1], 10);
+	validEdgeWeight(10, m_NodeSet[0], m_NodeSet[1]);
 
-	pGraph->updateEdgeWeight(glm::vec2(1, 2), glm::vec2(4, 1), 10);
-	validGetEdgeWeight(0, glm::vec2(1, 2), glm::vec2(4, 1));
+	m_pGraph->updateEdgeWeight(m_NodeSet[0], m_NodeSet[1], 5);
+	validEdgeWeight(5, m_NodeSet[0], m_NodeSet[1]);
 }
 
 TEST_F(TestGraph, FindShortestPath)
 {
 	constructGraph();
 
-	auto Path1 = pGraph->findShortestPath(glm::vec2(1, 1), glm::vec2(7, 3));
-	validShortestPath(Path1, 4, glm::vec2(1, 1), glm::vec2(1, 3), glm::vec2(4, 3), glm::vec2(7, 3));
-
-	auto Path2 = pGraph->findShortestPath(glm::vec2(4, 1), glm::vec2(4, 3));
-	validShortestPath(Path2, 3, glm::vec2(4, 1), glm::vec2(1, 3), glm::vec2(4, 3));
+	auto Path = m_pGraph->findShortestPath(m_NodeSet[0], m_NodeSet[4]);
+	validShortestPath(Path, 4, m_NodeSet[0], m_NodeSet[1], m_NodeSet[3], m_NodeSet[4]);
 }
