@@ -129,10 +129,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(BOOST);$(HIVE_ROOT)/include;$(GLM);$(OPENCV)/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\x64\Debug;$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;$(OPENCV)\x64\vc12\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CrowdRendering.lib;HiveConfiguration-vc140.lib;HiveOO-vc140.lib;hiveCommon-vc140.lib;opencv_core248.lib;opencv_highgui248.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

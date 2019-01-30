@@ -3,7 +3,7 @@
 #include "../CrowdSimulation/SceneGraph.h"
 #include "common/HiveCommonMicro.h"
 
-class TestGraph :public testing::Test
+class TestSceneGraph : public ::testing::Test
 {
 protected:
 	virtual void SetUp() override
@@ -34,7 +34,7 @@ protected:
 		EXPECT_EQ(vNumEdges, m_pGraph->getNumEdges());
 	}
 
-	void validEdgeWeight(double vExceptedVal, glm::vec2 vFromNode, glm::vec2 vToNode)
+	void validEdgeWeight(double vExceptedVal, const glm::vec2& vFromNode, const glm::vec2& vToNode)
 	{
 		EXPECT_FLOAT_EQ(vExceptedVal, m_pGraph->getEdgeWeight(vFromNode, vToNode));
 	}
@@ -53,7 +53,7 @@ protected:
 		va_end(args);
 	}
 
-	void validAdjNodeSet(glm::vec2 vFromNode, int vExpectedNum, ...)
+	void validAdjNodeSet(const glm::vec2& vFromNode, int vExpectedNum, ...)
 	{
 		auto AdjNodeSet = m_pGraph->dumpAdjNodeSet(vFromNode);
 		ASSERT_EQ(vExpectedNum, AdjNodeSet.size());
@@ -72,18 +72,26 @@ protected:
 	std::vector<glm::vec2> m_NodeSet = { {1,1}, {2,2}, {3,3}, {4,4}, {5,5} };
 };
 
-TEST_F(TestGraph, DefaultInitialization)
+TEST_F(TestSceneGraph, DefaultInitialization)
 {
 	validNumOfNodeAndEdge(0, 0);
 }
 
-TEST_F(TestGraph, InitializationWithPreConstruction)
+TEST_F(TestSceneGraph, InitializationWithPreConstruction)
 {
 	constructGraph();
 	validNumOfNodeAndEdge(5, 5);
 }
 
-TEST_F(TestGraph, DumpAdjNodeSet)
+TEST_F(TestSceneGraph, ClearGraph)
+{
+	constructGraph();
+
+	m_pGraph->clearGraph();
+	validNumOfNodeAndEdge(0, 0);
+}
+
+TEST_F(TestSceneGraph, DumpAdjNodeSet)
 {
 	constructGraph();
 	auto& AdjNodeSet = m_pGraph->dumpAdjNodeSet(m_NodeSet[0]);
@@ -93,7 +101,7 @@ TEST_F(TestGraph, DumpAdjNodeSet)
 	EXPECT_EQ(m_NodeSet[2], AdjNodeSet[1].first);
 }
 
-TEST_F(TestGraph, AddNode)
+TEST_F(TestSceneGraph, AddNode)
 {
 	constructGraph();
 
@@ -104,7 +112,7 @@ TEST_F(TestGraph, AddNode)
 	validNumOfNodeAndEdge(7, 5);
 }
 
-TEST_F(TestGraph, RemoveNode)
+TEST_F(TestSceneGraph, RemoveNode)
 {
 	constructGraph();
 
@@ -115,7 +123,7 @@ TEST_F(TestGraph, RemoveNode)
 	validNumOfNodeAndEdge(3, 2);
 }
 
-TEST_F(TestGraph, AddEdge)
+TEST_F(TestSceneGraph, AddEdge)
 {
 	constructGraph();
 
@@ -123,7 +131,7 @@ TEST_F(TestGraph, AddEdge)
 	validNumOfNodeAndEdge(5, 6);
 }
 
-TEST_F(TestGraph, RemoveEdge)
+TEST_F(TestSceneGraph, RemoveEdge)
 {
 	constructGraph();
 
@@ -134,7 +142,7 @@ TEST_F(TestGraph, RemoveEdge)
 	validNumOfNodeAndEdge(5, 3);
 }
 
-TEST_F(TestGraph, UpdateEdgeWeight)
+TEST_F(TestSceneGraph, UpdateEdgeWeight)
 {
 	constructGraph();
 
@@ -145,7 +153,7 @@ TEST_F(TestGraph, UpdateEdgeWeight)
 	validEdgeWeight(5, m_NodeSet[0], m_NodeSet[1]);
 }
 
-TEST_F(TestGraph, FindShortestPath)
+TEST_F(TestSceneGraph, FindShortestPath)
 {
 	constructGraph();
 

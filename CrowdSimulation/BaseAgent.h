@@ -8,10 +8,10 @@ public:
 	IAgent();
 	virtual ~IAgent();
 
-	void setLocatedEdge(const glm::vec2& vNode1, const glm::vec2& vNode2) { m_LocatedEdge.first = vNode1; m_LocatedEdge.second = vNode2; }
-	std::pair<glm::vec2, glm::vec2> getLocatedEdge() const { return m_LocatedEdge; }
+	void setInitNavPoints(const std::vector<glm::vec2>& vNavPoints) { m_InitNavPoints = vNavPoints; }
+	const std::vector<glm::vec2> getInitNavPoints() const { return m_InitNavPoints; }
 
 private:
-	std::pair<glm::vec2, glm::vec2> m_LocatedEdge;
 	RVO::Agent* m_pRVOAgent = nullptr;
+	std::vector<glm::vec2> m_InitNavPoints;
 };

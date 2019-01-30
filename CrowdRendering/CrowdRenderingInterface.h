@@ -13,6 +13,4 @@ namespace hiveCrowdRendering
 	CROWD_RENDERING_DLL_EXPORT void drawAgents(const std::vector<glm::vec2>& vPosOfAgents);
 	CROWD_RENDERING_DLL_EXPORT void display();
 	CROWD_RENDERING_DLL_EXPORT void clear();
-
-
 }

@@ -22,18 +22,21 @@ void CConfigParser::parseGraph(const std::string & vConfig, std::unordered_map<N
 	hiveConfig::hiveParseConfig(vConfig, hiveConfig::EConfigType::XML, pAdaptConfig);
 	auto pNodeConfig = pAdaptConfig->findSubConfigByName("node");
 	auto pEdegeConfig = pAdaptConfig->findSubConfigByName("edge");
+
 	std::unordered_map<int, glm::vec2> idx2PosMap;
 	for (int i = 0; i < nodeNum; i++)
 	{
 		boost::tuple<int, int> nodePos = pNodeConfig->getAttribute<boost::tuple<int, int>>("NodeItem" + std::to_string(i));
 		idx2PosMap[i] = glm::vec2(boost::get<0>(nodePos), boost::get<1>(nodePos));
 	}
+
 	std::vector<boost::tuple<int, int>> tmpEdgeVec;
 	for (int i = 0; i < edgeNum; i++)
 	{
 		boost::tuple<int, int> edgePos = pEdegeConfig->getAttribute<boost::tuple<int, int>>("EdgeItem" + std::to_string(i));
 		tmpEdgeVec.push_back(edgePos);
 	}
+
 	for (int i = 0; i < nodeNum; i++)
 	{
 		AdjNodeSet tmpNodeSet;

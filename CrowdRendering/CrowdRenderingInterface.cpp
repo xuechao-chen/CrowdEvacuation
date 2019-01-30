@@ -34,7 +34,7 @@ void hiveCrowdRendering::pause()
 	CSceneVisualization::getInstance()->pause();
 }
 
-CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::drawObstacles(const std::vector<std::pair<glm::vec2, glm::vec2>>& vPosOfObstacles)
+void hiveCrowdRendering::drawObstacles(const std::vector<std::pair<glm::vec2, glm::vec2>>& vPosOfObstacles)
 {
 	auto SceneVis = CSceneVisualization::getInstance();
 
@@ -44,7 +44,7 @@ CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::drawObstacles(const std::vec
 	}
 }
 
-CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::drawAgents(const std::vector<glm::vec2>& vPosOfAgents)
+void hiveCrowdRendering::drawAgents(const std::vector<glm::vec2>& vPosOfAgents)
 {
 	auto SceneVis = CSceneVisualization::getInstance();
 	for (auto& Pos : vPosOfAgents)
@@ -53,14 +53,13 @@ CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::drawAgents(const std::vector
 	}
 }
 
-CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::display()
+void hiveCrowdRendering::display()
 {
 	auto SceneVis = CSceneVisualization::getInstance();
 	SceneVis->display();
-
 }
 
-CROWD_RENDERING_DLL_EXPORT void hiveCrowdRendering::clear()
+void hiveCrowdRendering::clear()
 {
 	auto SceneVis = CSceneVisualization::getInstance();
 	SceneVis->clear();

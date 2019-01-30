@@ -33,17 +33,16 @@ public:
 	void removeEdge(const glm::vec2& vNode1, const glm::vec2& vNode2);
 	double getEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2) const;
 	void updateEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight);
+	int getNumNodes() const { return m_NodeMap.size(); }
+	int getNumEdges() const;
 
 	std::vector<glm::vec2> dumpAllNodes() const;
 	AdjNodeSet dumpAdjNodeSet(const glm::vec2& vFromNode) const;
 	std::vector<glm::vec2> findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const;
 
-	int getNumNodes() const { return m_NodePosMap.size(); }
-	int getNumEdges() const;
-
 private:
 	void __removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode);
 
 private:
-	std::unordered_map<Node, AdjNodeSet, HashFunc4Node> m_NodePosMap;
+	std::unordered_map<Node, AdjNodeSet, HashFunc4Node> m_NodeMap;
 };
