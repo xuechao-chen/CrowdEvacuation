@@ -2,15 +2,12 @@
 #include "common/Singleton.h"
 #include "SceneGraph.h"
 
-class CConfigParser : public hiveOO::CSingleton<CConfigParser>
+class CConfigParser
 {
 public:
 	CConfigParser();
 	~CConfigParser();
 
-	void parseGraph(const std::string& vConfig, std::unordered_map<Node, AdjNodeSet, HashFunc4Node>& vNodePosMap);
-
-private:
-	friend class hiveOO::CSingleton<CConfigParser>;
-
+	static void parseGraph(const std::string& vConfig, CSceneGraph* voGraph);
+	static void parseAgents();
 };

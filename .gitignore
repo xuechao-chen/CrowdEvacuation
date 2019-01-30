@@ -3,3 +3,5 @@
 /**/x64
 /**/x86
 *.log
+/**/Release
+/**/Debug

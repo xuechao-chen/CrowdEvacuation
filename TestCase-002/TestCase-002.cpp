@@ -57,15 +57,15 @@ void updateVisualization(RVO::RVOSimulator* sim) {
 bool reachedGoal(RVO::RVOSimulator* sim) {
 	// Check whether all agents have arrived at their goals.
 	for (size_t i = 0; i < sim->getNumAgents(); ++i) {
-		//if (absSq(goals[i] - sim->getAgentPosition(i)) > sim->getAgentRadius(i) * sim->getAgentRadius(i)) {
-		//	// Agent is further away from its goal than one radius.
-		//	return false;
-		//}
-		auto Agent = sim->getAgent(i);
+		if (absSq(goals[i] - sim->getAgentPosition(i)) > sim->getAgentRadius(i) * sim->getAgentRadius(i)) {
+			// Agent is further away from its goal than one radius.
+			return false;
+		}
+		/*auto Agent = sim->getAgent(i);
 		if (Agent->isFinished(10.0f))
 		{
 			return false;
-		}
+		}*/
 	}
 	return true;
 }

@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AgentGenerator.h" />
     <ClInclude Include="BaseAgent.h" />
     <ClInclude Include="BaseStrategy.h" />
     <ClInclude Include="CDFPredictionStrategy.h" />
@@ -38,7 +37,6 @@
     <ClInclude Include="SimulationStrategy.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AgentGenerator.cpp" />
     <ClCompile Include="BaseAgent.cpp" />
     <ClCompile Include="BaseStrategy.cpp" />
     <ClCompile Include="CDFPredictionStrategy.cpp" />
@@ -51,11 +49,6 @@
     <ClCompile Include="ShortestStrategy.cpp" />
     <ClCompile Include="SimAgent.cpp" />
     <ClCompile Include="SimulationStrategy.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RVO\RVO.vcxproj">
-      <Project>{25b6a30c-b779-42d5-aa0a-a1d8b349de23}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
