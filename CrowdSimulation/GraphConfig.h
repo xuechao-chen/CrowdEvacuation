@@ -12,11 +12,17 @@ namespace KEY_WORDS
 class CGraphConfig : public hiveConfig::CHiveConfig, public hiveOO::CSingleton<CGraphConfig>
 {
 public:
-	CGraphConfig();
+	CGraphConfig() { __defineExtraAttribute(); }
 	~CGraphConfig() {}
 	
 private:
-	void __defineExtraAttribute();
+	void __defineExtraAttribute()
+	{
+		defineAttribute(KEY_WORDS::NODE, hiveConfig::ATTRIBUTE_STRING);
+		defineAttribute(KEY_WORDS::EDGE, hiveConfig::ATTRIBUTE_STRING);
+		defineAttribute(KEY_WORDS::NODE_NUM, hiveConfig::ATTRIBUTE_INT);
+		defineAttribute(KEY_WORDS::EDGE_NUM, hiveConfig::ATTRIBUTE_INT);
+	}
 
 	friend class hiveOO::CSingleton<CGraphConfig>;
 };

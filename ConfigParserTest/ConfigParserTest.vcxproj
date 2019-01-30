@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GraphConfig.xml" />
+    <Xml Include="SimulatorConfig.xml" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -87,7 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>..\x64\Debug;$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CrowdSimulation.lib;HiveConfiguration-vc140D.lib;HiveOO-vc140D.lib;hiveCommon-vc140D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RVO.lib;CrowdSimulation.lib;HiveConfiguration-vc140D.lib;HiveOO-vc140D.lib;hiveCommon-vc140D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

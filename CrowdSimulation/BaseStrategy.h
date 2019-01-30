@@ -22,5 +22,3 @@ protected:
 	CEvacuationScene* m_pScene = nullptr;
 	RVO::RVOSimulator* m_pSimulator = nullptr;
 };
-
-

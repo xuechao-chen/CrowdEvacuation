@@ -22,7 +22,18 @@ TEST(TestConfigParser, ParseGraph)
 	delete pGraph;
 }
 
-TEST(TestConfigParser, ParseAgent)
+TEST(TestConfigParser, ParseRVOSimulator)
 {
+	RVO::RVOSimulator* pSimulator = new RVO::RVOSimulator();
+	CConfigParser::parseRVOSimulator("SimulatorConfig.xml", pSimulator);
+	auto Idx = pSimulator->addAgent(RVO::Vector2(10.0f, 10.0f));
+	
+	EXPECT_EQ(30, pSimulator->getAgentNeighborDist(Idx));
+	EXPECT_EQ(5, pSimulator->getAgentMaxNeighbors(Idx));
+	EXPECT_EQ(2, pSimulator->getAgentTimeHorizon(Idx));
+	EXPECT_EQ(2, pSimulator->getAgentTimeHorizonObst(Idx));
+	EXPECT_EQ(3, pSimulator->getAgentRadius(Idx));
+	EXPECT_EQ(4, pSimulator->getAgentMaxSpeed(Idx));
 
+	delete pSimulator;
 }

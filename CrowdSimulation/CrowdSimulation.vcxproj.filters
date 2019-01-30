@@ -68,6 +68,9 @@
       <Filter>EvacuationScene</Filter>
     </ClInclude>
     <ClInclude Include="CrowdSimulationExport.h" />
+    <ClInclude Include="SimulatorConfig.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EvacuationScene.cpp">
@@ -90,9 +93,6 @@
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
     <ClCompile Include="ConfigParser.cpp">
-      <Filter>Config</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphConfig.cpp">
       <Filter>Config</Filter>
     </ClCompile>
     <ClCompile Include="ShortestStrategy.cpp">

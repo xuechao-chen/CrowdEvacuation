@@ -1,6 +1,6 @@
 #pragma once
-#include "common/Singleton.h"
 #include "SceneGraph.h"
+#include "../RVO/RVOSimulator.h"
 
 class CConfigParser
 {
@@ -9,5 +9,6 @@ public:
 	~CConfigParser();
 
 	static void parseGraph(const std::string& vConfig, CSceneGraph* voGraph);
-	static void parseAgents();
+	static void parseRVOSimulator(const std::string& vConfig, RVO::RVOSimulator* voSimulator);
+	//static void parseAgents(const std::string& vConfig, );
 };
