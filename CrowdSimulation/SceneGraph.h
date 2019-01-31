@@ -21,6 +21,8 @@ public:
 class CSceneGraph
 {
 public:
+	const int ROAD_WIDTH = 60;
+
 	CSceneGraph();
 	CSceneGraph(const std::string& vConfig);
 	~CSceneGraph();
@@ -36,13 +38,18 @@ public:
 	int getNumNodes() const { return m_NodeMap.size(); }
 	int getNumEdges() const;
 
+	std::vector<glm::vec2> dumpNavNodes(const glm::vec2& vLocation) const;
 	std::vector<glm::vec2> dumpAllNodes() const;
+	std::vector<std::pair<glm::vec2, glm::vec2>> dumpAllEdges() const;
 	AdjNodeSet dumpAdjNodeSet(const glm::vec2& vFromNode) const;
 	std::vector<glm::vec2> findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const;
 
 private:
 	void __removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode);
+	bool __isLocationInRegion(const glm::vec2& vLocation, const std::pair<glm::vec2, glm::vec2>& vRegion) const;
 
 private:
 	std::unordered_map<Node, AdjNodeSet, HashFunc4Node> m_NodeMap;
+	std::vector<std::pair<glm::vec2, glm::vec2>> m_EdgeSet; 
+	//为了查找方便，额外存储的数据结构,边的方向按左上到右下存储
 };

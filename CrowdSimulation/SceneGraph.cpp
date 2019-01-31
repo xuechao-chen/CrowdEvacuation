@@ -49,6 +49,15 @@ void CSceneGraph::addEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, doub
 			it->second.push_back(std::make_pair(vNode1, vWeight));
 		}
 	}
+
+	if (vNode1.x < vNode2.x || vNode1.y < vNode2.y)
+	{
+		m_EdgeSet.push_back(std::make_pair(vNode1, vNode2));
+	}
+	else
+	{
+		m_EdgeSet.push_back(std::make_pair(vNode2, vNode1));
+	}
 }
 
 void CSceneGraph::removeNode(const glm::vec2& vNode)
@@ -77,12 +86,22 @@ void CSceneGraph::removeEdge(const glm::vec2& vNode1, const glm::vec2& vNode2)
 	_ASSERTE(m_NodeMap.find(vNode1) != m_NodeMap.end());
 	_ASSERTE(m_NodeMap.find(vNode2) != m_NodeMap.end());
 
-	for (auto it = m_NodeMap[vNode1].begin(); it != m_NodeMap[vNode1].end(); it++)
+	for (auto it = m_NodeMap[vNode1].begin(); it != m_NodeMap[vNode1].end(); ++it)
 	{
 		if (it->first == vNode2)
 		{
 			__removeAdjNode(vNode1, vNode2);
 			__removeAdjNode(vNode2, vNode1);
+			break;
+		}
+	}
+
+	for (auto it = m_EdgeSet.begin(); it != m_EdgeSet.end(); ++it) 
+	{
+		if ((vNode1 == it->first && vNode2 == it->second) ||
+			vNode1 == it->second && vNode2 == it->first)
+		{
+			m_EdgeSet.erase(it);
 			break;
 		}
 	}
@@ -228,6 +247,45 @@ int CSceneGraph::getNumEdges() const
 	return Num;
 }
 
+std::vector<glm::vec2> CSceneGraph::dumpNavNodes(const glm::vec2 & vLocation) const
+{
+	std::vector<glm::vec2> NavNodes;
+	auto HalfRoadWidth = ROAD_WIDTH / 2;
+
+	for (auto& Edge : m_EdgeSet)
+	{
+		glm::vec2 LeftTopOfEdge     = { Edge.first.x - HalfRoadWidth, Edge.first.y - HalfRoadWidth };
+		glm::vec2 RightBottomOfEdge = { Edge.second.x + HalfRoadWidth, Edge.second.y + HalfRoadWidth };
+		if (__isLocationInRegion(vLocation, std::make_pair(LeftTopOfEdge, RightBottomOfEdge)))
+		{
+			auto& Node1 = Edge.first; auto& Node2 = Edge.second;
+			glm::vec2 LeftTopOfNode1 = { Node1.x - HalfRoadWidth, Node1.y - HalfRoadWidth };
+			glm::vec2 RightBottomOfNode1 = { Node1.x + HalfRoadWidth, Node1.y + HalfRoadWidth };
+			glm::vec2 LeftTopOfNode2 = { Node2.x - HalfRoadWidth, Node2.y - HalfRoadWidth };
+			glm::vec2 RightBottomOfNode2 = { Node2.x + HalfRoadWidth, Node2.y + HalfRoadWidth };
+
+			if (__isLocationInRegion(vLocation, std::make_pair(LeftTopOfNode1, RightBottomOfNode1)))
+			{
+				NavNodes.push_back(Node1);
+				break;
+			}
+			else if (__isLocationInRegion(vLocation, std::make_pair(LeftTopOfNode2, RightBottomOfNode2)))
+			{
+				NavNodes.push_back(Node2);
+				break;
+			}
+			else
+			{
+				NavNodes.push_back(Node1);
+				NavNodes.push_back(Node2);
+				break;
+			}
+		}
+	}
+
+	return NavNodes;
+}
+
 std::vector<glm::vec2> CSceneGraph::dumpAllNodes() const
 {
 	auto NodeSet = std::vector<glm::vec2>();
@@ -236,6 +294,11 @@ std::vector<glm::vec2> CSceneGraph::dumpAllNodes() const
 		NodeSet.push_back(Node.first);
 	}
 	return NodeSet;
+}
+
+std::vector<std::pair<glm::vec2, glm::vec2>> CSceneGraph::dumpAllEdges() const
+{
+	return m_EdgeSet;
 }
 
 void CSceneGraph::__removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode)
@@ -252,4 +315,14 @@ void CSceneGraph::__removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2
 			break;
 		}
 	}
+}
+
+bool CSceneGraph::__isLocationInRegion(const glm::vec2 & vLocation, const std::pair<glm::vec2, glm::vec2>& vRegion) const
+{
+	if ((vLocation.x > vRegion.first.x && vLocation.x < vRegion.second.x)&&
+		(vLocation.y > vRegion.first.y && vLocation.y < vRegion.second.y))
+	{
+		return true;
+	}
+	return false;
 }
