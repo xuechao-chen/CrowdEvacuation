@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AgentConfig.h" />
     <ClInclude Include="BaseAgent.h" />
     <ClInclude Include="BaseStrategy.h" />
     <ClInclude Include="CDFPredictionStrategy.h" />

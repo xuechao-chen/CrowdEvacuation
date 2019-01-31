@@ -6,7 +6,6 @@ class SimNode;
 class CSimAgent : public IAgent
 {
 public:
-	CSimAgent();
 	~CSimAgent();
 
 	void setNavNode(SimNode* pNavNode) { m_NavNode = pNavNode; }

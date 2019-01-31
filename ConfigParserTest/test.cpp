@@ -37,3 +37,31 @@ TEST(TestConfigParser, ParseRVOSimulator)
 
 	delete pSimulator;
 }
+
+TEST(TestConfigParser, ParseAgent)
+{
+	RVO::RVOSimulator* pSimulator = new RVO::RVOSimulator();
+	CConfigParser::parseRVOSimulator("SimulatorConfig.xml", pSimulator);
+
+	std::vector<IAgent*> AgentSet;
+	CConfigParser::parseAgent("AgentConfig.xml", pSimulator, AgentSet);
+
+	EXPECT_EQ(15, AgentSet.size());
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		auto& Pos = AgentSet[i]->getPosition();
+		EXPECT_LE(100, Pos.x);
+		EXPECT_GE(200, Pos.x);
+		EXPECT_LE(100, Pos.y);
+		EXPECT_GE(200, Pos.y);
+	}
+	for (size_t i = 10; i < 15; i++)
+	{
+		auto& Pos = AgentSet[i]->getPosition();
+		EXPECT_LE(300, Pos.x);
+		EXPECT_GE(400, Pos.x);
+		EXPECT_LE(300, Pos.y);
+		EXPECT_GE(400, Pos.y);
+	}
+}
