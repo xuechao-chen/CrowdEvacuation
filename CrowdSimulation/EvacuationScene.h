@@ -8,13 +8,13 @@ class CEvacuationScene
 {
 public:
 	CEvacuationScene();
-	CEvacuationScene(int vWidth, int vHeight) : m_Width(vWidth), m_Height(vHeight) {}
+	//CEvacuationScene(int vWidth, int vHeight) : m_Width(vWidth), m_Height(vHeight) {}
 	~CEvacuationScene();
 
-	int getWidth() const { return m_Width; }
-	int getHeight() const { return m_Height; }
-	void setWidth(int vWidth) { m_Width = vWidth; }
-	void setHeight(int vHeight) { m_Height = vHeight; }
+	//int getWidth() const { return m_Width; }
+	//int getHeight() const { return m_Height; }
+	//void setWidth(int vWidth) { m_Width = vWidth; }
+	//void setHeight(int vHeight) { m_Height = vHeight; }
 
 	std::vector<std::pair<glm::vec2, glm::vec2>> getObstacles() const { return m_Obstacles; }
 	void addObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
@@ -28,10 +28,9 @@ public:
 	CSceneGraph* getGraph() const { return m_pGraph; }
 
 private:
-	int m_Width;
-	int m_Height;
+	//int m_Width;
+	//int m_Height;
 	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
 	std::vector<glm::vec2> m_Exits;
 	CSceneGraph* m_pGraph = nullptr;
 };
-

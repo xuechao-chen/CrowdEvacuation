@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneGraph.h"
+#include "EvacuationScene.h"
 #include "../RVO/RVOSimulator.h"
 #include "BaseAgent.h"
 
@@ -12,6 +13,7 @@ public:
 	static void parseGraph(const std::string& vConfig, CSceneGraph* voGraph);
 	static void parseRVOSimulator(const std::string& vConfig, RVO::RVOSimulator* voSimulator);
 	static void parseAgent(const std::string& vConfig, RVO::RVOSimulator* vSimulator, std::vector<IAgent*>& voAgentSet);
+	static void parseScene(const std::string& vConfig, RVO::RVOSimulator* vSimulator, CEvacuationScene* voScene);
 
 private:
 	static void __genAgentInRegion(int vAmount, int * vRegion, RVO::RVOSimulator* vSimulator, std::vector<IAgent*>& voAgentsInRegion);

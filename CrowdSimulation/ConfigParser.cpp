@@ -2,6 +2,7 @@
 #include "GraphConfig.h"
 #include "SimulatorConfig.h"
 #include "AgentConfig.h"
+#include "SceneConfig.h"
 #include "common/ConfigInterface.h"
 
 CConfigParser::CConfigParser()
@@ -73,6 +74,14 @@ void CConfigParser::parseAgent(const std::string & vConfig, RVO::RVOSimulator* v
 		__genAgentInRegion(Amount, Region, vSimulator, AgentsInRegion);
 		for (auto Agent : AgentsInRegion) voAgentSet.push_back(Agent);
 	}
+}
+
+void CConfigParser::parseScene(const std::string & vConfig, RVO::RVOSimulator* vSimulator, CEvacuationScene* voScene)
+{
+	hiveConfig::hiveParseConfig(vConfig, hiveConfig::EConfigType::XML, CSceneConfig::getInstance());
+	auto Config = CAgentConfig::getInstance();
+
+	//TODO: parse Scene
 }
 
 void CConfigParser::__genAgentInRegion(int vAmount, int* vRegion, RVO::RVOSimulator* vSimulator, std::vector<IAgent*>& voAgentsInRegion)
