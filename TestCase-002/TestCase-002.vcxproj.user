@@ -4,4 +4,8 @@
     <LocalDebuggerEnvironment>path=$(OPENCV)\x64\vc12\bin;$(HIVE_ROOT)\bin\x64;</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerEnvironment>path=$(OPENCV)\x64\vc12\bin;$(HIVE_ROOT)\bin\x64;</LocalDebuggerEnvironment>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

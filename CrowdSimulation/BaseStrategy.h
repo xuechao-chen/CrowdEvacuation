@@ -9,12 +9,13 @@ public:
 	IEvacuationStrategy();
 	virtual ~IEvacuationStrategy();
 
-	virtual void run() = 0;
+	virtual void run();
 
 private:
-	virtual void __init(const std::string& vSceneConfig, const std::string& vAgentConfig);
-	void __initScene(const std::string& vSceneConfig);
-	void __initAgents(const std::string& vAgentConfig);
+	void __init();
+	virtual bool __isFinish() = 0;
+	virtual void __onPreDoStep() = 0;
+	virtual void __onPostDoStep() = 0;
 
 protected:
 	CEvacuationScene* m_pScene = nullptr;

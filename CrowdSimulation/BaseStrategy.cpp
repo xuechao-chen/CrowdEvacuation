@@ -1,23 +1,35 @@
 #include "BaseStrategy.h"
+#include "ConfigParser.h"
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
-	//__init();
+	__init();
 }
-
 
 IEvacuationStrategy::~IEvacuationStrategy()
 {
+	_SAFE_DELETE(m_pScene);
 }
 
-void IEvacuationStrategy::__init(const std::string & vSceneConfig, const std::string & vAgentConfig)
+void IEvacuationStrategy::run()
 {
+	auto pSim = m_pScene->getSimulator();
+
+	do {
+		__onPreDoStep();
+		pSim->doStep();
+		__onPostDoStep();
+	} while (!__isFinish());
 }
 
-void IEvacuationStrategy::__initScene(const std::string & vSceneConfig)
+void IEvacuationStrategy::__init()
 {
-}
+	CSceneGraph* pGraph = new CSceneGraph();
+	RVO::RVOSimulator* pSim = new RVO::RVOSimulator();
 
-void IEvacuationStrategy::__initAgents(const std::string & vAgentConfig)
-{
+	CConfigParser::parseGraph("GraphConfig.xml", pGraph);
+	CConfigParser::parseRVOSimulator("SimulatorConfig.xml", pSim);
+
+	CEvacuationScene* pScene = new CEvacuationScene(pSim, pGraph);
+	CConfigParser::parseScene("SceneConfig.xml", pScene);
 }

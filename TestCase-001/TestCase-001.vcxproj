@@ -102,7 +102,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\x64\Release;$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;$(OPENCV)\x64\vc12\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CrowdRendering.lib;HiveConfiguration-vc140.lib;HiveOO-vc140.lib;hiveCommon-vc140.lib;opencv_core248.lib;opencv_highgui248.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RVO.lib;CrowdSimulation.lib;CrowdRendering.lib;HiveConfiguration-vc140.lib;HiveOO-vc140.lib;hiveCommon-vc140.lib;opencv_core248.lib;opencv_highgui248.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -135,7 +135,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\x64\Debug;$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;$(OPENCV)\x64\vc12\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>RVO.lib;CrowdSimulation.lib;CrowdRendering.lib;HiveConfiguration-vc140D.lib;HiveOO-vc140D.lib;hiveCommon-vc140D.lib;opencv_core248.lib;opencv_highgui248.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RVO.lib;CrowdSimulation.lib;CrowdRendering.lib;HiveConfiguration-vc140D.lib;HiveOO-vc140D.lib;hiveCommon-vc140D.lib;opencv_core248d.lib;opencv_highgui248d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

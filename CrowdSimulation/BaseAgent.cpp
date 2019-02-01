@@ -15,3 +15,8 @@ glm::vec2 IAgent::getPosition() const
 {
 	return {m_pRVOAgent->getPosition().x(), m_pRVOAgent->getPosition().y()};
 }
+
+void IAgent::setPrefVelocity(const glm::vec2 & vPrefVelocity)
+{
+	m_pRVOAgent->setPrefVelocity(RVO::Vector2(vPrefVelocity.x, vPrefVelocity.y));
+}

@@ -8,9 +8,10 @@ public:
 	CShortestStrategy();
 	~CShortestStrategy();
 
-	void run() override;
-
 private:
-	std::vector<IAgent*> m_Agent;
+	void __init();
+	bool __isFinish() override;
+	void __onPreDoStep() override;
+	void __onPostDoStep() override;
 };
 
