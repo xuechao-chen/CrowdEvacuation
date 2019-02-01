@@ -48,10 +48,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="AgentConfig.xml">
-      <SubType>Designer</SubType>
-    </Xml>
     <Xml Include="GraphConfig.xml" />
+    <Xml Include="SceneConfig.xml" />
     <Xml Include="SimulatorConfig.xml" />
   </ItemGroup>
   <ItemDefinitionGroup />

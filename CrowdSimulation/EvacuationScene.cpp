@@ -1,29 +1,20 @@
 #include "EvacuationScene.h"
 #include "common/HiveCommonMicro.h"
 
-CEvacuationScene::CEvacuationScene()
-{
-}
-
 CEvacuationScene::~CEvacuationScene()
 {
+	_SAFE_DELETE(m_pGraph);
+	_SAFE_DELETE(m_pRVOSimulator);
 }
 
 void CEvacuationScene::addObstacle(const glm::vec2 & vLeftTop, const glm::vec2 & vRightBottom)
 {
-	m_Obstacles.push_back(std::make_pair(vLeftTop, vRightBottom));
-}
-
-void CEvacuationScene::removeObstacle(const glm::vec2 & vLeftTop, const glm::vec2 & vRightBottom)
-{
-	for (auto it = m_Obstacles.begin(); it != m_Obstacles.end(); ++it)
-	{
-		if (vLeftTop == it->first && vRightBottom == it->second)
-		{
-			m_Obstacles.erase(it);
-			break;
-		}
-	}
+	std::vector<RVO::Vector2> Vertices;
+	Vertices.push_back(RVO::Vector2(vLeftTop.x, vLeftTop.y));
+	Vertices.push_back(RVO::Vector2(vLeftTop.x, vRightBottom.y));
+	Vertices.push_back(RVO::Vector2(vRightBottom.x, vRightBottom.y));
+	Vertices.push_back(RVO::Vector2(vRightBottom.x, vLeftTop.y));
+	m_pRVOSimulator->addObstacle(Vertices);
 }
 
 void CEvacuationScene::addExit(const glm::vec2 & vExit)
@@ -41,4 +32,11 @@ void CEvacuationScene::removeExit(const glm::vec2 & vExit)
 			break;
 		}
 	}
+}
+
+void CEvacuationScene::addAgent(const glm::vec2& vAgent)
+{
+	auto Idx = m_pRVOSimulator->addAgent(RVO::Vector2(vAgent.x, vAgent.y));
+	auto RVOAgent = m_pRVOSimulator->getAgent(Idx);
+	m_Agents.push_back(new IAgent(RVOAgent));
 }

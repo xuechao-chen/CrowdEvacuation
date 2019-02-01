@@ -38,16 +38,21 @@ TEST(TestConfigParser, ParseRVOSimulator)
 	delete pSimulator;
 }
 
-TEST(TestConfigParser, ParseAgent)
+TEST(TestConfigParser, ParseScene)
 {
 	RVO::RVOSimulator* pSimulator = new RVO::RVOSimulator();
 	CConfigParser::parseRVOSimulator("SimulatorConfig.xml", pSimulator);
+	
+	CEvacuationScene* pScene = new CEvacuationScene(pSimulator);
+	CConfigParser::parseScene("SceneConfig.xml", pScene);
 
-	std::vector<IAgent*> AgentSet;
-	CConfigParser::parseAgent("AgentConfig.xml", pSimulator, AgentSet);
+	auto& Exits = pScene->getExits();
+	ASSERT_EQ(2, Exits.size());
+	EXPECT_EQ(glm::vec2(5, 5), Exits[0]);
+	EXPECT_EQ(glm::vec2(6, 6), Exits[1]);
 
-	EXPECT_EQ(15, AgentSet.size());
-
+	std::vector<IAgent*> AgentSet = pScene->getAgents();
+	ASSERT_EQ(15, AgentSet.size());
 	for (size_t i = 0; i < 10; i++)
 	{
 		auto& Pos = AgentSet[i]->getPosition();

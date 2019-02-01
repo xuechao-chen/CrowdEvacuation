@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AgentConfig.h" />
     <ClInclude Include="BaseAgent.h" />
     <ClInclude Include="BaseStrategy.h" />
     <ClInclude Include="CDFPredictionStrategy.h" />
@@ -31,6 +30,7 @@
     <ClInclude Include="DivideNode.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
+    <ClInclude Include="SceneConfig.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="ShortestStrategy.h" />
     <ClInclude Include="SimAgent.h" />

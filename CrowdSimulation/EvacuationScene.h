@@ -2,23 +2,19 @@
 #include <vector>
 #include "GLM/glm.hpp"
 #include "SceneGraph.h"
+#include "BaseAgent.h"
 
-// 管理疏散场景的通行区域信息(出口/障碍物)，可通行区域的连接结构图
 class CEvacuationScene
 {
 public:
-	CEvacuationScene();
-	//CEvacuationScene(int vWidth, int vHeight) : m_Width(vWidth), m_Height(vHeight) {}
+	CEvacuationScene() = delete;
+	CEvacuationScene(RVO::RVOSimulator* pSimulator) : m_pRVOSimulator(pSimulator) {}
+	CEvacuationScene(RVO::RVOSimulator* pSimulator, CSceneGraph* pGraph) : m_pRVOSimulator(pSimulator), m_pGraph(pGraph) {}
 	~CEvacuationScene();
 
-	//int getWidth() const { return m_Width; }
-	//int getHeight() const { return m_Height; }
-	//void setWidth(int vWidth) { m_Width = vWidth; }
-	//void setHeight(int vHeight) { m_Height = vHeight; }
-
-	std::vector<std::pair<glm::vec2, glm::vec2>> getObstacles() const { return m_Obstacles; }
+	std::vector<IAgent*> getAgents() const { return m_Agents; }
+	void addAgent(const glm::vec2& vAgent);
 	void addObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
-	void removeObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 	
 	std::vector<glm::vec2> getExits() const { return m_Exits; }
 	void addExit(const glm::vec2& vExit);
@@ -27,10 +23,12 @@ public:
 	void setGraph(CSceneGraph* pGraph) { m_pGraph = pGraph; }
 	CSceneGraph* getGraph() const { return m_pGraph; }
 
+	void setSimulator(RVO::RVOSimulator* pSimulator) { m_pRVOSimulator = pSimulator; }
+	RVO::RVOSimulator* getSimulator() const { return m_pRVOSimulator; }
+
 private:
-	//int m_Width;
-	//int m_Height;
-	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
 	std::vector<glm::vec2> m_Exits;
+	std::vector<IAgent*> m_Agents;
 	CSceneGraph* m_pGraph = nullptr;
+	RVO::RVOSimulator* m_pRVOSimulator = nullptr;
 };

@@ -71,7 +71,7 @@
     <ClInclude Include="SimulatorConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="AgentConfig.h">
+    <ClInclude Include="SceneConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
   </ItemGroup>

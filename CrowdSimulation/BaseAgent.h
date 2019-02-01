@@ -9,14 +9,10 @@ public:
 	IAgent(RVO::Agent* pRVOAgent) : m_pRVOAgent(pRVOAgent) {}
 	IAgent(RVO::Agent* pRVOAgent, const glm::vec2& vPos) : m_pRVOAgent(pRVOAgent) { setPosition(vPos); };
 	virtual ~IAgent();
-
-	//void setInitNavPoints(const std::vector<glm::vec2>& vNavPoints) { m_InitNavPoints = vNavPoints; }
-	//const std::vector<glm::vec2> getInitNavPoints() const { return m_InitNavPoints; }
 	
 	void setPosition(const glm::vec2& vPos);
 	glm::vec2 getPosition() const;
 
 private:
 	RVO::Agent* m_pRVOAgent = nullptr;
-	//std::vector<glm::vec2> m_InitNavPoints;
 };

@@ -1,7 +1,9 @@
 #include "BaseAgent.h"
+#include "common/HiveCommonMicro.h"
 
 IAgent::~IAgent()
 {
+	_SAFE_DELETE(m_pRVOAgent);
 }
 
 void IAgent::setPosition(const glm::vec2 & vPos)
