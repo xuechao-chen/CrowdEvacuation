@@ -14,6 +14,7 @@ public:
 
 	std::vector<IAgent*> getAgents() const { return m_Agents; }
 	void addAgent(const glm::vec2& vAgent);
+	std::vector<std::pair<glm::vec2, glm::vec2>> getObstacles() const { return m_Obstacles; }
 	void addObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 	
 	std::vector<glm::vec2> getExits() const { return m_Exits; }
@@ -26,7 +27,10 @@ public:
 	void setSimulator(RVO::RVOSimulator* pSimulator) { m_pRVOSimulator = pSimulator; }
 	RVO::RVOSimulator* getSimulator() const { return m_pRVOSimulator; }
 
+	void show();
+
 private:
+	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
 	std::vector<glm::vec2> m_Exits;
 	std::vector<IAgent*> m_Agents;
 	CSceneGraph* m_pGraph = nullptr;

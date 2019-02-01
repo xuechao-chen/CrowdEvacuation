@@ -21,5 +21,8 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="RenderingConfig.xml" />
+    <Xml Include="GraphConfig.xml" />
+    <Xml Include="SceneConfig.xml" />
+    <Xml Include="SimulatorConfig.xml" />
   </ItemGroup>
 </Project>

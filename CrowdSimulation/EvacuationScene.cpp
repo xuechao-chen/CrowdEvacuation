@@ -9,6 +9,8 @@ CEvacuationScene::~CEvacuationScene()
 
 void CEvacuationScene::addObstacle(const glm::vec2 & vLeftTop, const glm::vec2 & vRightBottom)
 {
+	m_Obstacles.push_back({ vLeftTop, vRightBottom });
+
 	std::vector<RVO::Vector2> Vertices;
 	Vertices.push_back(RVO::Vector2(vLeftTop.x, vLeftTop.y));
 	Vertices.push_back(RVO::Vector2(vLeftTop.x, vRightBottom.y));
@@ -38,5 +40,5 @@ void CEvacuationScene::addAgent(const glm::vec2& vAgent)
 {
 	auto Idx = m_pRVOSimulator->addAgent(RVO::Vector2(vAgent.x, vAgent.y));
 	auto RVOAgent = m_pRVOSimulator->getAgent(Idx);
-	m_Agents.push_back(new IAgent(RVOAgent));
+	m_Agents.push_back(new IAgent(RVOAgent));//TODO ∂‡Ã¨Agent
 }

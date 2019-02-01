@@ -32,6 +32,7 @@
     <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="SceneConfig.h" />
     <ClInclude Include="SceneGraph.h" />
+    <ClInclude Include="SceneVis.h" />
     <ClInclude Include="ShortestStrategy.h" />
     <ClInclude Include="SimAgent.h" />
     <ClInclude Include="SimNode.h" />
@@ -44,6 +45,7 @@
     <ClCompile Include="CDFPredictionStrategy.cpp" />
     <ClCompile Include="ConfigParser.cpp" />
     <ClCompile Include="CrowdSimulationInterface.cpp" />
+    <ClCompile Include="CSceneVis.cpp" />
     <ClCompile Include="DensityStrategy.cpp" />
     <ClCompile Include="EvacuationScene.cpp" />
     <ClCompile Include="SceneGraph.cpp" />

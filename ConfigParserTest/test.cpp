@@ -46,6 +46,13 @@ TEST(TestConfigParser, ParseScene)
 	CEvacuationScene* pScene = new CEvacuationScene(pSimulator);
 	CConfigParser::parseScene("SceneConfig.xml", pScene);
 
+	auto& Obstacles = pScene->getObstacles();
+	ASSERT_EQ(2, Obstacles.size());
+	EXPECT_EQ(glm::vec2(1,1), Obstacles[0].first);
+	EXPECT_EQ(glm::vec2(2,2), Obstacles[0].second);
+	EXPECT_EQ(glm::vec2(3,3), Obstacles[1].first);
+	EXPECT_EQ(glm::vec2(4,4), Obstacles[1].second);
+
 	auto& Exits = pScene->getExits();
 	ASSERT_EQ(2, Exits.size());
 	EXPECT_EQ(glm::vec2(5, 5), Exits[0]);

@@ -59,7 +59,6 @@ void CConfigParser::__genAgentInRegion(int vAmount, int* vRegion, std::vector<gl
 
 		if (!__checkCollison({PosX, PosY}, Radius, voAgentsInRegion))
 		{
-			//TODO ¶àÌ¬Agent
 			voAgentsInRegion.push_back({PosX, PosY});
 			++i;
 		}
