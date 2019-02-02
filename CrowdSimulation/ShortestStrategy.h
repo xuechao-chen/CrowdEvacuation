@@ -19,5 +19,5 @@ private:
 	void __assignNavNode2Agent();
 
 private:
-	std::unordered_map<glm::vec2, glm::vec2*, HashFunc4Node> m_NavNodeMap;
+	std::unordered_map<glm::vec2, glm::vec2, HashFunc4Node> m_NavNodeMap;
 };

@@ -21,7 +21,7 @@ public:
 class CSceneGraph
 {
 public:
-	const int ROAD_WIDTH = 60;
+	static const int ROAD_WIDTH = 60;
 
 	CSceneGraph();
 	CSceneGraph(const std::string& vConfig);

@@ -25,3 +25,18 @@ bool IAgent::isReachNavNode() const
 {
 	return false;
 }
+
+bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
+{
+	if (m_IsReachExit) return true;
+
+	for (auto& Exit : vExits)
+	{
+		auto Pos = getPosition();
+		auto Distance = glm::distance(Pos, Exit);
+		if (Distance > 3) return false; //TODO: ÔÝ¶¨°ë¾¶Îª3
+	}
+
+	m_IsReachExit = true;
+	return true;
+}

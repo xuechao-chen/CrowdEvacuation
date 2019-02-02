@@ -17,8 +17,11 @@ public:
 	void setNavNode(const glm::vec2& vNavNode) { m_NavNode = vNavNode; }
 	glm::vec2 getNavNode() const { return m_NavNode; }
 	bool isReachNavNode() const;
-
+	bool isReachExit(const std::vector<glm::vec2>& vExits) const;
+	
 private:
+	mutable bool m_IsReachExit = false;
+
 	RVO::Agent* m_pRVOAgent = nullptr;
 	glm::vec2 m_NavNode;
 };
