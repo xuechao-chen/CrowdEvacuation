@@ -14,6 +14,11 @@ public:
 	glm::vec2 getPosition() const;
 	void setPrefVelocity(const glm::vec2& vPrefVelocity);
 
+	void setNavNode(const glm::vec2& vNavNode) { m_NavNode = vNavNode; }
+	glm::vec2 getNavNode() const { return m_NavNode; }
+	bool isReachNavNode() const;
+
 private:
 	RVO::Agent* m_pRVOAgent = nullptr;
+	glm::vec2 m_NavNode;
 };

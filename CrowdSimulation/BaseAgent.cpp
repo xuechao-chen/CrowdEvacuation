@@ -20,3 +20,8 @@ void IAgent::setPrefVelocity(const glm::vec2 & vPrefVelocity)
 {
 	m_pRVOAgent->setPrefVelocity(RVO::Vector2(vPrefVelocity.x, vPrefVelocity.y));
 }
+
+bool IAgent::isReachNavNode() const
+{
+	return false;
+}

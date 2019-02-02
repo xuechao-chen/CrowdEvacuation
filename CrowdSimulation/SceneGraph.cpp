@@ -144,7 +144,7 @@ AdjNodeSet CSceneGraph::dumpAdjNodeSet(const glm::vec2& vFromNode) const
 	return AdjNodeSet();
 }
 
-std::vector<glm::vec2> CSceneGraph::findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const
+std::pair<std::vector<glm::vec2>, float> CSceneGraph::findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const
 {
 	_ASSERTE(m_NodeMap.find(vFromNode) != m_NodeMap.end());
 	_ASSERTE(m_NodeMap.find(vToNode) != m_NodeMap.end());
@@ -194,7 +194,8 @@ std::vector<glm::vec2> CSceneGraph::findShortestPath(const glm::vec2& vFromNode,
 				toNodePos = PreviousMap[toNodePos];
 			}
 			std::reverse(Path.begin(), Path.end());
-			return Path;
+			return std::make_pair(Path, 0.0f);
+			//TODO ¼ÆËãÂ·¾¶µÄ¾àÀë
 		}
 
 		const auto& AdjNodeSet = dumpAdjNodeSet(u);
@@ -211,7 +212,7 @@ std::vector<glm::vec2> CSceneGraph::findShortestPath(const glm::vec2& vFromNode,
 		}
 	}
 	std::reverse(Path.begin(), Path.end());
-	return Path;
+	return std::make_pair(Path, FLT_MAX);
 }
 
 void CSceneGraph::updateEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight)

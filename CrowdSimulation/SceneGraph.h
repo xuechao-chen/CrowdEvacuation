@@ -42,7 +42,7 @@ public:
 	std::vector<glm::vec2> dumpAllNodes() const;
 	std::vector<std::pair<glm::vec2, glm::vec2>> dumpAllEdges() const;
 	AdjNodeSet dumpAdjNodeSet(const glm::vec2& vFromNode) const;
-	std::vector<glm::vec2> findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const;
+	std::pair<std::vector<glm::vec2>, float> findShortestPath(const glm::vec2& vFromNode, const glm::vec2& vToNode) const;
 
 private:
 	void __removeAdjNode(const glm::vec2& vAdjFromNode, const glm::vec2& vAdjToNode);

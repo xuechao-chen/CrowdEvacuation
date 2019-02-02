@@ -165,8 +165,9 @@ TEST_F(TestSceneGraph, FindShortestPath)
 {
 	constructGraph();
 
-	auto Path = m_pGraph->findShortestPath(m_NodeSet[0], m_NodeSet[4]);
-	validShortestPath(Path, 4, m_NodeSet[0], m_NodeSet[1], m_NodeSet[3], m_NodeSet[4]);
+	auto& Path = m_pGraph->findShortestPath(m_NodeSet[0], m_NodeSet[4]);
+	validShortestPath(Path.first, 4, m_NodeSet[0], m_NodeSet[1], m_NodeSet[3], m_NodeSet[4]);
+	EXPECT_FLOAT_EQ(25, Path.second);
 }
 
 TEST_F(TestSceneGraph, DumpNavNodes)
