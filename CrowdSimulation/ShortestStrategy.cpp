@@ -118,8 +118,10 @@ bool CShortestStrategy::__isFinish()
 	for (auto& Agent : Agents)
 	{
 		if (!Agent->isReachExit(Exits)) IsFinished = false;
-		else { //NOTE: 到达出口，移动到最远处,速度为0
-			Agent->setPosition(glm::vec2(FLT_MAX,FLT_MAX));
+		else { 
+			//NOTE: 到达出口，移动到场景外,速度为0,移到无穷远会触发RVO的建KD树的bug
+			//TODO: 从配置文件读取场景长宽来确定位置
+			Agent->setPosition(glm::vec2(500, 500));
 			Agent->setPrefVelocity(glm::vec2(0,0));
 		}
 	}
@@ -138,13 +140,19 @@ void CShortestStrategy::__onPreDoStep()
 			const auto& CurNavNode = Agent->getNavNode();
 			const auto& NextNavNode = m_NavNodeMap[CurNavNode];
 
-			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) continue;
-			else { //NOTE: 当前导航点不是出口，更新下一个导航点
-				auto Direcition = NextNavNode - Agent->getPosition();
-				auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
-				Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+			glm::vec2 Direction;
+			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX))
+			{
+				Direction = CurNavNode - Agent->getPosition();
+			}
+			else 
+			{ //NOTE: 当前导航点不是出口，更新下一个导航点
+				Direction = NextNavNode - Agent->getPosition();
 				Agent->setNavNode(NextNavNode);
 			}
+
+			auto Normal = RVO::normalize(RVO::Vector2(Direction.x, Direction.y));
+			Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 		}
 	}
 }
