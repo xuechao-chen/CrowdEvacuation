@@ -6,13 +6,12 @@
 class CSceneVis : public hiveOO::CSingleton<CSceneVis>
 {
 public:
+	CSceneVis();
 	~CSceneVis();
 
 	void displayScene(const CEvacuationScene* pScene);
 
 private:
-	CSceneVis();
-
 	friend class hiveOO::CSingleton<CSceneVis>;
 };
 

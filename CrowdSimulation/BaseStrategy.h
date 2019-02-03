@@ -2,6 +2,12 @@
 #include "EvacuationScene.h"
 #include "../RVO/RVOSimulator.h"
 
+//NOTE: FOR UNIT TEST
+#ifdef _DEBUG
+#define private public
+#define protected public
+#endif
+
 // 人群在场景中的运动和疏散算法
 class IEvacuationStrategy
 {
@@ -9,6 +15,8 @@ public:
 	IEvacuationStrategy();
 	virtual ~IEvacuationStrategy();
 
+	void setEvacuationScene(CEvacuationScene* pScene) { m_pScene = pScene; }
+	CEvacuationScene* getEvacuationScene() const { return m_pScene; }
 	virtual void run();
 
 private:
@@ -19,4 +27,5 @@ private:
 
 protected:
 	CEvacuationScene* m_pScene = nullptr;
+	int m_EvacuationTimeCost = 0;
 };

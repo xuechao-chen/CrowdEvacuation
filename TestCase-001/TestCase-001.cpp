@@ -1,9 +1,8 @@
 ﻿#include <iostream>
-#include "../CrowdRendering/CrowdRenderingInterface.h"
-
 #include "../CrowdSimulation/EvacuationScene.h"
 #include "../CrowdSimulation/SceneVis.h"
 #include "../CrowdSimulation/ConfigParser.h"
+#include "../CrowdSimulation/ShortestStrategy.h"
 
 int main(int, char*[])
 {

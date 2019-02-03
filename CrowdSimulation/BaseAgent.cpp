@@ -1,5 +1,6 @@
 #include "BaseAgent.h"
 #include "common/HiveCommonMicro.h"
+#include "SceneGraph.h"
 
 IAgent::~IAgent()
 {
@@ -23,7 +24,9 @@ void IAgent::setPrefVelocity(const glm::vec2 & vPrefVelocity)
 
 bool IAgent::isReachNavNode() const
 {
-	return false;
+	auto Distance = glm::distance(getNavNode(), getPosition());
+	if (Distance < CSceneGraph::ROAD_WIDTH/2) return true;
+	else return false;
 }
 
 bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const

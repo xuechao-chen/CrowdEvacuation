@@ -1,4 +1,5 @@
 #include "ShortestStrategy.h"
+#include "SceneVis.h"
 
 CShortestStrategy::CShortestStrategy()
 {
@@ -38,13 +39,14 @@ std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const st
 
 void CShortestStrategy::__add2NavNodeMap(const std::vector<glm::vec2>& vShortestPath)
 {
-	for (size_t i = 0; i < vShortestPath.size()-1; i++)
+	auto PathSize = vShortestPath.size();
+	for (size_t i = 0; i < PathSize-1; i++)
 	{
 		auto& CurNavNode = vShortestPath[i];
 		auto& NextNavNode = vShortestPath[i+1];
 		m_NavNodeMap[CurNavNode] = NextNavNode;
 	}
-	m_NavNodeMap[*vShortestPath.end()] = glm::vec2(FLT_MAX, FLT_MAX);
+	m_NavNodeMap[vShortestPath[PathSize-1]] = glm::vec2(FLT_MAX, FLT_MAX);
 }
 
 void CShortestStrategy::__assignNavNode2Agent()
@@ -67,6 +69,9 @@ void CShortestStrategy::__assignNavNode2Agent()
 				else Agent->setNavNode(Node2);
 			}
 		}
+		auto Direcition = Agent->getNavNode() - Agent->getPosition();
+		auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
+		Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 	}
 }
 
@@ -76,10 +81,18 @@ void CShortestStrategy::__init()
 	__assignNavNode2Agent();
 }
 
+bool __belongToExits(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits)
+{
+	for (auto& Exit : vExits)
+	{
+		if (vNode == Exit) return true;
+	}
+	return false;
+}
+
 void CShortestStrategy::__constructNavNodeMap()
 {
 	auto pGraph = m_pScene->getGraph();
-	const auto& AllEdges = pGraph->dumpAllEdges();
 	const auto& Exits = m_pScene->getExits();
 	auto VisitedNodeSet = std::vector<glm::vec2>();
 
@@ -89,6 +102,7 @@ void CShortestStrategy::__constructNavNodeMap()
 		if (__isVisited(Node, VisitedNodeSet)) continue;
 
 		//TODO: 针对节点是出口的情况
+		//目前的处理，出口的导航点无穷远
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
 		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
 		__add2NavNodeMap(ShortestPath);
@@ -99,29 +113,43 @@ bool CShortestStrategy::__isFinish()
 {
 	const auto& Exits = m_pScene->getExits();
 	const auto& Agents = m_pScene->getAgents();
+	bool IsFinished = true;
+
 	for (auto& Agent : Agents)
 	{
-		if (!Agent->isReachExit(Exits)) return false;
-		//TODO: Agent 到达出口时的处理｛移动到最远处｝
+		if (!Agent->isReachExit(Exits)) IsFinished = false;
+		else { //NOTE: 到达出口，移动到最远处,速度为0
+			Agent->setPosition(glm::vec2(FLT_MAX,FLT_MAX));
+			Agent->setPrefVelocity(glm::vec2(0,0));
+		}
 	}
-	return true;
+
+	return IsFinished;
 }
 
 void CShortestStrategy::__onPreDoStep()
 {
-	//改变导航点
+	const auto& Exits = m_pScene->getExits();
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)
 	{
 		if (Agent->isReachNavNode())
 		{
-			//TODO 针对导航点是出口的情况
 			const auto& CurNavNode = Agent->getNavNode();
-			Agent->setNavNode(m_NavNodeMap[CurNavNode]);
+			const auto& NextNavNode = m_NavNodeMap[CurNavNode];
+
+			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) continue;
+			else { //NOTE: 当前导航点不是出口，更新下一个导航点
+				auto Direcition = NextNavNode - Agent->getPosition();
+				auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
+				Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+				Agent->setNavNode(NextNavNode);
+			}
 		}
 	}
 }
 
 void CShortestStrategy::__onPostDoStep()
 {
+	CSceneVis::getInstance()->displayScene(m_pScene);
 }

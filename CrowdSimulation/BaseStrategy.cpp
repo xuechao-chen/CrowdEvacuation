@@ -15,11 +15,17 @@ void IEvacuationStrategy::run()
 {
 	auto pSim = m_pScene->getSimulator();
 
+	std::cout << "Evacuation Begin" << std::endl;
+
 	do {
+		m_EvacuationTimeCost++;
 		__onPreDoStep();
 		pSim->doStep();
 		__onPostDoStep();
 	} while (!__isFinish());
+
+	std::cout << "Evacuation End" << std::endl;
+	std::cout << "Evacuation time cost: " << m_EvacuationTimeCost << std::endl;
 }
 
 void IEvacuationStrategy::__init()
@@ -32,4 +38,6 @@ void IEvacuationStrategy::__init()
 
 	CEvacuationScene* pScene = new CEvacuationScene(pSim, pGraph);
 	CConfigParser::parseScene("SceneConfig.xml", pScene);
+
+	setEvacuationScene(pScene);
 }

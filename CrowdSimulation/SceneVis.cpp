@@ -18,12 +18,11 @@ void CSceneVis::displayScene(const CEvacuationScene* pScene)
 	std::vector<glm::vec2> AgentsPos;
 	for (auto& Agent : Agents)
 	{
-		AgentsPos.push_back(Agent->getPosition()
-);
+		AgentsPos.push_back(Agent->getPosition());
 	}
 
+	hiveCrowdRendering::clear();
 	hiveCrowdRendering::drawAgents(AgentsPos);
 	hiveCrowdRendering::drawObstacles(Obstacles);
 	hiveCrowdRendering::display();
-	hiveCrowdRendering::pause();
 }
