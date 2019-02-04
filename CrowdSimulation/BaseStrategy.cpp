@@ -20,7 +20,8 @@ void IEvacuationStrategy::run()
 	do {
 		m_EvacuationTimeCost++;
 		__onPreDoStep();
-		pSim->doStep();
+ 		pSim->doStep();
+		__avoidStuckInObstacles();
 		__onPostDoStep();
 	} while (!__isFinish());
 
@@ -40,4 +41,10 @@ void IEvacuationStrategy::__init()
 	CConfigParser::parseScene("SceneConfig.xml", pScene);
 
 	setEvacuationScene(pScene);
+}
+
+void IEvacuationStrategy::__avoidStuckInObstacles()
+{
+	//TODO: 避免Agent卡墙
+	//沿着倾向速度的方向前进一段距离
 }

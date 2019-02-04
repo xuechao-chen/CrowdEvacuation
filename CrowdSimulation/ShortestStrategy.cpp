@@ -146,7 +146,7 @@ void CShortestStrategy::__onPreDoStep()
 				Direction = CurNavNode - Agent->getPosition();
 			}
 			else 
-			{ //NOTE: 当前导航点不是出口，更新下一个导航点
+			{   //NOTE: 当前导航点不是出口，更新下一个导航点
 				Direction = NextNavNode - Agent->getPosition();
 				Agent->setNavNode(NextNavNode);
 			}

@@ -21,6 +21,7 @@ public:
 
 private:
 	void __init();
+	void __avoidStuckInObstacles();
 	virtual bool __isFinish() = 0;
 	virtual void __onPreDoStep() = 0;
 	virtual void __onPostDoStep() = 0;

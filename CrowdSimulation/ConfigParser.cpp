@@ -78,7 +78,7 @@ bool CConfigParser::__checkCollison(const glm::vec2& vPos, float vRadius, std::v
 	return false;
 }
 
-void CConfigParser::__parseNodes(CGraphConfig * pConfig, CSceneGraph * voGraph)
+void CConfigParser::__parseNodes(CGraphConfig* pConfig, CSceneGraph* voGraph)
 {
 	auto NumNode = pConfig->getAttribute<int>(KEY_WORDS::NODE_NUM);
 	std::string NodeSetStr = pConfig->getAttribute<std::string>(KEY_WORDS::NODE);
@@ -91,7 +91,7 @@ void CConfigParser::__parseNodes(CGraphConfig * pConfig, CSceneGraph * voGraph)
 	}
 }
 
-void CConfigParser::__parseEdges(CGraphConfig * pConfig, CSceneGraph * voGraph)
+void CConfigParser::__parseEdges(CGraphConfig* pConfig, CSceneGraph* voGraph)
 {
 	auto NumEdge = pConfig->getAttribute<int>(KEY_WORDS::EDGE_NUM);
 	std::string EdgeSetStr = pConfig->getAttribute<std::string>(KEY_WORDS::EDGE);
@@ -107,7 +107,7 @@ void CConfigParser::__parseEdges(CGraphConfig * pConfig, CSceneGraph * voGraph)
 	}
 }
 
-void CConfigParser::__parseAgents(CSceneConfig * pConfig, CEvacuationScene * voScene)
+void CConfigParser::__parseAgents(CSceneConfig* pConfig, CEvacuationScene* voScene)
 {
 	for (size_t i = 0; i < pConfig->getNumSubConfig(); i++)
 	{
@@ -126,7 +126,7 @@ void CConfigParser::__parseAgents(CSceneConfig * pConfig, CEvacuationScene * voS
 	}
 }
 
-void CConfigParser::__parseObstacles(CSceneConfig * pConfig, CEvacuationScene * voScene)
+void CConfigParser::__parseObstacles(CSceneConfig* pConfig, CEvacuationScene* voScene)
 {
 	auto NumObstacles = pConfig->getAttribute<int>(KEY_WORDS::OBSTACLE_NUM);
 	std::string ObstacleSetStr = pConfig->getAttribute<std::string>(KEY_WORDS::OBSTACLE);
@@ -141,7 +141,7 @@ void CConfigParser::__parseObstacles(CSceneConfig * pConfig, CEvacuationScene * 
 	}
 }
 
-void CConfigParser::__parseExits(CSceneConfig * pConfig, CEvacuationScene * voScene)
+void CConfigParser::__parseExits(CSceneConfig* pConfig, CEvacuationScene* voScene)
 {
 	auto NumExits = pConfig->getAttribute<int>(KEY_WORDS::EXIT_NUM);
 	std::string ExitSetStr = pConfig->getAttribute<std::string>(KEY_WORDS::EXIT);
