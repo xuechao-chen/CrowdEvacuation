@@ -3,7 +3,6 @@
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
-	__init();
 }
 
 IEvacuationStrategy::~IEvacuationStrategy()
@@ -29,7 +28,14 @@ void IEvacuationStrategy::run()
 	std::cout << "Evacuation time cost: " << m_EvacuationTimeCost << std::endl;
 }
 
-void IEvacuationStrategy::__init()
+void IEvacuationStrategy::init()
+{
+	__constructEvacuationScene();
+	__constructRoadMap();
+	__assignNavNode2Agent();
+}
+
+void IEvacuationStrategy::__constructEvacuationScene()
 {
 	CSceneGraph* pGraph = new CSceneGraph();
 	RVO::RVOSimulator* pSim = new RVO::RVOSimulator();

@@ -18,13 +18,17 @@ public:
 	void setEvacuationScene(CEvacuationScene* pScene) { m_pScene = pScene; }
 	CEvacuationScene* getEvacuationScene() const { return m_pScene; }
 	virtual void run();
+	virtual void init();
 
 private:
-	void __init();
-	void __avoidStuckInObstacles();
 	virtual bool __isFinish() = 0;
 	virtual void __onPreDoStep() = 0;
 	virtual void __onPostDoStep() = 0;
+	virtual void __constructRoadMap() = 0;
+	virtual void __assignNavNode2Agent() = 0;
+
+	void __avoidStuckInObstacles();
+	void __constructEvacuationScene();
 
 protected:
 	CEvacuationScene* m_pScene = nullptr;

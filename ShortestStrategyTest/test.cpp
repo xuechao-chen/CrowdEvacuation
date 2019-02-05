@@ -20,7 +20,7 @@ protected:
 
 TEST_F(TestShortestStrategy, ConstructNavNodeMap)
 {
-	auto& NavNodeMap = m_pStrategy->m_NavNodeMap;
+	auto& NavNodeMap = m_pStrategy->m_RoadMap;
 	ASSERT_EQ(4, NavNodeMap.size());
 	EXPECT_EQ(m_NodeSet[2], NavNodeMap[m_NodeSet[0]]);
 	EXPECT_EQ(m_NodeSet[3], NavNodeMap[m_NodeSet[1]]);

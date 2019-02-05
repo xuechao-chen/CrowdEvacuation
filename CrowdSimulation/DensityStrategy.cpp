@@ -10,7 +10,3 @@ CDensityStrategy::CDensityStrategy()
 CDensityStrategy::~CDensityStrategy()
 {
 }
-
-void CDensityStrategy::run()
-{
-}

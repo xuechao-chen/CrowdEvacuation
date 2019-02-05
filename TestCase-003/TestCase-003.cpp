@@ -4,7 +4,8 @@
 
 int main()
 {
-	CShortestStrategy* pStrategy = new CShortestStrategy();
+	IEvacuationStrategy* pStrategy = new CShortestStrategy();
+	pStrategy->init();
 	pStrategy->run();
 	return 0;
 }

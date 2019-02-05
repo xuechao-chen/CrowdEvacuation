@@ -8,14 +8,18 @@ public:
 	CSimulationStrategy();
 	~CSimulationStrategy();
 
-	void run() override;
-
 private:
-	void __initEvacuationDirection();
+	bool __isFinish() override;
+	void __onPreDoStep() override;
+	void __onPostDoStep() override;
+	void __constructRoadMap() override;
+	void __assignNavNode2Agent() override;
+
+	/*void __initEvacuationDirection();
 	void __updateEvacuationDirection();
 	void __assignAgentNavNode();
 	bool __isConverged() const;
-	void __doSimulation();
+	void __doSimulation();*/
 	
 private:
 	std::vector<SimNode*> m_NodeSet;
