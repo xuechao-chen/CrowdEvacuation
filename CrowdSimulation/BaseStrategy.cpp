@@ -1,5 +1,6 @@
 #include "BaseStrategy.h"
 #include "ConfigParser.h"
+#include "SceneVis.h"
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
@@ -18,6 +19,7 @@ void IEvacuationStrategy::run()
 
 	do {
 		m_EvacuationTimeCost++;
+		__updateVisualization();
 		__onPreDoStep();
  		pSim->doStep();
 		__avoidStuckInObstacles();
@@ -47,6 +49,11 @@ void IEvacuationStrategy::__constructEvacuationScene()
 	CConfigParser::parseScene("SceneConfig.xml", pScene);
 
 	setEvacuationScene(pScene);
+}
+
+void IEvacuationStrategy::__updateVisualization()
+{
+	CSceneVis::getInstance()->displayScene(m_pScene);
 }
 
 void IEvacuationStrategy::__avoidStuckInObstacles()

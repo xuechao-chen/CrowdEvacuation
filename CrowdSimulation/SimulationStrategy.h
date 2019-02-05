@@ -20,8 +20,12 @@ private:
 	void __assignAgentNavNode();
 	bool __isConverged() const;
 	void __doSimulation();*/
+	void __analyzeConvergence();
+	bool __isDivideNodeConverged();
+	bool __isDistributionNodeConverged();
 	
 private:
 	std::vector<SimNode*> m_NodeSet;
 	int m_MaxIterationNum = 0;
+	bool m_IsConverged = false;
 };

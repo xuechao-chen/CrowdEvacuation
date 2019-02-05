@@ -29,6 +29,7 @@ private:
 
 	void __avoidStuckInObstacles();
 	void __constructEvacuationScene();
+	void __updateVisualization();
 
 protected:
 	CEvacuationScene* m_pScene = nullptr;

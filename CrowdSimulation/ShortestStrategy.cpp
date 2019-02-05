@@ -122,9 +122,8 @@ bool CShortestStrategy::__isFinish()
 	return IsFinished;
 }
 
-void CShortestStrategy::__onPreDoStep()
+void CShortestStrategy::__onPostDoStep()
 {
-	const auto& Exits = m_pScene->getExits();
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)
 	{
@@ -148,9 +147,4 @@ void CShortestStrategy::__onPreDoStep()
 			Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 		}
 	}
-}
-
-void CShortestStrategy::__onPostDoStep()
-{
-	CSceneVis::getInstance()->displayScene(m_pScene);
 }
