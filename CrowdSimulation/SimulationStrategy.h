@@ -15,17 +15,13 @@ private:
 	void __constructRoadMap() override;
 	void __assignNavNode2Agent() override;
 
-	/*void __initEvacuationDirection();
-	void __updateEvacuationDirection();
-	void __assignAgentNavNode();
-	bool __isConverged() const;
-	void __doSimulation();*/
 	void __analyzeConvergence();
 	bool __isDivideNodeConverged();
 	bool __isDistributionNodeConverged();
 	
 private:
-	std::vector<SimNode*> m_NodeSet;
-	int m_MaxIterationNum = 0;
+	std::unordered_map<glm::vec2, CSimNode*, HashFunc4Node> m_RoadMap;
+
+	int m_IterationNum = 0;
 	bool m_IsConverged = false;
 };

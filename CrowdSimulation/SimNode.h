@@ -8,23 +8,23 @@ enum class ESimNodeType
 	DivideNode, DistributionNode, NormalNode 
 };
 
-class SimNode
+class CSimNode
 {
 public:
-	SimNode() {}
-	SimNode(const glm::vec2& vPos) : m_Pos(vPos) {}
-	virtual ~SimNode() {}
+	CSimNode() {}
+	CSimNode(const glm::vec2& vPos) : m_Pos(vPos) {}
+	virtual ~CSimNode() {}
 
 	void setNodeType(ESimNodeType vType) { m_Type = vType; }
 	void setPos(const glm::vec2& vPos) { m_Pos = vPos; }
-	void addSuccessor(const SimNode* vSuccessor) { m_SuccessorSet.push_back(vSuccessor); }
+	void addNavNode(const glm::vec2& vNavNode) { m_NavNodeSet.push_back(vNavNode); }
 
 	ESimNodeType getNodeType() const { return m_Type; }
 	glm::vec2 getPos() const { return m_Pos; }
-	std::vector<const SimNode*> getSuccessorSet() const { return m_SuccessorSet; }
+	std::vector<glm::vec2> getNavNodeSet() const { return m_NavNodeSet; }
 
 private:
 	glm::vec2 m_Pos;
-	std::vector<const SimNode*> m_SuccessorSet;
+	std::vector<glm::vec2> m_NavNodeSet;
 	ESimNodeType m_Type;
 };

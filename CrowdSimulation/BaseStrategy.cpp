@@ -61,3 +61,30 @@ void IEvacuationStrategy::__avoidStuckInObstacles()
 	//TODO: 避免Agent卡墙
 	//沿着倾向速度的方向前进一段距离
 }
+
+bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet)
+{
+	for (auto& VisitedNode : vVisitedNodeSet)
+	{
+		if (vNode == VisitedNode) return true;
+	}
+	return false;
+}
+
+std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits, CSceneGraph* pGraph)
+{
+	std::vector<glm::vec2> ShortestNavNodeSet;
+	auto ShortestDistance = FLT_MAX;
+	for (auto& Exit : vExits)
+	{
+		const auto& Path = pGraph->findShortestPath(vNode, Exit);
+		auto& NavNodeSet = Path.first;
+		auto Distance = Path.second;
+		if (Distance < ShortestDistance)
+		{
+			ShortestNavNodeSet = NavNodeSet;
+			ShortestDistance = Distance;
+		}
+	}
+	return ShortestNavNodeSet;
+}

@@ -35,3 +35,6 @@ protected:
 	CEvacuationScene* m_pScene = nullptr;
 	int m_EvacuationTimeCost = 0;
 };
+
+bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet);
+std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits, CSceneGraph* pGraph);

@@ -1,11 +1,11 @@
 #pragma once
 #include "SimNode.h"
 
-class CDivideNode : public SimNode
+class CDivideNode : public CSimNode
 {
 public:
 	CDivideNode() {}
-	CDivideNode(const glm::vec2& vPos) : SimNode(vPos) { setNodeType(ESimNodeType::DivideNode); }
+	CDivideNode(const glm::vec2& vPos) : CSimNode(vPos) { setNodeType(ESimNodeType::DivideNode); }
 
 	bool isConverged() const;
 

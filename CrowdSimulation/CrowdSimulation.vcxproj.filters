@@ -74,7 +74,9 @@
     <ClInclude Include="SceneConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="SceneVis.h" />
+    <ClInclude Include="SceneVis.h">
+      <Filter>EvacuationScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EvacuationScene.cpp">
@@ -108,6 +110,8 @@
     <ClCompile Include="SceneGraph.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneVis.cpp" />
+    <ClCompile Include="SceneVis.cpp">
+      <Filter>EvacuationScene</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

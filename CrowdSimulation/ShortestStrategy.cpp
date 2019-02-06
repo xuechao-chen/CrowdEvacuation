@@ -1,5 +1,4 @@
 #include "ShortestStrategy.h"
-#include "SceneVis.h"
 
 CShortestStrategy::CShortestStrategy()
 {
@@ -7,33 +6,6 @@ CShortestStrategy::CShortestStrategy()
 
 CShortestStrategy::~CShortestStrategy()
 {
-}
-
-bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet) 
-{
-	for (auto& VisitedNode : vVisitedNodeSet)
-	{
-		if (vNode == VisitedNode) return true;
-	}
-	return false;
-}
-
-std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits, CSceneGraph* pGraph)
-{
-	std::vector<glm::vec2> ShortestNavNodeSet;
-	auto ShortestDistance = FLT_MAX;
-	for (auto& Exit : vExits)
-	{
-		const auto& Path = pGraph->findShortestPath(vNode, Exit);
-		auto& NavNodeSet = Path.first;
-		auto Distance = Path.second;
-		if (Distance < ShortestDistance)
-		{
-			ShortestNavNodeSet = NavNodeSet;
-			ShortestDistance = Distance;
-		}
-	}
-	return ShortestNavNodeSet;
 }
 
 void CShortestStrategy::__add2NavNodeMap(const std::vector<glm::vec2>& vShortestPath)
