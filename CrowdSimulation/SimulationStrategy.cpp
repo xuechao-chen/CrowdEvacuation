@@ -120,7 +120,32 @@ void CSimulationStrategy::__assignNavNode2Agent()
 			auto SimNode = m_RoadMap[NavNodes[0]];
 			if (SimNode->getNodeType() == ESimNodeType::DivideNode)
 			{
-				//Agent->
+				_ASSERTE(SimNode->getNavNodeNum() == 2);
+				const auto& NavNode1 = SimNode->getNavNodeAt(0);
+				const auto& NavNode2 = SimNode->getNavNodeAt(1);
+				auto Distance1 = Graph->getEdgeWeight(SimNode->getPos(), NavNode1);
+				if (NavNode1.x == NavNode2.x)
+				{
+					if (abs(Agent->getPosition().y - NavNode1.y) < Distance1)
+					{
+						Agent->setNavNode(NavNode1);
+					}
+					else
+					{
+						Agent->setNavNode(NavNode2);
+					}
+				}
+				else
+				{
+					if (abs(Agent->getPosition().x - NavNode1.x) < Distance1)
+					{
+						Agent->setNavNode(NavNode1);
+					}
+					else
+					{
+						Agent->setNavNode(NavNode2);
+					}
+				}
 			}
 			else
 			{   // Normal Node
@@ -128,6 +153,19 @@ void CSimulationStrategy::__assignNavNode2Agent()
 				Agent->setNavNode(SimNode->getNavNodeAt(0));
 			}
 		}
+		if (NavNodes.size() == 2)
+		{
+			auto& Node1 = NavNodes[0]; auto& Node2 = NavNodes[1];
+			auto SimNode1 = m_RoadMap[Node1]; auto SimNode2 = m_RoadMap[Node2];
+			if      (SimNode1->getNodeType()   == ESimNodeType::DivideNode)  Agent->setNavNode(Node2);
+			else if (SimNode2->getNodeType()   == ESimNodeType::DivideNode)  Agent->setNavNode(Node1);
+			else if (SimNode1->getNavNodeAt(0) == Node2) Agent->setNavNode(Node2);
+			else if (SimNode2->getNavNodeAt(0) == Node1) Agent->setNavNode(Node1);
+			else    _ASSERTE(false);
+		}	
+		auto Direcition = Agent->getNavNode() - Agent->getPosition();
+		auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
+		Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 	}
 }
 

@@ -18,7 +18,7 @@ protected:
 	std::vector<glm::vec2> m_NodeSet = { {30,30},{150,30},{30,150},{150,150} };
 };
 
-TEST_F(TestSimulationStrategy, ConstructNavNodeMap)
+TEST_F(TestSimulationStrategy, ConstructRoadMap)
 {
 	auto& NavNodeMap = m_pStrategy->m_RoadMap;
 	ASSERT_EQ(5, NavNodeMap.size());
@@ -37,15 +37,14 @@ TEST_F(TestSimulationStrategy, ConstructNavNodeMap)
 	EXPECT_EQ(5, Graph->getNumNodes());
 	EXPECT_EQ(5, Graph->getNumEdges());
 }
-//
-//TEST_F(TestSimulationStrategy, AssignNavNode2Agent)
-//{
-//	auto Scene = m_pStrategy->getEvacuationScene();
-//	auto& Agents = Scene->getAgents();
-//	ASSERT_EQ(5, Agents.size());
-//	EXPECT_EQ(m_NodeSet[2], Agents[0]->getNavNode());
-//	EXPECT_EQ(m_NodeSet[2], Agents[1]->getNavNode());
-//	EXPECT_EQ(m_NodeSet[0], Agents[2]->getNavNode());
-//	EXPECT_EQ(m_NodeSet[1], Agents[3]->getNavNode());
-//	EXPECT_EQ(glm::vec2(FLT_MAX, FLT_MAX), Agents[4]->getNavNode());
-//}
+
+TEST_F(TestSimulationStrategy, AssignNavNode2Agent)
+{
+	auto Scene = m_pStrategy->getEvacuationScene();
+	auto& Agents = Scene->getAgents();
+	ASSERT_EQ(4, Agents.size());
+	EXPECT_EQ(m_NodeSet[2], Agents[0]->getNavNode());
+	EXPECT_EQ(m_NodeSet[2], Agents[1]->getNavNode());
+	EXPECT_EQ(m_NodeSet[0], Agents[2]->getNavNode());
+	EXPECT_EQ(m_NodeSet[1], Agents[3]->getNavNode());
+}

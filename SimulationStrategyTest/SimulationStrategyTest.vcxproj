@@ -48,10 +48,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\ShortestStrategyTest\GraphConfig.xml" />
-    <Xml Include="..\ShortestStrategyTest\RenderingConfig.xml" />
-    <Xml Include="..\ShortestStrategyTest\SceneConfig.xml" />
-    <Xml Include="..\ShortestStrategyTest\SimulatorConfig.xml" />
+    <Xml Include="GraphConfig.xml" />
+    <Xml Include="RenderingConfig.xml" />
+    <Xml Include="SceneConfig.xml" />
+    <Xml Include="SimulatorConfig.xml" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
