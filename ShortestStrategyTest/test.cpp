@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "../CrowdSimulation/SceneVis.h"
 
-class TestShortestStrategy : public ::testing::Test
+class TestSimulationStrategy : public ::testing::Test
 {
 protected:
 	virtual void SetUp() override
 	{
 		m_pStrategy = new CShortestStrategy();
+		m_pStrategy->init();
 	}
 
 	virtual void TearDown() override
@@ -18,7 +19,7 @@ protected:
 	std::vector<glm::vec2> m_NodeSet = { {30,30},{150,30},{30,150},{150,150} };
 };
 
-TEST_F(TestShortestStrategy, ConstructNavNodeMap)
+TEST_F(TestSimulationStrategy, ConstructNavNodeMap)
 {
 	auto& NavNodeMap = m_pStrategy->m_RoadMap;
 	ASSERT_EQ(4, NavNodeMap.size());
@@ -28,7 +29,7 @@ TEST_F(TestShortestStrategy, ConstructNavNodeMap)
 	EXPECT_EQ(glm::vec2(FLT_MAX, FLT_MAX), NavNodeMap[m_NodeSet[3]]);
 }
 
-TEST_F(TestShortestStrategy, AssignNavNode2Agent)
+TEST_F(TestSimulationStrategy, AssignNavNode2Agent)
 {
 	auto Scene = m_pStrategy->getEvacuationScene();
 	auto& Agents = Scene->getAgents();

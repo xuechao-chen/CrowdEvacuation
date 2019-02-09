@@ -13,6 +13,7 @@ private:
 	void __onPreDoStep() override;
 	void __onPostDoStep() override;
 	void __constructRoadMap() override;
+	void __addShortestPath2RoadMap(const std::vector<glm::vec2> & ShortestPath);
 	void __assignNavNode2Agent() override;
 
 	void __analyzeConvergence();

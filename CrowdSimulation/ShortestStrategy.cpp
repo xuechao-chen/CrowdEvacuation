@@ -8,7 +8,7 @@ CShortestStrategy::~CShortestStrategy()
 {
 }
 
-void CShortestStrategy::__add2NavNodeMap(const std::vector<glm::vec2>& vShortestPath)
+void CShortestStrategy::__add2RoadMap(const std::vector<glm::vec2>& vShortestPath)
 {
 	auto PathSize = vShortestPath.size();
 	for (size_t i = 0; i < PathSize-1; i++)
@@ -66,11 +66,9 @@ void CShortestStrategy::__constructRoadMap()
 	{
 		if (__isVisited(Node, VisitedNodeSet)) continue;
 
-		//TODO: 针对节点是出口的情况
-		//目前的处理，出口的导航点无穷远
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
 		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
-		__add2NavNodeMap(ShortestPath);
+		__add2RoadMap(ShortestPath);
 	}
 }
 

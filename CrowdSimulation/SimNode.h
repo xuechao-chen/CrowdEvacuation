@@ -22,6 +22,8 @@ public:
 	ESimNodeType getNodeType() const { return m_Type; }
 	glm::vec2 getPos() const { return m_Pos; }
 	std::vector<glm::vec2> getNavNodeSet() const { return m_NavNodeSet; }
+	glm::vec2 getNavNodeAt(int vIdx) const { return m_NavNodeSet[vIdx]; }
+	int getNavNodeNum() const { return m_NavNodeSet.size(); }
 
 private:
 	glm::vec2 m_Pos;
