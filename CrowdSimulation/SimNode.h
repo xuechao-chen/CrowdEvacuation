@@ -13,6 +13,7 @@ class CSimNode
 public:
 	CSimNode() {}
 	CSimNode(const glm::vec2& vPos) : m_Pos(vPos) {}
+	CSimNode(const glm::vec2& vPos, ESimNodeType vType) : m_Pos(vPos), m_Type(vType) {}
 	virtual ~CSimNode() {}
 
 	void setNodeType(ESimNodeType vType) { m_Type = vType; }

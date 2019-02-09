@@ -20,16 +20,16 @@ void setupScenario(RVO::RVOSimulator* sim) {
 	
 	// Create goals (simulator is unaware of these).
 	for (size_t i = 0; i < sim->getNumAgents(); ++i) {
-		goals.push_back(RVO::Vector2(50, 50));
+		goals.push_back(RVO::Vector2(300, 200));
 	}
 
 	// Add (polygonal) obstacle(s), specifying vertices in counterclockwise order.
-	/*std::vector<RVO::Vector2> vertices;
-	vertices.push_back(RVO::Vector2(-7.0f, -20.0f));
-	vertices.push_back(RVO::Vector2(7.0f, -20.0f));
-	vertices.push_back(RVO::Vector2(7.0f, 20.0f));
-	vertices.push_back(RVO::Vector2(-7.0f, 20.0f));
-	sim->addObstacle(vertices);*/
+	std::vector<RVO::Vector2> vertices;
+	vertices.push_back(RVO::Vector2(260.0f, 180.0f));
+	vertices.push_back(RVO::Vector2(280.0f, 180.0f));
+	vertices.push_back(RVO::Vector2(280.0f, 220.0f));
+	vertices.push_back(RVO::Vector2(260.0f, 220.0f));
+	sim->addObstacle(vertices);
 
 	// Process obstacles so that they are accounted for in the simulation.
 	sim->processObstacles();
@@ -48,8 +48,11 @@ void updateVisualization(RVO::RVOSimulator* sim) {
 		AgentPosSet.push_back({ Pos.x(), Pos.y() });
 	}
 
-	//std::cout << std::endl;
+	std::vector<std::pair<glm::vec2, glm::vec2>> Obstacles;
+	auto Obstacle = std::make_pair(glm::vec2(260, 180), glm::vec2(280,220));
+	Obstacles.push_back(Obstacle);
 	hiveCrowdRendering::drawAgents(AgentPosSet);
+	hiveCrowdRendering::drawObstacles(Obstacles);
 	hiveCrowdRendering::display();
 	hiveCrowdRendering::clear();
 }

@@ -80,12 +80,9 @@ void CSimulationStrategy::__constructRoadMap()
 			pGraph->addEdge(Pos, Node2, glm::distance(Pos, Node2));
 			pGraph->removeEdge(Node1, Node2);
 	
-			CSimNode* pDivideNode = new CSimNode();
-			pDivideNode->setNodeType(ESimNodeType::DivideNode);
+			CSimNode* pDivideNode = new CSimNode(Pos, ESimNodeType::DivideNode);
 			pDivideNode->addNavNode(Node1);
 			pDivideNode->addNavNode(Node2);
-			pDivideNode->setPos(Pos);
-
 			m_RoadMap[Pos] = pDivideNode;
 		}
 	}
