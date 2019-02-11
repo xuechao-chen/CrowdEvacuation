@@ -34,6 +34,7 @@ void CSimulationStrategy::__onPostDoStep()
 		{
 			//TODO: update scene
 			//TODO: reset agent
+			__updateScene();
 		}
 	}
 }
@@ -108,7 +109,6 @@ bool CSimulationStrategy::__isAllAgentReachExit()
 
 void CSimulationStrategy::__updateAgentsVelocity()
 {
-	//TODO 更新agent方向
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)
 	{
@@ -124,11 +124,23 @@ void CSimulationStrategy::__updateAgentsVelocity()
 			{
 				NextNavNode = SimNode->getNavNodeAt(0); break;
 			}
-			case ESimNodeType::DivideNode:
-			{
-				//TODO
-			}
 			case ESimNodeType::DistributionNode:
+			{
+				float Rand = rand(); //TODO rand 0~1
+				int NavNodeNum = SimNode->getNavNodeNum();
+				auto AccumulatedRatio = 0.0f;
+				for (size_t i = 0; i < NavNodeNum; i++)
+				{
+					auto Ratio = SimNode->getDistributionRatioAt(i);
+					AccumulatedRatio += Ratio;
+					if (Rand <= AccumulatedRatio)
+					{
+						NextNavNode = SimNode->getNavNodeAt(i);
+					}
+				}
+				break;
+			}
+			case ESimNodeType::DivideNode:
 			default:
 				break;
 			}
@@ -148,6 +160,11 @@ void CSimulationStrategy::__updateAgentsVelocity()
 			Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 		}
 	}
+}
+
+void CSimulationStrategy::__updateScene()
+{
+	
 }
 
 void CSimulationStrategy::__assignNavNode2Agent()

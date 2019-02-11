@@ -27,7 +27,6 @@ private:
 	virtual void __constructRoadMap() = 0;
 	virtual void __assignNavNode2Agent() = 0;
 
-	void __avoidStuckInObstacles();
 	void __constructEvacuationScene();
 	void __updateVisualization();
 

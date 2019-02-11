@@ -44,6 +44,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimulationStrategyTest", "S
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCase-004", "TestCase-004\TestCase-004.vcxproj", "{3AE09107-C44A-4813-B86A-E05476044784}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14F45DEB-2FDD-461D-8A6D-55279E4D0342} = {14F45DEB-2FDD-461D-8A6D-55279E4D0342}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

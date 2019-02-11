@@ -13,12 +13,12 @@ void CEvacuationScene::addObstacle(const glm::vec2 & vLeftTop, const glm::vec2 &
 
 	std::vector<RVO::Vector2> Vertices;
 	Vertices.push_back(RVO::Vector2(vLeftTop.x, vLeftTop.y));
-	Vertices.push_back(RVO::Vector2(vLeftTop.x, vRightBottom.y));
-	Vertices.push_back(RVO::Vector2(vRightBottom.x, vRightBottom.y));
 	Vertices.push_back(RVO::Vector2(vRightBottom.x, vLeftTop.y));
+	Vertices.push_back(RVO::Vector2(vRightBottom.x, vRightBottom.y));
+	Vertices.push_back(RVO::Vector2(vLeftTop.x, vRightBottom.y));
 	m_pRVOSimulator->addObstacle(Vertices);
 
-	m_pRVOSimulator->processObstacles();
+	//m_pRVOSimulator->processObstacles();
 	//NOTE: Process obstacles so that they are accounted for in the simulation.
 }
 

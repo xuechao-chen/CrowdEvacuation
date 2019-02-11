@@ -18,7 +18,8 @@ private:
 	void __analyzeConvergence();
 	void __addShortestPath2RoadMap(const std::vector<glm::vec2> & ShortestPath);
 	bool __isAllAgentReachExit();
-	void updateAgentsVelocity();
+	void __updateAgentsVelocity();
+	void __updateScene();
 	
 private:
 	int m_IterationNum = 0;

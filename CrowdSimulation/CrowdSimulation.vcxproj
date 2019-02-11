@@ -51,6 +51,7 @@
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="ShortestStrategy.cpp" />
     <ClCompile Include="SimAgent.cpp" />
+    <ClCompile Include="SimNode.cpp" />
     <ClCompile Include="SimulationStrategy.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

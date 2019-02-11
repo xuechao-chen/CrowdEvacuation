@@ -139,6 +139,7 @@ void CConfigParser::__parseObstacles(CSceneConfig* pConfig, CEvacuationScene* vo
 		glm::vec2 RightBottom = { ObstacleSetPos[4 * i + 2], ObstacleSetPos[4 * i + 3] };
 		voScene->addObstacle(LeftTop, RightBottom);
 	}
+	voScene->getSimulator()->processObstacles();
 }
 
 void CConfigParser::__parseExits(CSceneConfig* pConfig, CEvacuationScene* voScene)

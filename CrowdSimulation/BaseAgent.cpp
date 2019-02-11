@@ -24,9 +24,10 @@ void IAgent::setPrefVelocity(const glm::vec2 & vPrefVelocity)
 
 bool IAgent::isReachNavNode() const
 {
-	auto Distance = glm::distance(getNavNode(), getPosition());
-	if (Distance < CSceneGraph::ROAD_WIDTH/2) return true;
-	else return false;
+	const auto& Pos = getPosition();
+	const auto& NavNode = getNavNode();
+	return (abs(Pos.x - NavNode.x) < CSceneGraph::ROAD_WIDTH / 2 &&
+		    abs(Pos.y - NavNode.y) < CSceneGraph::ROAD_WIDTH / 2);
 }
 
 bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const

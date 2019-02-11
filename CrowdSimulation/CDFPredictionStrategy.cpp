@@ -24,6 +24,7 @@ void CCDFPredictionStrategy::__onPostDoStep()
 
 void CCDFPredictionStrategy::__constructRoadMap()
 {
+	
 }
 
 void CCDFPredictionStrategy::__assignNavNode2Agent()

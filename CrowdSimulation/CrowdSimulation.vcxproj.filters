@@ -113,5 +113,8 @@
     <ClCompile Include="SceneVis.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
+    <ClCompile Include="SimNode.cpp">
+      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

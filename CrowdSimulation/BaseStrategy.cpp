@@ -21,8 +21,7 @@ void IEvacuationStrategy::run()
 		m_EvacuationTimeCost++;
 		__updateVisualization();
 		__onPreDoStep();
- 		pSim->doStep();
-		__avoidStuckInObstacles();
+  		pSim->doStep();
 		__onPostDoStep();
 	} while (!__isFinish());
 
@@ -54,12 +53,6 @@ void IEvacuationStrategy::__constructEvacuationScene()
 void IEvacuationStrategy::__updateVisualization()
 {
 	CSceneVis::getInstance()->displayScene(m_pScene);
-}
-
-void IEvacuationStrategy::__avoidStuckInObstacles()
-{
-	//TODO: 避免Agent卡墙
-	//沿着倾向速度的方向前进一段距离
 }
 
 bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet)

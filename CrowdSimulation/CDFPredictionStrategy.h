@@ -13,5 +13,9 @@ private:
 	void __onPostDoStep() override;
 	void __constructRoadMap() override;
 	void __assignNavNode2Agent() override;
+
+private:
+	//Intersection 
+
 };
 
