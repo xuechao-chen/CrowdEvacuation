@@ -16,9 +16,9 @@ private:
 	void __assignNavNode2Agent() override;
 
 	void __analyzeConvergence();
-	bool __isDivideNodeConverged();
-	bool __isDistributionNodeConverged();
 	void __addShortestPath2RoadMap(const std::vector<glm::vec2> & ShortestPath);
+	bool __isAllAgentReachExit();
+	void updateAgentsVelocity();
 	
 private:
 	int m_IterationNum = 0;

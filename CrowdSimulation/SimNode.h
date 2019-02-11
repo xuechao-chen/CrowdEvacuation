@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "GLM/glm.hpp"
-#include "SimAgent.h"
+#include "BaseAgent.h"
 
 enum class ESimNodeType 
 { 
@@ -26,8 +26,11 @@ public:
 	glm::vec2 getNavNodeAt(int vIdx) const { return m_NavNodeSet[vIdx]; }
 	int getNavNodeNum() const { return m_NavNodeSet.size(); }
 
+	bool isConverged();
+	
 private:
 	glm::vec2 m_Pos;
-	std::vector<glm::vec2> m_NavNodeSet;
 	ESimNodeType m_Type;
+	std::vector<glm::vec2> m_NavNodeSet;
+	std::vector<std::vector<std::vector<IAgent*>>> m_AgentGroups;
 };

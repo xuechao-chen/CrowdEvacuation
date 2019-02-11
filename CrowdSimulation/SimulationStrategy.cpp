@@ -24,29 +24,16 @@ void CSimulationStrategy::__onPreDoStep()
 
 void CSimulationStrategy::__onPostDoStep()
 {
-	//TODO: update prefvelocity
+	__updateAgentsVelocity();
 
-	auto IsAllAgentReachExit = true;
-	const auto& Agents = m_pScene->getAgents();
-	const auto& Exits = m_pScene->getExits();
-	for (auto& Agent : Agents)
-	{
-		if (!Agent->isReachExit(Exits))
-		{
-			IsAllAgentReachExit = false;
-			break;
-		}
-	}
-
-	if (IsAllAgentReachExit)
+	if (__isAllAgentReachExit())
 	{
 		m_IterationNum++;
 		__analyzeConvergence();
 		if (!m_IsConverged)
 		{
-			//TODO: reset agent
 			//TODO: update scene
-			
+			//TODO: reset agent
 		}
 	}
 }
@@ -105,6 +92,64 @@ void CSimulationStrategy::__addShortestPath2RoadMap(const std::vector<glm::vec2>
 	m_RoadMap[vShortestPath[PathSize - 1]] = pSimNode;
 }
 
+bool CSimulationStrategy::__isAllAgentReachExit()
+{
+	const auto& Agents = m_pScene->getAgents();
+	const auto& Exits = m_pScene->getExits();
+	for (auto& Agent : Agents)
+	{
+		if (!Agent->isReachExit(Exits))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void CSimulationStrategy::__updateAgentsVelocity()
+{
+	//TODO 更新agent方向
+	const auto& Agents = m_pScene->getAgents();
+	for (auto& Agent : Agents)
+	{
+		if (Agent->isReachNavNode())
+		{
+
+			const auto& CurNavNode = Agent->getNavNode();
+			glm::vec2 NextNavNode;
+			auto SimNode = m_RoadMap[CurNavNode];
+			switch (SimNode->getNodeType())
+			{
+			case ESimNodeType::NormalNode:
+			{
+				NextNavNode = SimNode->getNavNodeAt(0); break;
+			}
+			case ESimNodeType::DivideNode:
+			{
+				//TODO
+			}
+			case ESimNodeType::DistributionNode:
+			default:
+				break;
+			}
+
+			glm::vec2 Direction;
+			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX))
+			{
+				Direction = CurNavNode - Agent->getPosition();
+			}
+			else
+			{   //NOTE: 当前导航点不是出口，更新下一个导航点
+				Direction = NextNavNode - Agent->getPosition();
+				Agent->setNavNode(NextNavNode);
+			}
+
+			auto Normal = RVO::normalize(RVO::Vector2(Direction.x, Direction.y));
+			Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+		}
+	}
+}
+
 void CSimulationStrategy::__assignNavNode2Agent()
 {
 	const auto& Agents = m_pScene->getAgents();
@@ -123,25 +168,13 @@ void CSimulationStrategy::__assignNavNode2Agent()
 				auto Distance1 = Graph->getEdgeWeight(SimNode->getPos(), NavNode1);
 				if (NavNode1.x == NavNode2.x)
 				{
-					if (abs(Agent->getPosition().y - NavNode1.y) < Distance1)
-					{
-						Agent->setNavNode(NavNode1);
-					}
-					else
-					{
-						Agent->setNavNode(NavNode2);
-					}
+					if (abs(Agent->getPosition().y - NavNode1.y) < Distance1) Agent->setNavNode(NavNode1);
+					else	 Agent->setNavNode(NavNode2);
 				}
 				else
 				{
-					if (abs(Agent->getPosition().x - NavNode1.x) < Distance1)
-					{
-						Agent->setNavNode(NavNode1);
-					}
-					else
-					{
-						Agent->setNavNode(NavNode2);
-					}
+					if (abs(Agent->getPosition().x - NavNode1.x) < Distance1) Agent->setNavNode(NavNode1);
+					else Agent->setNavNode(NavNode2);
 				}
 			}
 			else
@@ -168,18 +201,23 @@ void CSimulationStrategy::__assignNavNode2Agent()
 
 void CSimulationStrategy::__analyzeConvergence()
 {
-	if (__isDivideNodeConverged() && __isDistributionNodeConverged())
+	for (auto& Item : m_RoadMap)
 	{
-		m_IsConverged = true;
+		auto SimNode = Item.second;
+		switch (SimNode->getNodeType())
+		{
+		case ESimNodeType::DivideNode:
+		case ESimNodeType::DistributionNode:
+		{
+			if (!SimNode->isConverged())
+			{
+				m_IsConverged = false;
+				return;
+			}
+			break;
+		}
+		default: break;
+		}
 	}
-}
-
-bool CSimulationStrategy::__isDivideNodeConverged()
-{
-	return false;
-}
-
-bool CSimulationStrategy::__isDistributionNodeConverged()
-{
-	return false;
+	m_IsConverged = true;
 }
