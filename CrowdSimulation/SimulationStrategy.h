@@ -20,6 +20,7 @@ private:
 	bool __isAllAgentReachExit();
 	void __updateAgentsVelocity();
 	void __updateScene();
+	void __groupAgentInSimNode();
 	
 private:
 	int m_IterationNum = 0;

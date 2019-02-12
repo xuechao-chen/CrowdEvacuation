@@ -86,6 +86,7 @@ bool CShortestStrategy::__isFinish()
 			//TODO: 从配置文件读取场景长宽来确定位置
 			Agent->setPosition(glm::vec2(500, 500));
 			Agent->setPrefVelocity(glm::vec2(0,0));
+			Agent->setEvacuationTime(m_EvacuationTimeCost);
 		}
 	}
 

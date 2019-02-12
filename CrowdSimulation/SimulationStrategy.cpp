@@ -104,6 +104,7 @@ bool CSimulationStrategy::__isAllAgentReachExit()
 		else {
 			Agent->setPosition(glm::vec2(500, 500));
 			Agent->setPrefVelocity(glm::vec2(0, 0));
+			Agent->setEvacuationTime(m_EvacuationTimeCost);
 		}
 	}
 	return IsAllAgentReachExit;
@@ -168,6 +169,37 @@ void CSimulationStrategy::__updateScene()
 	
 }
 
+void CSimulationStrategy::__groupAgentInSimNode()
+{
+	for (auto& Item : m_RoadMap)
+	{
+		auto SimNode = Item.second;
+		switch (SimNode->getNodeType())
+		{
+		case ESimNodeType::DivideNode:
+		{
+			const auto& SimNodePos = SimNode->getPos();
+			for (auto Agent : m_pScene->getAgents())
+			{
+				const auto& AgentPos = Agent->getPosition();
+				if (abs(AgentPos.x - SimNodePos.x) < CSceneGraph::ROAD_WIDTH/2 &&
+					abs(AgentPos.y - SimNodePos.y) < CSceneGraph::ROAD_WIDTH / 2)
+				{
+					//TODO
+				}
+			}
+			break;
+		}
+		case ESimNodeType::DistributionNode:
+		{
+			break;
+		}
+		default:
+			break;
+		}
+	}
+}
+
 void CSimulationStrategy::__assignNavNode2Agent()
 {
 	const auto& Agents = m_pScene->getAgents();
@@ -187,7 +219,7 @@ void CSimulationStrategy::__assignNavNode2Agent()
 				if (NavNode1.x == NavNode2.x)
 				{
 					if (abs(Agent->getPosition().y - NavNode1.y) < Distance1) Agent->setNavNode(NavNode1);
-					else	 Agent->setNavNode(NavNode2);
+					else Agent->setNavNode(NavNode2);
 				}
 				else
 				{
