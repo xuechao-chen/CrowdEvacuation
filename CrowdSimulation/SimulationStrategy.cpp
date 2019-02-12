@@ -83,12 +83,11 @@ void CSimulationStrategy::__addShortestPath2RoadMap(const std::vector<glm::vec2>
 	{
 		auto& CurNavNode = vShortestPath[i];
 		auto& NextNavNode = vShortestPath[i + 1];
-		CSimNode* pSimNode = new CSimNode();
-		pSimNode->setNodeType(ESimNodeType::NormalNode);
+		CSimNode* pSimNode = new CSimNode(CurNavNode, ESimNodeType::NormalNode);
 		pSimNode->addNavNode(NextNavNode);
 		m_RoadMap[CurNavNode] = pSimNode;
 	}
-	CSimNode* pSimNode = new CSimNode();
+	CSimNode* pSimNode = new CSimNode(vShortestPath[PathSize - 1], ESimNodeType::NormalNode);
 	pSimNode->addNavNode(glm::vec2(FLT_MAX, FLT_MAX));
 	m_RoadMap[vShortestPath[PathSize - 1]] = pSimNode;
 }
@@ -97,14 +96,17 @@ bool CSimulationStrategy::__isAllAgentReachExit()
 {
 	const auto& Agents = m_pScene->getAgents();
 	const auto& Exits = m_pScene->getExits();
+	bool IsAllAgentReachExit = true;
+
 	for (auto& Agent : Agents)
 	{
-		if (!Agent->isReachExit(Exits))
-		{
-			return false;
+		if (!Agent->isReachExit(Exits)) IsAllAgentReachExit = false;
+		else {
+			Agent->setPosition(glm::vec2(500, 500));
+			Agent->setPrefVelocity(glm::vec2(0, 0));
 		}
 	}
-	return true;
+	return IsAllAgentReachExit;
 }
 
 void CSimulationStrategy::__updateAgentsVelocity()
@@ -114,7 +116,6 @@ void CSimulationStrategy::__updateAgentsVelocity()
 	{
 		if (Agent->isReachNavNode())
 		{
-
 			const auto& CurNavNode = Agent->getNavNode();
 			glm::vec2 NextNavNode;
 			auto SimNode = m_RoadMap[CurNavNode];
