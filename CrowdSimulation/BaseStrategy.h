@@ -8,7 +8,6 @@
 #define protected public
 #endif
 
-// 人群在场景中的运动和疏散算法
 class IEvacuationStrategy
 {
 public:
