@@ -52,12 +52,6 @@
     <ClInclude Include="GraphConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="DistributionNode.h">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClInclude>
-    <ClInclude Include="DivideNode.h">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClInclude>
     <ClInclude Include="ShortestStrategy.h">
       <Filter>EvacuationStrategy\ShortestStrategy</Filter>
     </ClInclude>

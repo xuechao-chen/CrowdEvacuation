@@ -39,6 +39,21 @@ void CEvacuationScene::removeExit(const glm::vec2 & vExit)
 	}
 }
 
+std::vector<IAgent*> CEvacuationScene::dumpAgentsInRegion(const glm::vec2 & vLeftTop, const glm::vec2 & vRightBottom)
+{
+	std::vector<IAgent*> AgentsInRegion;
+	for (auto Agent : m_Agents)
+	{
+		const auto& Pos = Agent->getPosition();
+		if (Pos.x > vLeftTop.x && Pos.x < vRightBottom.x &&
+			Pos.y > vLeftTop.y && Pos.y < vRightBottom.y)
+		{
+			AgentsInRegion.push_back(Agent);
+		}
+	}
+	return AgentsInRegion;
+}
+
 void CEvacuationScene::addAgent(const glm::vec2& vAgent)
 {
 	auto Idx = m_pRVOSimulator->addAgent(RVO::Vector2(vAgent.x, vAgent.y));

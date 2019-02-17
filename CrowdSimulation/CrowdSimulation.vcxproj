@@ -26,8 +26,6 @@
     <ClInclude Include="CrowdSimulationExport.h" />
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="DensityStrategy.h" />
-    <ClInclude Include="DistributionNode.h" />
-    <ClInclude Include="DivideNode.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="SceneConfig.h" />

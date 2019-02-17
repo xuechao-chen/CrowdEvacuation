@@ -1,4 +1,9 @@
 #include "SimulationStrategy.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "common/CommonInterface.h"
+#include <boost/format.hpp>
 
 CSimulationStrategy::CSimulationStrategy()
 {
@@ -41,20 +46,9 @@ void CSimulationStrategy::__onPostDoStep()
 
 void CSimulationStrategy::__constructRoadMap()
 {
+	__constructBasicRoadMap();
+
 	auto pGraph = m_pScene->getGraph();
-	const auto& Exits = m_pScene->getExits();
-	auto VisitedNodeSet = std::vector<glm::vec2>();
-
-	const auto& AllNodes = pGraph->dumpAllNodes();
-	for (auto& Node : AllNodes)
-	{
-		if (__isVisited(Node, VisitedNodeSet)) continue;
-
-		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
-		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
-		__addShortestPath2RoadMap(ShortestPath);
-	}
-
 	const auto& AllEdges = pGraph->dumpAllEdges();
 	for (auto& Edge : AllEdges)
 	{
@@ -128,7 +122,7 @@ void CSimulationStrategy::__updateAgentsVelocity()
 			}
 			case ESimNodeType::DistributionNode:
 			{
-				float Rand = rand(); //TODO rand 0~1
+				float Rand = rand() % 100 / (float)(101); // 0到1的随机数
 				int NavNodeNum = SimNode->getNavNodeNum();
 				auto AccumulatedRatio = 0.0f;
 				for (size_t i = 0; i < NavNodeNum; i++)
@@ -169,33 +163,83 @@ void CSimulationStrategy::__updateScene()
 	
 }
 
-void CSimulationStrategy::__groupAgentInSimNode()
+void CSimulationStrategy::__constructRoadMapFromFile()
 {
-	for (auto& Item : m_RoadMap)
+	// reset roadmap to basic state
+	m_RoadMap.clear();
+	m_RoadMap = m_BasicRoadMap;
+
+	__addDivideNode2RoadMap();
+	__addDistributionNode2RoadMap();
+}
+
+void CSimulationStrategy::__constructBasicRoadMap()
+{
+	auto pGraph = m_pScene->getGraph();
+	const auto& Exits = m_pScene->getExits();
+	auto VisitedNodeSet = std::vector<glm::vec2>();
+
+	const auto& AllNodes = pGraph->dumpAllNodes();
+	for (auto& Node : AllNodes)
 	{
-		auto SimNode = Item.second;
-		switch (SimNode->getNodeType())
+		if (__isVisited(Node, VisitedNodeSet)) continue;
+
+		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
+		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
+		__addShortestPath2RoadMap(ShortestPath);
+	}
+}
+
+void CSimulationStrategy::__addDivideNode2RoadMap()
+{
+	std::string FileStr = (boost::format("DivideNode_%1%.txt") % m_IterationNum).str();
+	std::ifstream DivideNodeFile(FileStr);
+	std::string DivideNodeStr;
+
+	while (std::getline(DivideNodeFile, DivideNodeStr))
+	{
+		int* DivideNodeInfo = new int[6];
+		hiveCommon::hiveSplitLine2IntArray(DivideNodeStr, " ", 6 , DivideNodeInfo);
+		glm::vec2 DivideNodePos(DivideNodeInfo[0], DivideNodeInfo[1]);
+		glm::vec2 NavNode1Pos(DivideNodeInfo[2], DivideNodeInfo[3]);
+		glm::vec2 NavNode2Pos(DivideNodeInfo[4], DivideNodeInfo[5]);
+
+		CSimNode* pDivideNode = new CSimNode(DivideNodePos, ESimNodeType::DivideNode);
+		pDivideNode->addNavNode(NavNode1Pos);
+		pDivideNode->addNavNode(NavNode2Pos);
+		m_RoadMap[DivideNodePos] = pDivideNode;
+	}
+}
+
+void CSimulationStrategy::__addDistributionNode2RoadMap()
+{
+	std::string FileStr = (boost::format("DistributionNode_%1%.txt") % m_IterationNum).str();
+	std::ifstream DistributionNodeFile(FileStr);
+	std::string DistributionNodeStr;
+	std::string NavNodeStr;
+	std::string DistributionRatioStr;
+
+	while (std::getline(DistributionNodeFile, DistributionNodeStr) &&
+		   std::getline(DistributionNodeFile, NavNodeStr) &&
+		   std::getline(DistributionNodeFile, DistributionRatioStr))
+	{
+		int* DistributionNodeInfo = new int[3];
+		hiveCommon::hiveSplitLine2IntArray(DistributionNodeStr, " ", 3, DistributionNodeInfo);
+		glm::vec2 DistributionNodePos(DistributionNodeInfo[0], DistributionNodeInfo[1]);
+		int NavNodeNum = DistributionNodeInfo[2];
+
+		CSimNode* pDistributionNode = new CSimNode(DistributionNodePos, ESimNodeType::DistributionNode);
+
+		int* NavNodeInfo = new int[NavNodeNum*2];
+		float* RatioInfo = new float[NavNodeNum];
+		hiveCommon::hiveSplitLine2IntArray(NavNodeStr, " ", NavNodeNum*2, NavNodeInfo);
+		hiveCommon::hiveSplitLine2FloatArray(DistributionRatioStr, " ", NavNodeNum, RatioInfo);
+		for (size_t i = 0; i < NavNodeNum; i++)
 		{
-		case ESimNodeType::DivideNode:
-		{
-			const auto& SimNodePos = SimNode->getPos();
-			for (auto Agent : m_pScene->getAgents())
-			{
-				const auto& AgentPos = Agent->getPosition();
-				if (abs(AgentPos.x - SimNodePos.x) < CSceneGraph::ROAD_WIDTH/2 &&
-					abs(AgentPos.y - SimNodePos.y) < CSceneGraph::ROAD_WIDTH / 2)
-				{
-					//TODO
-				}
-			}
-			break;
-		}
-		case ESimNodeType::DistributionNode:
-		{
-			break;
-		}
-		default:
-			break;
+			glm::vec2 NavNodePos(NavNodeInfo[i*2], NavNodeInfo[i*2+1]);
+			pDistributionNode->addNavNode(NavNodePos);
+			pDistributionNode->addDistributionRatio(RatioInfo[i]);
+			m_RoadMap[DistributionNodePos] = pDistributionNode;
 		}
 	}
 }

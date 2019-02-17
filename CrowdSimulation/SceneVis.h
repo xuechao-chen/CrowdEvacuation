@@ -16,4 +16,3 @@ public:
 private:
 	friend class hiveOO::CSingleton<CSceneVis>;
 };
-

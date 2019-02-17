@@ -53,6 +53,10 @@
     <Xml Include="SceneConfig.xml" />
     <Xml Include="SimulatorConfig.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="DistributionNode_0.txt" />
+    <Text Include="DivideNode_0.txt" />
+  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

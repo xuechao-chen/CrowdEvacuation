@@ -48,3 +48,38 @@ TEST_F(TestSimulationStrategy, AssignNavNode2Agent)
 	EXPECT_EQ(m_NodeSet[0], Agents[2]->getNavNode());
 	EXPECT_EQ(m_NodeSet[1], Agents[3]->getNavNode());
 }
+
+TEST_F(TestSimulationStrategy, AddDivideNode2RoadMap)
+{
+	m_pStrategy->__addDivideNode2RoadMap();
+	auto RoadMap = m_pStrategy->m_RoadMap;
+	ASSERT_EQ(7, RoadMap.size());
+
+	auto SimNode1 = RoadMap[glm::vec2(1, 1)];
+	auto SimNode2 = RoadMap[glm::vec2(4, 4)];
+	ASSERT_EQ(2, SimNode1->getNavNodeNum());
+	ASSERT_EQ(2, SimNode2->getNavNodeNum());
+	EXPECT_EQ(ESimNodeType::DivideNode, SimNode1->getNodeType());
+	EXPECT_EQ(ESimNodeType::DivideNode, SimNode2->getNodeType());
+
+	EXPECT_EQ(glm::vec2(2,2), SimNode1->getNavNodeAt(0));
+	EXPECT_EQ(glm::vec2(3,3), SimNode1->getNavNodeAt(1));
+	EXPECT_EQ(glm::vec2(5,5), SimNode2->getNavNodeAt(0));
+	EXPECT_EQ(glm::vec2(6,6), SimNode2->getNavNodeAt(1));
+}
+
+TEST_F(TestSimulationStrategy, AddDistributionNode2RoadMap)
+{
+	m_pStrategy->__addDistributionNode2RoadMap();
+	auto RoadMap = m_pStrategy->m_RoadMap;
+	ASSERT_EQ(5, RoadMap.size());
+
+	auto SimNode = RoadMap[glm::vec2(30, 30)];
+	ASSERT_EQ(2, SimNode->getNavNodeNum());
+	EXPECT_EQ(ESimNodeType::DistributionNode, SimNode->getNodeType());
+
+	EXPECT_EQ(glm::vec2(30, 150), SimNode->getNavNodeAt(0));
+	EXPECT_EQ(glm::vec2(150, 30), SimNode->getNavNodeAt(1));
+	EXPECT_FLOAT_EQ(0.3, SimNode->getDistributionRatioAt(0));
+	EXPECT_FLOAT_EQ(0.7, SimNode->getDistributionRatioAt(1));
+}

@@ -27,6 +27,8 @@ public:
 	void setSimulator(RVO::RVOSimulator* pSimulator) { m_pRVOSimulator = pSimulator; }
 	RVO::RVOSimulator* getSimulator() const { return m_pRVOSimulator; }
 
+	std::vector<IAgent*> dumpAgentsInRegion(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
+
 private:
 	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;
 	std::vector<glm::vec2> m_Exits;

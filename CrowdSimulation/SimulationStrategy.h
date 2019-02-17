@@ -20,10 +20,15 @@ private:
 	bool __isAllAgentReachExit();
 	void __updateAgentsVelocity();
 	void __updateScene();
-	void __groupAgentInSimNode();
+
+	void __constructRoadMapFromFile();
+	void __constructBasicRoadMap();
+	void __addDivideNode2RoadMap();
+	void __addDistributionNode2RoadMap();
 	
 private:
 	int m_IterationNum = 0;
 	bool m_IsConverged = false;
 	std::unordered_map<glm::vec2, CSimNode*, HashFunc4Node> m_RoadMap;
+	std::unordered_map<glm::vec2, CSimNode*, HashFunc4Node> m_BasicRoadMap;
 };

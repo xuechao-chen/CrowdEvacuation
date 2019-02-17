@@ -18,7 +18,7 @@ public:
 
 	void setNodeType(ESimNodeType vType) { m_Type = vType; }
 	void setPos(const glm::vec2& vPos) { m_Pos = vPos; }
-	void addNavNode(const glm::vec2& vNavNode) { m_NavNodeSet.push_back(vNavNode); }
+	void addNavNode(const glm::vec2& vNavNode) { m_NavNodeSet.push_back(vNavNode);}
 
 	ESimNodeType getNodeType() const { return m_Type; }
 	glm::vec2 getPos() const { return m_Pos; }
@@ -26,7 +26,7 @@ public:
 	glm::vec2 getNavNodeAt(int vIdx) const { return m_NavNodeSet[vIdx]; }
 	int getNavNodeNum() const { return m_NavNodeSet.size(); }
 	float getDistributionRatioAt(int vIdx) const { return m_DistributionRatioSet[vIdx]; }
-	void setDistributionRatioAt(int vIdx, float vRatio) { m_DistributionRatioSet[vIdx] = vRatio; }
+	void addDistributionRatio(float vRatio) { m_DistributionRatioSet.push_back(vRatio); }
 
 	bool isConverged();
 	
