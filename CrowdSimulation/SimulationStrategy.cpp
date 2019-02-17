@@ -34,13 +34,8 @@ void CSimulationStrategy::__onPostDoStep()
 	if (__isAllAgentReachExit())
 	{
 		m_IterationNum++;
-		__analyzeConvergence();
-		if (!m_IsConverged)
-		{
-			//TODO: update scene
-			//TODO: reset agent
-			__updateScene();
-		}
+		__updateScene();
+		//__analyzeConvergence();
 	}
 }
 
@@ -160,6 +155,15 @@ void CSimulationStrategy::__updateAgentsVelocity()
 
 void CSimulationStrategy::__updateScene()
 {
+	m_RoadMap.clear();
+	m_RoadMap = m_BasicRoadMap;
+
+	//update Divide Node
+	for (auto& Item : m_RoadMap)
+	{
+		auto SimNode = Item.second;
+		
+	}
 	
 }
 
