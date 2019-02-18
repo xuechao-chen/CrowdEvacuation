@@ -25,7 +25,6 @@
     <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="CrowdSimulationExport.h" />
     <ClInclude Include="CrowdSimulationInterface.h" />
-    <ClInclude Include="DensityStrategy.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="SceneConfig.h" />
@@ -43,7 +42,6 @@
     <ClCompile Include="ConfigParser.cpp" />
     <ClCompile Include="CrowdSimulationInterface.cpp" />
     <ClCompile Include="SceneVis.cpp" />
-    <ClCompile Include="DensityStrategy.cpp" />
     <ClCompile Include="EvacuationScene.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="ShortestStrategy.cpp" />

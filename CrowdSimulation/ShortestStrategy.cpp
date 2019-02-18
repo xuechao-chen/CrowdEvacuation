@@ -84,6 +84,7 @@ bool CShortestStrategy::__isFinish()
 		else { 
 			//NOTE: 到达出口，移动到场景外,速度为0,移到无穷远会触发RVO的建KD树的bug
 			//TODO: 从配置文件读取场景长宽来确定位置
+			Agent->tagIsReachExit(true);
 			Agent->setPosition(glm::vec2(500, 500));
 			Agent->setPrefVelocity(glm::vec2(0,0));
 			Agent->setEvacuationTime(m_EvacuationTimeCost);

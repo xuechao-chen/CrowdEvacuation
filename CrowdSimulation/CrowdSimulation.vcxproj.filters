@@ -16,9 +16,6 @@
     <Filter Include="EvacuationStrategy\CDFPredictionStratedy">
       <UniqueIdentifier>{7f90ca5f-835b-456e-b9ca-8217c5ce14d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EvacuationStrategy\DensityStrategy">
-      <UniqueIdentifier>{9bf89441-7f23-4028-b5df-071346754749}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EvacuationStrategy\ShortestStrategy">
       <UniqueIdentifier>{2a89da0c-e5ba-4de1-8eee-1dfbbe3c3b4c}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </ClInclude>
     <ClInclude Include="CDFPredictionStrategy.h">
       <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
-    </ClInclude>
-    <ClInclude Include="DensityStrategy.h">
-      <Filter>EvacuationStrategy\DensityStrategy</Filter>
     </ClInclude>
     <ClInclude Include="BaseAgent.h">
       <Filter>EvacuationStrategy</Filter>
@@ -79,9 +73,6 @@
     </ClCompile>
     <ClCompile Include="CDFPredictionStrategy.cpp">
       <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
-    </ClCompile>
-    <ClCompile Include="DensityStrategy.cpp">
-      <Filter>EvacuationStrategy\DensityStrategy</Filter>
     </ClCompile>
     <ClCompile Include="BaseAgent.cpp">
       <Filter>EvacuationStrategy</Filter>
