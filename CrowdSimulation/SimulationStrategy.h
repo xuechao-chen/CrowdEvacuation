@@ -20,6 +20,9 @@ private:
 	bool __isAllAgentReachExit();
 	void __updateAgentsVelocity();
 	void __updateScene();
+	void __updateDivideNode(CSimNode* pSimNode);
+	void __updateDistributionNode(CSimNode* pSimNode);
+	void __resetAgents();
 
 	void __constructRoadMapFromFile();
 	void __constructBasicRoadMap();

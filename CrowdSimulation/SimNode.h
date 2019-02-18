@@ -26,13 +26,21 @@ public:
 	glm::vec2 getNavNodeAt(int vIdx) const { return m_NavNodeSet[vIdx]; }
 	int getNavNodeNum() const { return m_NavNodeSet.size(); }
 	float getDistributionRatioAt(int vIdx) const { return m_DistributionRatioSet[vIdx]; }
+	void setDistributionRatioAt(int vIdx, float vRatio) { m_DistributionRatioSet[vIdx] = vRatio; }
 	void addDistributionRatio(float vRatio) { m_DistributionRatioSet.push_back(vRatio); }
+	float getDivideRatio() const { return m_DivideRatio; }
+	void setDivideRatio(float vRatio) { m_DivideRatio = vRatio; }
+	void updateDividePos()
+	{
+		//TODO 根据导航点和分割率更新位置
+	}
 
 	bool isConverged();
 	
 private:
 	glm::vec2 m_Pos;
 	ESimNodeType m_Type;
+	float m_DivideRatio = 0.5f;
 	std::vector<float> m_DistributionRatioSet;
 	std::vector<glm::vec2> m_NavNodeSet;
 	std::vector<std::vector<std::vector<IAgent*>>> m_AgentGroups;

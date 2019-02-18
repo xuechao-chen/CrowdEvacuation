@@ -44,3 +44,10 @@ bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
 	m_IsReachExit = true;
 	return true;
 }
+
+void IAgent::reset()
+{
+	m_EvacuationTime = 0;
+	m_IsReachExit = false;
+	m_pRVOAgent->setPosition(RVO::Vector2(m_InitPos.x, m_InitPos.y));
+}

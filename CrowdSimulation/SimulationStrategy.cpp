@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <numeric>
 #include "common/CommonInterface.h"
 #include <boost/format.hpp>
 
@@ -155,16 +156,93 @@ void CSimulationStrategy::__updateAgentsVelocity()
 
 void CSimulationStrategy::__updateScene()
 {
-	m_RoadMap.clear();
-	m_RoadMap = m_BasicRoadMap;
-
-	//update Divide Node
+	//update Divide Node & Distribution Node
 	for (auto& Item : m_RoadMap)
 	{
 		auto SimNode = Item.second;
-		
+		if (SimNode->getNodeType() == ESimNodeType::DivideNode) __updateDivideNode(SimNode);
+		if (SimNode->getNodeType() == ESimNodeType::DistributionNode) __updateDistributionNode(SimNode);
 	}
-	
+	__resetAgents();
+}
+
+void CSimulationStrategy::__updateDivideNode(CSimNode * pSimNode)
+{
+	const auto& NavNode1 = pSimNode->getNavNodeAt(0);
+	const auto& NavNode2 = pSimNode->getNavNodeAt(1);
+	const auto& DividePos = pSimNode->getPos();
+	// T_1, T_2
+	const auto& AgentsInNode1 = m_pScene->dumpAgentsInNode(NavNode1);
+	const auto& AgentsInNode2 = m_pScene->dumpAgentsInNode(NavNode2);
+	const auto& AgentsInEdge1 = m_pScene->dumpAgentsInEdge(NavNode1, DividePos);
+	const auto& AgentsInEdge2 = m_pScene->dumpAgentsInEdge(NavNode2, DividePos);
+
+	auto T1 = __calAvgEvacuationTime4Agents(AgentsInNode1);
+	auto T2 = __calAvgEvacuationTime4Agents(AgentsInNode2);
+	auto DeltaT1 = __calMaxEvacuationTime4Agents(AgentsInEdge1);
+	auto DeltaT2 = __calMaxEvacuationTime4Agents(AgentsInEdge2);
+	auto Alpha = DeltaT1 / pSimNode->getDivideRatio();
+	auto Beta = DeltaT2 / (1 - pSimNode->getDivideRatio());
+
+	auto UpdatedDivideRatio = (T2 - T1 + Beta) / (Alpha + Beta);
+	if (UpdatedDivideRatio <= 0)
+	{
+		// NavNode1成为分流点
+		auto pSimNode = m_RoadMap[NavNode1];
+		pSimNode->setNodeType(ESimNodeType::DistributionNode);
+		pSimNode->addNavNode(NavNode2);
+		pSimNode->addDistributionRatio(0.5);
+		pSimNode->addDistributionRatio(0.5);
+		for (auto Iter = m_RoadMap.begin(); Iter != m_RoadMap.end(); ++Iter)
+		{
+			if (Iter->first == DividePos) m_RoadMap.erase(Iter);
+		}
+	}
+	else if (UpdatedDivideRatio >= 1)
+	{
+		// NavNode2成为分流点
+		auto pSimNode = m_RoadMap[NavNode2];
+		pSimNode->setNodeType(ESimNodeType::DistributionNode);
+		pSimNode->addNavNode(NavNode1);
+		pSimNode->addDistributionRatio(0.5);
+		pSimNode->addDistributionRatio(0.5);
+		for (auto Iter = m_RoadMap.begin(); Iter != m_RoadMap.end(); ++Iter)
+		{
+			if (Iter->first == DividePos) m_RoadMap.erase(Iter);
+		}
+	}
+	else
+	{
+		pSimNode->setDivideRatio(UpdatedDivideRatio);
+		pSimNode->updateDividePos();
+	}
+}
+
+void CSimulationStrategy::__updateDistributionNode(CSimNode * pSimNode)
+{
+	std::vector<float> TimeSet;
+	for (size_t i = 0; i < pSimNode->getNavNodeNum(); i++)
+	{
+		const auto& NavNode = pSimNode->getNavNodeAt(i);
+		const auto& Agents = m_pScene->dumpAgentsInEdge(pSimNode->getPos(), NavNode);//TODO 边的范围不包括Intersection
+		auto MaxTime = __calMaxEvacuationTime4Agents(Agents);
+		TimeSet.push_back(MaxTime);
+	}
+	auto Total = std::accumulate(TimeSet.begin(), TimeSet.end(), 0);
+	for (size_t i = 0; i < pSimNode->getNavNodeNum(); i++)
+	{
+		pSimNode->setDistributionRatioAt(i, (1 / TimeSet[i]) / Total);
+	}
+}
+
+void CSimulationStrategy::__resetAgents()
+{
+	const auto& Agents = m_pScene->getAgents();
+	for (auto Agent : Agents)
+	{
+		Agent->reset();
+	}
+	__assignNavNode2Agent();
 }
 
 void CSimulationStrategy::__constructRoadMapFromFile()

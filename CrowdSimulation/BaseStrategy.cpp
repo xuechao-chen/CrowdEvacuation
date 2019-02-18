@@ -81,3 +81,24 @@ std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const st
 	}
 	return ShortestNavNodeSet;
 }
+
+float __calAvgEvacuationTime4Agents(const std::vector<IAgent*>& vAgents)
+{
+	float TotalTime = 0.0f;
+	for (auto Agent : vAgents)
+	{
+		TotalTime += Agent->getEvacuationTime();
+	}
+	return TotalTime / vAgents.size();
+}
+
+float __calMaxEvacuationTime4Agents(const std::vector<IAgent*>& vAgents)
+{
+	float MaxTime = -FLT_MAX;
+	for (auto Agent : vAgents)
+	{
+		auto EvacuationTime = Agent->getEvacuationTime();
+		if (EvacuationTime > MaxTime) MaxTime = EvacuationTime;
+	}
+	return MaxTime;
+}

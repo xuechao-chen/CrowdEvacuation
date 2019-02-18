@@ -7,7 +7,7 @@ class IAgent
 public:
 	IAgent() = delete;
 	IAgent(RVO::Agent* pRVOAgent) : m_pRVOAgent(pRVOAgent) {}
-	IAgent(RVO::Agent* pRVOAgent, const glm::vec2& vPos) : m_pRVOAgent(pRVOAgent) { setPosition(vPos); };
+	IAgent(RVO::Agent* pRVOAgent, const glm::vec2& vPos) : m_pRVOAgent(pRVOAgent) { setPosition(vPos); m_InitPos = vPos; };
 	virtual ~IAgent();
 	
 	void setPosition(const glm::vec2& vPos); 
@@ -21,11 +21,14 @@ public:
 
 	void setEvacuationTime(int vTime) { m_EvacuationTime = vTime; }
 	int getEvacuationTime() const { return m_EvacuationTime; }
+
+	void reset();
 	
 private:
 	mutable bool m_IsReachExit = false;
 
 	RVO::Agent* m_pRVOAgent = nullptr;
 	glm::vec2 m_NavNode;
+	glm::vec2 m_InitPos;
 	int m_EvacuationTime = 0;
 };
