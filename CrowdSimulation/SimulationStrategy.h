@@ -5,29 +5,23 @@
 class CSimulationStrategy : public IEvacuationStrategy
 {
 public:
-	CSimulationStrategy();
-	~CSimulationStrategy();
+	CSimulationStrategy() = default;
+	~CSimulationStrategy() = default;
 
 private:
 	bool __isFinish() override;
-	void __onPreDoStep() override;
+	void __onPreDoStep() override {}
 	void __onPostDoStep() override;
 	void __constructRoadMap() override;
 	void __assignNavNode2Agent() override;
 
-	void __analyzeConvergence();
-	void __addShortestPath2RoadMap(const std::vector<glm::vec2> & ShortestPath);
+	void __addShortestPath2RoadMap(const std::vector<glm::vec2>& ShortestPath);
 	bool __isAllAgentReachExit();
 	void __updateAgentsVelocity();
 	void __updateScene();
 	void __updateDivideNode(CSimNode* pSimNode);
 	void __updateDistributionNode(CSimNode* pSimNode);
 	void __resetAgents();
-
-	void __constructRoadMapFromFile();
-	void __constructBasicRoadMap();
-	void __addDivideNode2RoadMap();
-	void __addDistributionNode2RoadMap();
 	
 private:
 	int m_IterationNum = 0;

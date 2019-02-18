@@ -41,7 +41,6 @@ bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
 		if (Distance > 10) return false; //TODO: ÔÝ¶¨°ë¾¶Îª3
 	}
 
-	m_IsReachExit = true;
 	return true;
 }
 

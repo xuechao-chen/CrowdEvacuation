@@ -12,16 +12,17 @@ public:
 	
 	void setPosition(const glm::vec2& vPos); 
 	glm::vec2 getPosition() const;
+	glm::vec2 getInitPosition() const { return m_InitPos; }
 	void setPrefVelocity(const glm::vec2& vPrefVelocity);
 
 	void setNavNode(const glm::vec2& vNavNode) { m_NavNode = vNavNode; }
 	glm::vec2 getNavNode() const { return m_NavNode; }
 	bool isReachNavNode() const;
 	bool isReachExit(const std::vector<glm::vec2>& vExits) const;
+	void tagIsReachExit(bool vIsReachExit) { m_IsReachExit = vIsReachExit; }
 
-	void setEvacuationTime(int vTime) { m_EvacuationTime = vTime; }
+	void setEvacuationTime(int vTime) { if (!m_IsReachExit) m_EvacuationTime = vTime;}
 	int getEvacuationTime() const { return m_EvacuationTime; }
-
 	void reset();
 	
 private:

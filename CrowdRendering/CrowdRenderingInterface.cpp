@@ -36,6 +36,24 @@ void hiveCrowdRendering::drawAgents(const std::vector<glm::vec2>& vPosOfAgents)
 	}
 }
 
+void hiveCrowdRendering::drawNodes(const std::vector<glm::vec2>& vNodes)
+{
+	auto SceneVis = CSceneVisualization::getInstance();
+	for (auto& Node : vNodes)
+	{
+		SceneVis->drawNode(Node);
+	}
+}
+
+void hiveCrowdRendering::drawEdges(const std::vector<std::pair<glm::vec2, glm::vec2>>& vEdges)
+{
+	auto SceneVis = CSceneVisualization::getInstance();
+	for (auto& Edge : vEdges)
+	{
+		SceneVis->drawEdge(Edge.first, Edge.second);
+	}
+}
+
 void hiveCrowdRendering::display()
 {
 	auto SceneVis = CSceneVisualization::getInstance();

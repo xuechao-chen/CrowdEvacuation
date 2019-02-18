@@ -6,26 +6,9 @@
 #include "common/CommonInterface.h"
 #include <boost/format.hpp>
 
-CSimulationStrategy::CSimulationStrategy()
-{
-}
-
-CSimulationStrategy::~CSimulationStrategy()
-{
-}
-
 bool CSimulationStrategy::__isFinish()
 {
-	if (m_IsConverged || m_IterationNum >= 10)
-	{
-		return true;
-	}
-	return false;
-}
-
-void CSimulationStrategy::__onPreDoStep()
-{
-	
+	return m_IterationNum >= 10;
 }
 
 void CSimulationStrategy::__onPostDoStep()
@@ -36,15 +19,27 @@ void CSimulationStrategy::__onPostDoStep()
 	{
 		m_IterationNum++;
 		__updateScene();
-		//__analyzeConvergence();
+		std::cout << "Evacuation Iteration " << m_IterationNum << " : " << m_EvacuationTimeCost << std::endl;
+		m_EvacuationTimeCost = 0;
 	}
 }
 
 void CSimulationStrategy::__constructRoadMap()
 {
-	__constructBasicRoadMap();
-
 	auto pGraph = m_pScene->getGraph();
+	const auto& Exits = m_pScene->getExits();
+	auto VisitedNodeSet = std::vector<glm::vec2>();
+
+	const auto& AllNodes = pGraph->dumpAllNodes();
+	for (auto& Node : AllNodes)
+	{
+		if (__isVisited(Node, VisitedNodeSet)) continue;
+
+		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
+		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
+		__addShortestPath2RoadMap(ShortestPath);
+	}
+
 	const auto& AllEdges = pGraph->dumpAllEdges();
 	for (auto& Edge : AllEdges)
 	{
@@ -95,6 +90,7 @@ bool CSimulationStrategy::__isAllAgentReachExit()
 			Agent->setPosition(glm::vec2(500, 500));
 			Agent->setPrefVelocity(glm::vec2(0, 0));
 			Agent->setEvacuationTime(m_EvacuationTimeCost);
+			Agent->tagIsReachExit(true);
 		}
 	}
 	return IsAllAgentReachExit;
@@ -156,26 +152,31 @@ void CSimulationStrategy::__updateAgentsVelocity()
 
 void CSimulationStrategy::__updateScene()
 {
-	//update Divide Node & Distribution Node
-	for (auto& Item : m_RoadMap)
+	//NOTE: 先更新分流点，后更新分割点
+	auto TempRoadMap = m_RoadMap;
+	for (auto& Item : TempRoadMap)
+	{
+		auto SimNode = Item.second;
+		if (SimNode->getNodeType() == ESimNodeType::DistributionNode) __updateDistributionNode(SimNode);
+	}
+	for (auto& Item : TempRoadMap)
 	{
 		auto SimNode = Item.second;
 		if (SimNode->getNodeType() == ESimNodeType::DivideNode) __updateDivideNode(SimNode);
-		if (SimNode->getNodeType() == ESimNodeType::DistributionNode) __updateDistributionNode(SimNode);
 	}
 	__resetAgents();
 }
 
-void CSimulationStrategy::__updateDivideNode(CSimNode * pSimNode)
+void CSimulationStrategy::__updateDivideNode(CSimNode* pSimNode)
 {
 	const auto& NavNode1 = pSimNode->getNavNodeAt(0);
 	const auto& NavNode2 = pSimNode->getNavNodeAt(1);
 	const auto& DividePos = pSimNode->getPos();
-	// T_1, T_2
+	
 	const auto& AgentsInNode1 = m_pScene->dumpAgentsInNode(NavNode1);
 	const auto& AgentsInNode2 = m_pScene->dumpAgentsInNode(NavNode2);
 	const auto& AgentsInEdge1 = m_pScene->dumpAgentsInEdge(NavNode1, DividePos);
-	const auto& AgentsInEdge2 = m_pScene->dumpAgentsInEdge(NavNode2, DividePos);
+	const auto& AgentsInEdge2 = m_pScene->dumpAgentsInEdge(DividePos, NavNode2);
 
 	auto T1 = __calAvgEvacuationTime4Agents(AgentsInNode1);
 	auto T2 = __calAvgEvacuationTime4Agents(AgentsInNode2);
@@ -185,7 +186,9 @@ void CSimulationStrategy::__updateDivideNode(CSimNode * pSimNode)
 	auto Beta = DeltaT2 / (1 - pSimNode->getDivideRatio());
 
 	auto UpdatedDivideRatio = (T2 - T1 + Beta) / (Alpha + Beta);
-	if (UpdatedDivideRatio <= 0)
+	auto Graph = m_pScene->getGraph();
+	if (isnan(UpdatedDivideRatio)) UpdatedDivideRatio = 0.5f;
+	if (UpdatedDivideRatio <= 0.05)
 	{
 		// NavNode1成为分流点
 		auto pSimNode = m_RoadMap[NavNode1];
@@ -195,10 +198,15 @@ void CSimulationStrategy::__updateDivideNode(CSimNode * pSimNode)
 		pSimNode->addDistributionRatio(0.5);
 		for (auto Iter = m_RoadMap.begin(); Iter != m_RoadMap.end(); ++Iter)
 		{
-			if (Iter->first == DividePos) m_RoadMap.erase(Iter);
+			if (Iter->first == DividePos)
+			{
+				m_RoadMap.erase(Iter); break;
+			}
 		}
+		Graph->removeNode(DividePos);
+		Graph->addEdge(NavNode1, NavNode2, glm::distance(NavNode1, NavNode2));
 	}
-	else if (UpdatedDivideRatio >= 1)
+	else if (UpdatedDivideRatio >= 0.95)
 	{
 		// NavNode2成为分流点
 		auto pSimNode = m_RoadMap[NavNode2];
@@ -208,17 +216,32 @@ void CSimulationStrategy::__updateDivideNode(CSimNode * pSimNode)
 		pSimNode->addDistributionRatio(0.5);
 		for (auto Iter = m_RoadMap.begin(); Iter != m_RoadMap.end(); ++Iter)
 		{
-			if (Iter->first == DividePos) m_RoadMap.erase(Iter);
+			if (Iter->first == DividePos)
+			{
+				m_RoadMap.erase(Iter); break;
+			}
 		}
+		Graph->removeNode(DividePos);
+		Graph->addEdge(NavNode1, NavNode2, glm::distance(NavNode1, NavNode2));
 	}
 	else
 	{
 		pSimNode->setDivideRatio(UpdatedDivideRatio);
-		pSimNode->updateDividePos();
+		glm::vec2 UpdatedDividePos = NavNode1 + (NavNode2 - NavNode1) * UpdatedDivideRatio;
+		pSimNode->setPos(UpdatedDividePos);
+		for (auto Iter = m_RoadMap.begin(); Iter != m_RoadMap.end(); ++Iter)
+		{
+			if (Iter->first == DividePos) { m_RoadMap.erase(Iter); break; }
+		}
+		m_RoadMap[UpdatedDividePos] = pSimNode;
+		Graph->removeNode(DividePos);
+		Graph->addNode(UpdatedDividePos);
+		Graph->addEdge(NavNode1, UpdatedDividePos, glm::distance(NavNode1, UpdatedDividePos));
+		Graph->addEdge(UpdatedDividePos, NavNode2, glm::distance(NavNode2, UpdatedDividePos));
 	}
 }
 
-void CSimulationStrategy::__updateDistributionNode(CSimNode * pSimNode)
+void CSimulationStrategy::__updateDistributionNode(CSimNode* pSimNode)
 {
 	std::vector<float> TimeSet;
 	for (size_t i = 0; i < pSimNode->getNavNodeNum(); i++)
@@ -226,12 +249,12 @@ void CSimulationStrategy::__updateDistributionNode(CSimNode * pSimNode)
 		const auto& NavNode = pSimNode->getNavNodeAt(i);
 		const auto& Agents = m_pScene->dumpAgentsInEdge(pSimNode->getPos(), NavNode);//TODO 边的范围不包括Intersection
 		auto MaxTime = __calMaxEvacuationTime4Agents(Agents);
-		TimeSet.push_back(MaxTime);
+		TimeSet.push_back(1/MaxTime);
 	}
-	auto Total = std::accumulate(TimeSet.begin(), TimeSet.end(), 0);
+	float Total = std::accumulate(TimeSet.begin(), TimeSet.end(), 0.0f);
 	for (size_t i = 0; i < pSimNode->getNavNodeNum(); i++)
 	{
-		pSimNode->setDistributionRatioAt(i, (1 / TimeSet[i]) / Total);
+		pSimNode->setDistributionRatioAt(i, TimeSet[i] / Total);
 	}
 }
 
@@ -245,87 +268,6 @@ void CSimulationStrategy::__resetAgents()
 	__assignNavNode2Agent();
 }
 
-void CSimulationStrategy::__constructRoadMapFromFile()
-{
-	// reset roadmap to basic state
-	m_RoadMap.clear();
-	m_RoadMap = m_BasicRoadMap;
-
-	__addDivideNode2RoadMap();
-	__addDistributionNode2RoadMap();
-}
-
-void CSimulationStrategy::__constructBasicRoadMap()
-{
-	auto pGraph = m_pScene->getGraph();
-	const auto& Exits = m_pScene->getExits();
-	auto VisitedNodeSet = std::vector<glm::vec2>();
-
-	const auto& AllNodes = pGraph->dumpAllNodes();
-	for (auto& Node : AllNodes)
-	{
-		if (__isVisited(Node, VisitedNodeSet)) continue;
-
-		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
-		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
-		__addShortestPath2RoadMap(ShortestPath);
-	}
-}
-
-void CSimulationStrategy::__addDivideNode2RoadMap()
-{
-	std::string FileStr = (boost::format("DivideNode_%1%.txt") % m_IterationNum).str();
-	std::ifstream DivideNodeFile(FileStr);
-	std::string DivideNodeStr;
-
-	while (std::getline(DivideNodeFile, DivideNodeStr))
-	{
-		int* DivideNodeInfo = new int[6];
-		hiveCommon::hiveSplitLine2IntArray(DivideNodeStr, " ", 6 , DivideNodeInfo);
-		glm::vec2 DivideNodePos(DivideNodeInfo[0], DivideNodeInfo[1]);
-		glm::vec2 NavNode1Pos(DivideNodeInfo[2], DivideNodeInfo[3]);
-		glm::vec2 NavNode2Pos(DivideNodeInfo[4], DivideNodeInfo[5]);
-
-		CSimNode* pDivideNode = new CSimNode(DivideNodePos, ESimNodeType::DivideNode);
-		pDivideNode->addNavNode(NavNode1Pos);
-		pDivideNode->addNavNode(NavNode2Pos);
-		m_RoadMap[DivideNodePos] = pDivideNode;
-	}
-}
-
-void CSimulationStrategy::__addDistributionNode2RoadMap()
-{
-	std::string FileStr = (boost::format("DistributionNode_%1%.txt") % m_IterationNum).str();
-	std::ifstream DistributionNodeFile(FileStr);
-	std::string DistributionNodeStr;
-	std::string NavNodeStr;
-	std::string DistributionRatioStr;
-
-	while (std::getline(DistributionNodeFile, DistributionNodeStr) &&
-		   std::getline(DistributionNodeFile, NavNodeStr) &&
-		   std::getline(DistributionNodeFile, DistributionRatioStr))
-	{
-		int* DistributionNodeInfo = new int[3];
-		hiveCommon::hiveSplitLine2IntArray(DistributionNodeStr, " ", 3, DistributionNodeInfo);
-		glm::vec2 DistributionNodePos(DistributionNodeInfo[0], DistributionNodeInfo[1]);
-		int NavNodeNum = DistributionNodeInfo[2];
-
-		CSimNode* pDistributionNode = new CSimNode(DistributionNodePos, ESimNodeType::DistributionNode);
-
-		int* NavNodeInfo = new int[NavNodeNum*2];
-		float* RatioInfo = new float[NavNodeNum];
-		hiveCommon::hiveSplitLine2IntArray(NavNodeStr, " ", NavNodeNum*2, NavNodeInfo);
-		hiveCommon::hiveSplitLine2FloatArray(DistributionRatioStr, " ", NavNodeNum, RatioInfo);
-		for (size_t i = 0; i < NavNodeNum; i++)
-		{
-			glm::vec2 NavNodePos(NavNodeInfo[i*2], NavNodeInfo[i*2+1]);
-			pDistributionNode->addNavNode(NavNodePos);
-			pDistributionNode->addDistributionRatio(RatioInfo[i]);
-			m_RoadMap[DistributionNodePos] = pDistributionNode;
-		}
-	}
-}
-
 void CSimulationStrategy::__assignNavNode2Agent()
 {
 	const auto& Agents = m_pScene->getAgents();
@@ -333,67 +275,83 @@ void CSimulationStrategy::__assignNavNode2Agent()
 	for (auto& Agent : Agents)
 	{
 		const auto& NavNodes = Graph->dumpNavNodes(Agent->getPosition());
-		if (NavNodes.size() == 1)
+		if (NavNodes.size() == 1) // Agent on Node
 		{
 			auto SimNode = m_RoadMap[NavNodes[0]];
-			if (SimNode->getNodeType() == ESimNodeType::DivideNode)
+			switch (SimNode->getNodeType())
+			{
+			case ESimNodeType::DivideNode:
 			{
 				_ASSERTE(SimNode->getNavNodeNum() == 2);
 				const auto& NavNode1 = SimNode->getNavNodeAt(0);
 				const auto& NavNode2 = SimNode->getNavNodeAt(1);
 				auto Distance1 = Graph->getEdgeWeight(SimNode->getPos(), NavNode1);
-				if (NavNode1.x == NavNode2.x)
-				{
-					if (abs(Agent->getPosition().y - NavNode1.y) < Distance1) Agent->setNavNode(NavNode1);
-					else Agent->setNavNode(NavNode2);
-				}
-				else
-				{
-					if (abs(Agent->getPosition().x - NavNode1.x) < Distance1) Agent->setNavNode(NavNode1);
-					else Agent->setNavNode(NavNode2);
-				}
+				if (glm::distance(Agent->getPosition(), NavNode1) < Distance1) Agent->setNavNode(NavNode1);
+				else Agent->setNavNode(NavNode2);
+				break;
 			}
-			else
-			{   // Normal Node
+			case ESimNodeType::DistributionNode:
+			{
+				float Rand = rand() % 100 / (float)(101); // 0到1的随机数
+				int NavNodeNum = SimNode->getNavNodeNum();
+				auto AccumulatedRatio = 0.0f;
+				for (size_t i = 0; i < NavNodeNum; i++)
+				{
+					auto Ratio = SimNode->getDistributionRatioAt(i);
+					AccumulatedRatio += Ratio;
+					if (Rand <= AccumulatedRatio)
+					{
+						Agent->setNavNode(SimNode->getNavNodeAt(i)); break;
+					}
+				}
+				break;
+			}
+			case ESimNodeType::NormalNode:
+			{
 				_ASSERTE(SimNode->getNavNodeNum() == 1);
 				Agent->setNavNode(SimNode->getNavNodeAt(0));
+				break;
+			}
+			default: break;
 			}
 		}
-		if (NavNodes.size() == 2)
+		if (NavNodes.size() == 2) // Agent on Edge
 		{
 			auto& Node1 = NavNodes[0]; auto& Node2 = NavNodes[1];
 			auto SimNode1 = m_RoadMap[Node1]; auto SimNode2 = m_RoadMap[Node2];
-			if      (SimNode1->getNodeType()   == ESimNodeType::DivideNode)  Agent->setNavNode(Node2);
-			else if (SimNode2->getNodeType()   == ESimNodeType::DivideNode)  Agent->setNavNode(Node1);
-			else if (SimNode1->getNavNodeAt(0) == Node2) Agent->setNavNode(Node2);
-			else if (SimNode2->getNavNodeAt(0) == Node1) Agent->setNavNode(Node1);
-			else    _ASSERTE(false);
+			switch (SimNode1->getNodeType())
+			{
+				case ESimNodeType::DivideNode:
+				{
+					Agent->setNavNode(Node2); break;
+				}
+				case ESimNodeType::DistributionNode:
+				{
+					Agent->setNavNode(Node1);
+					for (size_t i = 0; i < SimNode1->getNavNodeNum(); i++)
+					{
+						if (SimNode1->getNavNodeAt(i) == Node2)
+						{
+							Agent->setNavNode(Node2); break;
+						}
+					}
+					break;
+				}
+				case ESimNodeType::NormalNode:
+				{
+					if (SimNode1->getNavNodeAt(0) == Node2) Agent->setNavNode(Node2);
+					else Agent->setNavNode(Node1);
+					break;
+				}
+				default:
+				{
+					_ASSERTE(false);
+					break;
+				}
+			}
 		}	
 		auto Direcition = Agent->getNavNode() - Agent->getPosition();
 		auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
 		Agent->setPrefVelocity({ Normal.x(), Normal.y() });
 	}
-}
-
-void CSimulationStrategy::__analyzeConvergence()
-{
-	for (auto& Item : m_RoadMap)
-	{
-		auto SimNode = Item.second;
-		switch (SimNode->getNodeType())
-		{
-		case ESimNodeType::DivideNode:
-		case ESimNodeType::DistributionNode:
-		{
-			if (!SimNode->isConverged())
-			{
-				m_IsConverged = false;
-				return;
-			}
-			break;
-		}
-		default: break;
-		}
-	}
-	m_IsConverged = true;
 }

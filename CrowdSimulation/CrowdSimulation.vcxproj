@@ -32,7 +32,6 @@
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SceneVis.h" />
     <ClInclude Include="ShortestStrategy.h" />
-    <ClInclude Include="SimAgent.h" />
     <ClInclude Include="SimNode.h" />
     <ClInclude Include="SimulationStrategy.h" />
     <ClInclude Include="SimulatorConfig.h" />
@@ -48,8 +47,6 @@
     <ClCompile Include="EvacuationScene.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="ShortestStrategy.cpp" />
-    <ClCompile Include="SimAgent.cpp" />
-    <ClCompile Include="SimNode.cpp" />
     <ClCompile Include="SimulationStrategy.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

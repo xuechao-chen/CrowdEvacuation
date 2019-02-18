@@ -14,6 +14,7 @@ void CSceneVis::displayScene(const CEvacuationScene* pScene)
 	const auto& Obstacles = pScene->getObstacles();
 	const auto& Agents = pScene->getAgents();
 	const auto& Exits = pScene->getExits();
+	auto Graph = pScene->getGraph();
 
 	std::vector<glm::vec2> AgentsPos;
 	for (auto& Agent : Agents)
@@ -24,5 +25,7 @@ void CSceneVis::displayScene(const CEvacuationScene* pScene)
 	hiveCrowdRendering::clear();
 	hiveCrowdRendering::drawAgents(AgentsPos);
 	hiveCrowdRendering::drawObstacles(Obstacles);
+	hiveCrowdRendering::drawNodes(Graph->dumpAllNodes());
+	hiveCrowdRendering::drawEdges(Graph->dumpAllEdges());
 	hiveCrowdRendering::display();
 }

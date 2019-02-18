@@ -40,9 +40,6 @@
     <ClInclude Include="BaseAgent.h">
       <Filter>EvacuationStrategy</Filter>
     </ClInclude>
-    <ClInclude Include="SimAgent.h">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClInclude>
     <ClInclude Include="SimNode.h">
       <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClInclude>
@@ -89,9 +86,6 @@
     <ClCompile Include="BaseAgent.cpp">
       <Filter>EvacuationStrategy</Filter>
     </ClCompile>
-    <ClCompile Include="SimAgent.cpp">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigParser.cpp">
       <Filter>Config</Filter>
     </ClCompile>
@@ -106,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="SceneVis.cpp">
       <Filter>EvacuationScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SimNode.cpp">
-      <Filter>EvacuationStrategy\SimulationStrategy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

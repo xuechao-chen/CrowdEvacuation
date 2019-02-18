@@ -33,6 +33,23 @@ void CSceneVisualization::drawObstacle(const glm::vec2& vLeftTop, const glm::vec
 	cv::rectangle(m_Scene, Rect, cv::Scalar(r, g, b), CV_FILLED);
 }
 
+void hiveCrowdRendering::CSceneVisualization::drawNode(const glm::vec2 & vPos)
+{
+	auto CenterPos = cv::Point(vPos.x, vPos.y);
+	int r, g, b;
+	std::tie(r, g, b) = m_AgentColor;
+	cv::circle(m_Scene, CenterPos, m_AgentRadius, cv::Scalar(r, g, b));
+}
+
+void hiveCrowdRendering::CSceneVisualization::drawEdge(const glm::vec2 & vNode1, const glm::vec2 & vNode2)
+{
+	auto Point1 = cv::Point(vNode1.x, vNode1.y);
+	auto Point2 = cv::Point(vNode2.x, vNode2.y);
+	int r, g, b;
+	std::tie(r, g, b) = m_AgentColor;
+	cv::line(m_Scene, Point1, Point2, cv::Scalar(r,g,b));
+}
+
 void CSceneVisualization::display()
 {
 	cv::imshow("Scene", m_Scene);

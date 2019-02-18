@@ -13,6 +13,8 @@ namespace hiveCrowdRendering
 		void init(const std::string& vConfig);
 		void drawAgent(const glm::vec2& vPos);
 		void drawObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
+		void drawNode(const glm::vec2& vPos);
+		void drawEdge(const glm::vec2& vNode1, const glm::vec2& vNode2);
 		void display();
 		void pause();
 		void clear();

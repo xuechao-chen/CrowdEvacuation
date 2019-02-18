@@ -44,7 +44,7 @@ std::vector<IAgent*> CEvacuationScene::dumpAgentsInRegion(const glm::vec2 & vLef
 	std::vector<IAgent*> AgentsInRegion;
 	for (auto Agent : m_Agents)
 	{
-		const auto& Pos = Agent->getPosition();
+		const auto& Pos = Agent->getInitPosition();
 		if ((Pos.x > vLeftTop.x && Pos.x < vRightBottom.x && Pos.y > vLeftTop.y && Pos.y < vRightBottom.y) ||
 			(Pos.x > vRightBottom.x && Pos.x < vLeftTop.x && Pos.y > vRightBottom.y && Pos.y < vLeftTop.y))
 		{
@@ -64,13 +64,13 @@ std::vector<IAgent*> CEvacuationScene::dumpAgentsInEdge(const glm::vec2 & vNode1
 {
 	if (vNode1.x == vNode2.x)
 	{
-		return dumpAgentsInRegion(glm::vec2(vNode1.x - CSceneGraph::ROAD_WIDTH / 2, vNode2.y), 
-			                      glm::vec2(vNode1.x + CSceneGraph::ROAD_WIDTH / 2, vNode2.y));
+		return dumpAgentsInRegion(glm::vec2(vNode1.x - CSceneGraph::ROAD_WIDTH / 2, vNode1.y), 
+			                      glm::vec2(vNode2.x + CSceneGraph::ROAD_WIDTH / 2, vNode2.y));
 	}
 	else
 	{
-		return dumpAgentsInRegion(glm::vec2(vNode1.x, vNode2.y - CSceneGraph::ROAD_WIDTH / 2),
-								  glm::vec2(vNode1.x, vNode2.y + CSceneGraph::ROAD_WIDTH / 2));
+		return dumpAgentsInRegion(glm::vec2(vNode1.x, vNode1.y - CSceneGraph::ROAD_WIDTH / 2),
+								  glm::vec2(vNode2.x, vNode2.y + CSceneGraph::ROAD_WIDTH / 2));
 	}
 }
 
