@@ -10,8 +10,7 @@ public:
 
 private:
 	bool __isFinish() override;
-	void __onPreDoStep() override {}
-	void __onPostDoStep() override;
+	void __afterSimulationDoStep() override;
 	void __constructRoadMap() override;
 	void __assignNavNode2Agent() override;
 

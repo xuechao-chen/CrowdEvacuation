@@ -85,7 +85,7 @@ bool CShortestStrategy::__isFinish()
 	return IsFinished;
 }
 
-void CShortestStrategy::__onPostDoStep()
+void CShortestStrategy::__afterSimulationDoStep()
 {
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)

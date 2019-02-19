@@ -11,7 +11,7 @@ bool CSimulationStrategy::__isFinish()
 	return m_IterationNum >= 10;
 }
 
-void CSimulationStrategy::__onPostDoStep()
+void CSimulationStrategy::__afterSimulationDoStep()
 {
 	__updateAgentsVelocity();
 

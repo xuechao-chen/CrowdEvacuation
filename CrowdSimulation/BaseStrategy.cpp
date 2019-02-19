@@ -20,9 +20,8 @@ void IEvacuationStrategy::run()
 	do {
 		m_EvacuationTimeCost++;
 		__updateVisualization();
-		__onPreDoStep();
   		pSim->doStep();
-		__onPostDoStep();
+		__afterSimulationDoStep();
 	} while (!__isFinish());
 
 	std::cout << "Evacuation End" << std::endl;

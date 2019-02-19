@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include "../CrowdSimulation/ShortestStrategy.h"
+﻿#include "../CrowdSimulation/ShortestStrategy.h"
 
 int main()
 {
