@@ -27,6 +27,7 @@
     <ClInclude Include="CrowdSimulationInterface.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
+    <ClInclude Include="Intersection.h" />
     <ClInclude Include="SceneConfig.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SceneVis.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="CDFPredictionStrategy.cpp" />
     <ClCompile Include="ConfigParser.cpp" />
     <ClCompile Include="CrowdSimulationInterface.cpp" />
+    <ClCompile Include="Intersection.cpp" />
     <ClCompile Include="SceneVis.cpp" />
     <ClCompile Include="EvacuationScene.cpp" />
     <ClCompile Include="SceneGraph.cpp" />

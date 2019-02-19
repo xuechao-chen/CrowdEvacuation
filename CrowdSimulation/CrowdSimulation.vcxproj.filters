@@ -62,6 +62,9 @@
     <ClInclude Include="SceneVis.h">
       <Filter>EvacuationScene</Filter>
     </ClInclude>
+    <ClInclude Include="Intersection.h">
+      <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EvacuationScene.cpp">
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="SceneVis.cpp">
       <Filter>EvacuationScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Intersection.cpp">
+      <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

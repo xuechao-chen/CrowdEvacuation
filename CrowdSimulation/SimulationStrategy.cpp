@@ -36,8 +36,8 @@ void CSimulationStrategy::__constructRoadMap()
 		if (__isVisited(Node, VisitedNodeSet)) continue;
 
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
-		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
-		__addShortestPath2RoadMap(ShortestPath);
+		for (auto& NavNode : ShortestPath.first) VisitedNodeSet.push_back(NavNode);
+		__addShortestPath2RoadMap(ShortestPath.first);
 	}
 
 	const auto& AllEdges = pGraph->dumpAllEdges();

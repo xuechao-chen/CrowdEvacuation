@@ -35,6 +35,6 @@ protected:
 };
 
 bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet);
-std::vector<glm::vec2> __findShortestPathToExit(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits, CSceneGraph* pGraph);
+std::pair<std::vector<glm::vec2>, float> __findShortestPathToExit(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits, CSceneGraph* pGraph);
 float __calAvgEvacuationTime4Agents(const std::vector<IAgent*>& vAgents);
 float __calMaxEvacuationTime4Agents(const std::vector<IAgent*>& vAgents);

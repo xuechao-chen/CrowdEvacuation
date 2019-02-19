@@ -46,15 +46,6 @@ void CShortestStrategy::__assignNavNode2Agent()
 	}
 }
 
-bool __belongToExits(const glm::vec2& vNode, const std::vector<glm::vec2>& vExits)
-{
-	for (auto& Exit : vExits)
-	{
-		if (vNode == Exit) return true;
-	}
-	return false;
-}
-
 void CShortestStrategy::__constructRoadMap()
 {
 	auto pGraph = m_pScene->getGraph();
@@ -67,8 +58,8 @@ void CShortestStrategy::__constructRoadMap()
 		if (__isVisited(Node, VisitedNodeSet)) continue;
 
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
-		for (auto& NavNode : ShortestPath) VisitedNodeSet.push_back(NavNode);
-		__add2RoadMap(ShortestPath);
+		for (auto& NavNode : ShortestPath.first) VisitedNodeSet.push_back(NavNode);
+		__add2RoadMap(ShortestPath.first);
 	}
 }
 

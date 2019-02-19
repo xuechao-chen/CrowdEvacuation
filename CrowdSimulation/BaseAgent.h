@@ -24,6 +24,12 @@ public:
 	void setEvacuationTime(int vTime) { if (!m_IsReachExit) m_EvacuationTime = vTime;}
 	int getEvacuationTime() const { return m_EvacuationTime; }
 	void reset();
+
+	float getSpeed()
+	{
+		auto Velocity = m_pRVOAgent->getVelocity();
+		return glm::distance(glm::vec2{ Velocity.x(), Velocity.y() }, { 0, 0 });
+	}
 	
 private:
 	mutable bool m_IsReachExit = false;

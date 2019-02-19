@@ -153,7 +153,7 @@ std::pair<std::vector<glm::vec2>, float> CSceneGraph::findShortestPath(const glm
 	std::vector<glm::vec2> Q;
 	auto PreviousMap = std::unordered_map<glm::vec2, glm::vec2, HashFunc4Node>();
 	auto DistMap = std::unordered_map<glm::vec2, double, HashFunc4Node>();
-	glm::vec2 toNodePos = vToNode;
+	glm::vec2 ToNodePos = vToNode;
 	const auto& NodePosSet = dumpAllNodes();
 	for (auto NodePos : NodePosSet)
 	{
@@ -186,16 +186,20 @@ std::pair<std::vector<glm::vec2>, float> CSceneGraph::findShortestPath(const glm
 			}
 		}
 
-		if (PreviousMap[toNodePos] != glm::vec2(-1, -1) || toNodePos == vFromNode)
+		if (PreviousMap[ToNodePos] != glm::vec2(-1, -1) || ToNodePos == vFromNode)
 		{
-			while (toNodePos != glm::vec2(-1, -1))
+			while (ToNodePos != glm::vec2(-1, -1))
 			{
-				Path.push_back(toNodePos);
-				toNodePos = PreviousMap[toNodePos];
+				Path.push_back(ToNodePos);
+				ToNodePos = PreviousMap[ToNodePos];
 			}
 			std::reverse(Path.begin(), Path.end());
-			return std::make_pair(Path, 0.0f);
-			//TODO ¼ÆËãÂ·¾¶µÄ¾àÀë
+			auto Distance = 0.0f;
+			for (size_t i = 0; i < Path.size() - 1; i++)
+			{
+				Distance += glm::distance(Path[i], Path[i+1]);
+			}
+			return std::make_pair(Path, Distance);
 		}
 
 		const auto& AdjNodeSet = dumpAdjNodeSet(u);

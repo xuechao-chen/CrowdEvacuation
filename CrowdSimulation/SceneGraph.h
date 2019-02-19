@@ -30,8 +30,8 @@ public:
 	void clearGraph();
 
 	void addNode(const glm::vec2& vNode);
-	void addEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight);
 	void removeNode(const glm::vec2& vNode);
+	void addEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight);
 	void removeEdge(const glm::vec2& vNode1, const glm::vec2& vNode2);
 	double getEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2) const;
 	void updateEdgeWeight(const glm::vec2& vNode1, const glm::vec2& vNode2, double vWeight);
