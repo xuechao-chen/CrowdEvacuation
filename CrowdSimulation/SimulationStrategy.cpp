@@ -77,25 +77,6 @@ void CSimulationStrategy::__addShortestPath2RoadMap(const std::vector<glm::vec2>
 	m_RoadMap[vShortestPath[PathSize - 1]] = pSimNode;
 }
 
-bool CSimulationStrategy::__isAllAgentReachExit()
-{
-	const auto& Agents = m_pScene->getAgents();
-	const auto& Exits = m_pScene->getExits();
-	bool IsAllAgentReachExit = true;
-
-	for (auto& Agent : Agents)
-	{
-		if (!Agent->isReachExit(Exits)) IsAllAgentReachExit = false;
-		else {
-			Agent->setPosition(glm::vec2(500, 500));
-			Agent->setPrefVelocity(glm::vec2(0, 0));
-			Agent->setEvacuationTime(m_EvacuationTimeCost);
-			Agent->tagIsReachExit(true);
-		}
-	}
-	return IsAllAgentReachExit;
-}
-
 void CSimulationStrategy::__updateAgentsVelocity()
 {
 	const auto& Agents = m_pScene->getAgents();
@@ -132,20 +113,13 @@ void CSimulationStrategy::__updateAgentsVelocity()
 			default:
 				break;
 			}
+			
+			//NOTE: 当前导航点为出口，则下个导航点仍为出口
+			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
-			glm::vec2 Direction;
-			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX))
-			{
-				Direction = CurNavNode - Agent->getPosition();
-			}
-			else
-			{   //NOTE: 当前导航点不是出口，更新下一个导航点
-				Direction = NextNavNode - Agent->getPosition();
-				Agent->setNavNode(NextNavNode);
-			}
-
-			auto Normal = RVO::normalize(RVO::Vector2(Direction.x, Direction.y));
-			Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+			Agent->setNavNode(NextNavNode);
+			glm::vec2 Direction = NextNavNode - Agent->getPosition();
+			Agent->setPrefVelocity(glm::normalize(Direction));
 		}
 	}
 }

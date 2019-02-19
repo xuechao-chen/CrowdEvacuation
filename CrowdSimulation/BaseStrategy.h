@@ -20,17 +20,20 @@ public:
 	CEvacuationScene* getEvacuationScene() const { return m_pScene; }
 
 private:
-	virtual bool __isFinish() = 0;
+	virtual bool __isFinish();
 	virtual void __afterSimulationDoStep() = 0;
-	virtual void __constructRoadMap() = 0;
-	virtual void __assignNavNode2Agent() = 0;
+	virtual void __constructRoadMap();
+	virtual void __assignNavNode2Agent();
 
 	void __constructEvacuationScene();
 	void __updateVisualization();
+	void __add2RoadMap(const std::vector<glm::vec2>& vShortestPath);
+	bool __isAllAgentReachExit();
 
 protected:
 	int m_EvacuationTimeCost = 0;
 	CEvacuationScene* m_pScene = nullptr;
+	std::unordered_map<glm::vec2, glm::vec2, HashFunc4Node> m_RoadMap;
 };
 
 bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet);
