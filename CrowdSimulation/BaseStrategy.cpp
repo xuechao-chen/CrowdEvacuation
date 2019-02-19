@@ -53,7 +53,7 @@ void IEvacuationStrategy::__constructRoadMap()
 
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
 		for (auto& NavNode : ShortestPath.first) VisitedNodeSet.push_back(NavNode);
-		__add2RoadMap(ShortestPath.first);
+		__addPath2RoadMap(ShortestPath.first);
 	}
 }
 
@@ -102,16 +102,16 @@ void IEvacuationStrategy::__updateVisualization()
 	CSceneVis::getInstance()->displayScene(m_pScene);
 }
 
-void IEvacuationStrategy::__add2RoadMap(const std::vector<glm::vec2>& vShortestPath)
+void IEvacuationStrategy::__addPath2RoadMap(const std::vector<glm::vec2>& vPath)
 {
-	auto PathSize = vShortestPath.size();
+	auto PathSize = vPath.size();
 	for (size_t i = 0; i < PathSize - 1; i++)
 	{
-		auto& CurNavNode = vShortestPath[i];
-		auto& NextNavNode = vShortestPath[i + 1];
+		auto& CurNavNode = vPath[i];
+		auto& NextNavNode = vPath[i + 1];
 		m_RoadMap[CurNavNode] = NextNavNode;
 	}
-	m_RoadMap[vShortestPath[PathSize - 1]] = glm::vec2(FLT_MAX, FLT_MAX);
+	m_RoadMap[vPath[PathSize - 1]] = glm::vec2(FLT_MAX, FLT_MAX);//NOTE: 出口的下一个导航点默认为无限远
 }
 
 bool IEvacuationStrategy::__isAllAgentReachExit()

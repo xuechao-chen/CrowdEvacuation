@@ -13,7 +13,7 @@ bool CSimulationStrategy::__isFinish()
 
 void CSimulationStrategy::__afterSimulationDoStep()
 {
-	__updateAgentsVelocity();
+	__updateAgentsNavigation();
 
 	if (__isAllAgentReachExit())
 	{
@@ -77,7 +77,7 @@ void CSimulationStrategy::__addShortestPath2RoadMap(const std::vector<glm::vec2>
 	m_RoadMap[vShortestPath[PathSize - 1]] = pSimNode;
 }
 
-void CSimulationStrategy::__updateAgentsVelocity()
+void CSimulationStrategy::__updateAgentsNavigation()
 {
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)

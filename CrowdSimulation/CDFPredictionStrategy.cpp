@@ -1,13 +1,4 @@
 #include "CDFPredictionStrategy.h"
-#include <iostream>
-
-CCDFPredictionStrategy::CCDFPredictionStrategy()
-{
-}
-
-CCDFPredictionStrategy::~CCDFPredictionStrategy()
-{
-}
 
 void CCDFPredictionStrategy::init()
 {
@@ -27,6 +18,7 @@ void CCDFPredictionStrategy::__initIntersections()
 
 void CCDFPredictionStrategy::__afterSimulationDoStep()
 {
+	//TODO: 考虑边上人的密度影响 updateEdgeWeight()
 	__updateIntersections();
 	__updateAgentsNavigation();
 }
@@ -62,6 +54,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			const auto& CurNavNode = Agent->getNavNode();
 			glm::vec2 NextNavNode;
 
+			//NOTE: 当前导航点为出口，则下个导航点仍为出口
 			if (m_RoadMap[CurNavNode] == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 			else
 			{

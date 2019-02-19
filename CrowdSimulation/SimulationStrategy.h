@@ -15,7 +15,7 @@ private:
 	void __assignNavNode2Agent() override;
 
 	void __addShortestPath2RoadMap(const std::vector<glm::vec2>& ShortestPath);
-	void __updateAgentsVelocity();
+	void __updateAgentsNavigation();
 	void __updateScene();
 	void __updateDivideNode(CSimNode* pSimNode);
 	void __updateDistributionNode(CSimNode* pSimNode);

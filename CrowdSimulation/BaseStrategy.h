@@ -21,13 +21,13 @@ public:
 
 private:
 	virtual bool __isFinish();
-	virtual void __afterSimulationDoStep() = 0;
 	virtual void __constructRoadMap();
 	virtual void __assignNavNode2Agent();
+	virtual void __afterSimulationDoStep() = 0;
 
 	void __constructEvacuationScene();
 	void __updateVisualization();
-	void __add2RoadMap(const std::vector<glm::vec2>& vShortestPath);
+	void __addPath2RoadMap(const std::vector<glm::vec2>& vPath);
 	bool __isAllAgentReachExit();
 
 protected:
