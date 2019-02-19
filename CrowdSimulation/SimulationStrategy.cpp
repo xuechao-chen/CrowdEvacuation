@@ -1,14 +1,9 @@
 #include "SimulationStrategy.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <numeric>
-#include "common/CommonInterface.h"
-#include <boost/format.hpp>
 
 bool CSimulationStrategy::__isFinish()
 {
-	return m_IterationNum >= 10;
+	return m_IterationNum >= 10 && __isAllAgentReachExit();
 }
 
 void CSimulationStrategy::__afterSimulationDoStep()
@@ -324,8 +319,7 @@ void CSimulationStrategy::__assignNavNode2Agent()
 				}
 			}
 		}	
-		auto Direcition = Agent->getNavNode() - Agent->getPosition();
-		auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
-		Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+		auto Direction = Agent->getNavNode() - Agent->getPosition();
+		Agent->setPrefVelocity(glm::normalize(Direction));
 	}
 }

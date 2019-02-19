@@ -77,9 +77,8 @@ void IEvacuationStrategy::__assignNavNode2Agent()
 				else Agent->setNavNode(Node2);
 			}
 		}
-		auto Direcition = Agent->getNavNode() - Agent->getPosition();
-		auto Normal = RVO::normalize(RVO::Vector2(Direcition.x, Direcition.y));
-		Agent->setPrefVelocity({ Normal.x(), Normal.y() });
+		auto Direction = Agent->getNavNode() - Agent->getPosition();
+		Agent->setPrefVelocity(glm::normalize(Direction));
 	}
 }
 
