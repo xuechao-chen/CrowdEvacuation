@@ -26,8 +26,8 @@ bool IAgent::isReachNavNode() const
 {
 	const auto& Pos = getPosition();
 	const auto& NavNode = getNavNode();
-	return (abs(Pos.x - NavNode.x) < CSceneGraph::ROAD_WIDTH / 2 &&
-		    abs(Pos.y - NavNode.y) < CSceneGraph::ROAD_WIDTH / 2);
+	return (abs(Pos.x - NavNode.x) < CSceneGraph::ROAD_WIDTH / 2-3 &&
+		    abs(Pos.y - NavNode.y) < CSceneGraph::ROAD_WIDTH / 2-3);
 }
 
 bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
@@ -38,7 +38,7 @@ bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
 	{
 		auto Pos = getPosition();
 		auto Distance = glm::distance(Pos, Exit);
-		if (Distance > 10) return false; //TODO: 暂定半径为3
+		if (Distance > 10) return false; //TODO: 暂定半径为10
 	}
 
 	return true;
