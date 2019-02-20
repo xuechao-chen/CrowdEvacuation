@@ -74,9 +74,22 @@ std::vector<IAgent*> CEvacuationScene::dumpAgentsInEdge(const glm::vec2 & vNode1
 	}
 }
 
+int CEvacuationScene::dumpAgentNeighborNum(IAgent* vAgent)
+{
+	auto Num = 0;
+	for (auto Agent : m_Agents)
+	{
+		if (glm::distance(vAgent->getPosition(), Agent->getPosition()) < CSceneGraph::ROAD_WIDTH/2)
+		{
+			Num++;
+		}
+	}
+	return Num;
+}
+
 void CEvacuationScene::addAgent(const glm::vec2& vAgent)
 {
 	auto Idx = m_pRVOSimulator->addAgent(RVO::Vector2(vAgent.x, vAgent.y));
 	auto RVOAgent = m_pRVOSimulator->getAgent(Idx);
-	m_Agents.push_back(new IAgent(RVOAgent, vAgent));//TODO ∂‡Ã¨Agent
+	m_Agents.push_back(new IAgent(RVOAgent, vAgent));
 }

@@ -117,8 +117,6 @@ void CSimulationStrategy::__updateAgentsNavigation()
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
 			Agent->setNavNode(NextNavNode);
-			glm::vec2 Direction = NextNavNode - Agent->getPosition();
-			Agent->setPrefVelocity(glm::normalize(Direction));
 		}
 	}
 }

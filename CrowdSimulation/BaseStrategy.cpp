@@ -16,12 +16,12 @@ void IEvacuationStrategy::run()
 	auto pSim = m_pScene->getSimulator();
 
 	std::cout << "Evacuation Begin" << std::endl;
-
 	do {
 		m_EvacuationTimeCost++;
 		__updateVisualization();
   		pSim->doStep();
 		__afterSimulationDoStep();
+		__updateAgentVelocity();
 	} while (!__isFinish());
 
 	std::cout << "Evacuation End" << std::endl;
@@ -113,6 +113,21 @@ void IEvacuationStrategy::__addPath2RoadMap(const std::vector<glm::vec2>& vPath)
 	m_RoadMap[vPath[PathSize - 1]] = glm::vec2(FLT_MAX, FLT_MAX);//NOTE: 出口的下一个导航点默认为无限远
 }
 
+void IEvacuationStrategy::__updateAgentVelocity()
+{
+	auto Exits = m_pScene->getExits();
+	for (auto Agent : m_pScene->getAgents())
+	{
+		if (!Agent->isReachExit(Exits))
+		{
+			auto NeighborNum = m_pScene->dumpAgentNeighborNum(Agent);
+			auto Factor = 1 - (NeighborNum / 100.0f);
+			glm::vec2 Direction = Agent->getNavNode() - Agent->getPosition();
+			Agent->setPrefVelocity(glm::normalize(Direction)*Factor);
+		}
+	}
+}
+
 bool IEvacuationStrategy::_isAllAgentReachExit()
 {
 	const auto& Agents = m_pScene->getAgents();
@@ -123,7 +138,7 @@ bool IEvacuationStrategy::_isAllAgentReachExit()
 	{
 		if (!Agent->isReachExit(Exits)) IsAllAgentReachExit = false;
 		else {
-			Agent->setPosition({ -rand() % (100 + 1), -rand() % (100 + 1) });
+			Agent->setPosition({ -rand() % (100 + 1)-100, -rand() % (100 + 1)-100 });
 			Agent->setPrefVelocity(glm::vec2(0, 0));
 			Agent->setEvacuationTime(m_EvacuationTimeCost);
 			Agent->tagIsReachExit(true);

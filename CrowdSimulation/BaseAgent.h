@@ -30,7 +30,11 @@ public:
 		auto Velocity = m_pRVOAgent->getVelocity();
 		return glm::distance(glm::vec2{ Velocity.x(), Velocity.y() }, { 0, 0 });
 	}
-	
+	void setSpeed(float vSpeed)
+	{
+		m_pRVOAgent->setSpeed(vSpeed);
+	}
+
 private:
 	mutable bool m_IsReachExit = false;
 

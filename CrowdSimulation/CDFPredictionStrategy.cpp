@@ -85,8 +85,6 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			}
 
 			Agent->setNavNode(NextNavNode);
-			glm::vec2 Direction = NextNavNode - Agent->getPosition();
-			Agent->setPrefVelocity(glm::normalize(Direction));
 		}
 	}
 }

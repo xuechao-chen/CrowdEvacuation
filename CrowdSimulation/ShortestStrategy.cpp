@@ -6,6 +6,7 @@ hiveOO::CProductFactory<CShortestStrategy> theCreator(KEY_WORDS::SHORTEST_STRATE
 
 void CShortestStrategy::__afterSimulationDoStep()
 {
+	// update agent navigation
 	const auto& Agents = m_pScene->getAgents();
 	for (auto& Agent : Agents)
 	{
@@ -18,8 +19,7 @@ void CShortestStrategy::__afterSimulationDoStep()
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
 			Agent->setNavNode(NextNavNode);
-			glm::vec2 Direction = NextNavNode - Agent->getPosition();
-			Agent->setPrefVelocity(glm::normalize(Direction));
 		}
+		
 	}
 }

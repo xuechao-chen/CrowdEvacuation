@@ -30,6 +30,7 @@ public:
 	std::vector<IAgent*> dumpAgentsInRegion(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
 	std::vector<IAgent*> dumpAgentsInNode(const glm::vec2& vNode);
 	std::vector<IAgent*> dumpAgentsInEdge(const glm::vec2& vNode1, const glm::vec2& vNode2);
+	int dumpAgentNeighborNum(IAgent* vAgent);
 
 private:
 	std::vector<std::pair<glm::vec2, glm::vec2>> m_Obstacles;

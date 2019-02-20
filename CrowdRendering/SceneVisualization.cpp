@@ -65,7 +65,7 @@ void hiveCrowdRendering::CSceneVisualization::clear()
 {
 	int r, g, b;
 	std::tie(r, g, b) = m_BgColor;
-	m_Scene = cv::Mat(m_Width, m_Height, CV_8SC3, cv::Scalar(r, g, b));
+	m_Scene = cv::Mat(m_Height, m_Width, CV_8SC3, cv::Scalar(r, g, b));
 }
 
 void CSceneVisualization::__parseConfig(const std::string& vConfig)
@@ -96,5 +96,5 @@ void CSceneVisualization::__initScene()
 {
 	int r, g, b;
 	std::tie(r, g, b) = m_BgColor;
-	m_Scene = cv::Mat(m_Width, m_Height, CV_8SC3, cv::Scalar(r, g, b));
+	m_Scene = cv::Mat(m_Height, m_Width, CV_8SC3, cv::Scalar(r, g, b));
 }

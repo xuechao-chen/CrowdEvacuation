@@ -29,6 +29,7 @@ private:
 	void __constructEvacuationScene();
 	void __updateVisualization();
 	void __addPath2RoadMap(const std::vector<glm::vec2>& vPath);
+	void __updateAgentVelocity();
 
 protected:
 	bool _isAllAgentReachExit();
