@@ -25,6 +25,7 @@
     <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="CrowdSimulationExport.h" />
     <ClInclude Include="CrowdSimulationInterface.h" />
+    <ClInclude Include="StrategyConfig.h" />
     <ClInclude Include="EvacuationScene.h" />
     <ClInclude Include="GraphConfig.h" />
     <ClInclude Include="Intersection.h" />
@@ -128,15 +129,15 @@
       <PreprocessorDefinitions>NDEBUG;CROWDSIMULATION_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(BOOST);$(HIVE_ROOT)/include;$(GLM);</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>;4996;4267;4244</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HiveConfiguration-vc140.lib;HiveOO-vc140.lib;hiveCommon-vc140.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\x64\Release;$(BOOST)/x64;$(HIVE_ROOT)\lib\x64;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RVO.lib;CrowdRendering.lib;HiveConfiguration-vc140.lib;HiveOO-vc140.lib;hiveCommon-vc140.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -162,7 +163,7 @@
       <PreprocessorDefinitions>_DEBUG;CROWDSIMULATION_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(BOOST);$(HIVE_ROOT)/include;$(GLM);$(OPENCV)/include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>;4996;4267;4244</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

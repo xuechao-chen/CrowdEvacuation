@@ -1,4 +1,8 @@
 #include "ShortestStrategy.h"
+#include "common/ProductFactory.h"
+#include "StrategyConfig.h"
+
+hiveOO::CProductFactory<CShortestStrategy> theCreator(KEY_WORDS::SHORTEST_STRATEGY);
 
 void CShortestStrategy::__afterSimulationDoStep()
 {

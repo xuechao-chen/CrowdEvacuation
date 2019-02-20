@@ -1,16 +1,20 @@
 #include "SimulationStrategy.h"
 #include <numeric>
+#include "common/ProductFactory.h"
+#include "StrategyConfig.h"
+
+hiveOO::CProductFactory<CSimulationStrategy> theCreator(KEY_WORDS::SIMULATION_STRATEGY);
 
 bool CSimulationStrategy::__isFinish()
 {
-	return m_IterationNum >= 10 && __isAllAgentReachExit();
+	return m_IterationNum >= 10 && _isAllAgentReachExit();
 }
 
 void CSimulationStrategy::__afterSimulationDoStep()
 {
 	__updateAgentsNavigation();
 
-	if (__isAllAgentReachExit())
+	if (_isAllAgentReachExit())
 	{
 		m_IterationNum++;
 		__updateScene();

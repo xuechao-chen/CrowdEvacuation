@@ -37,7 +37,7 @@ void IEvacuationStrategy::init()
 
 bool IEvacuationStrategy::__isFinish()
 {
-	return __isAllAgentReachExit();
+	return _isAllAgentReachExit();
 }
 
 void IEvacuationStrategy::__constructRoadMap()
@@ -113,7 +113,7 @@ void IEvacuationStrategy::__addPath2RoadMap(const std::vector<glm::vec2>& vPath)
 	m_RoadMap[vPath[PathSize - 1]] = glm::vec2(FLT_MAX, FLT_MAX);//NOTE: 出口的下一个导航点默认为无限远
 }
 
-bool IEvacuationStrategy::__isAllAgentReachExit()
+bool IEvacuationStrategy::_isAllAgentReachExit()
 {
 	const auto& Agents = m_pScene->getAgents();
 	const auto& Exits = m_pScene->getExits();

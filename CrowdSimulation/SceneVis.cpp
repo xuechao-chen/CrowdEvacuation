@@ -29,3 +29,8 @@ void CSceneVis::displayScene(const CEvacuationScene* pScene)
 	hiveCrowdRendering::drawEdges(Graph->dumpAllEdges());
 	hiveCrowdRendering::display();
 }
+
+void CSceneVis::pause()
+{
+	hiveCrowdRendering::pause();
+}

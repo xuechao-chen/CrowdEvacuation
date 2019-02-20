@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include "../CrowdSimulation/EvacuationScene.h"
+﻿#include "../CrowdSimulation/EvacuationScene.h"
 #include "../CrowdSimulation/SceneVis.h"
 #include "../CrowdSimulation/ConfigParser.h"
 #include "../CrowdSimulation/ShortestStrategy.h"
@@ -16,6 +15,9 @@ int main(int, char*[])
 	CConfigParser::parseScene("SceneConfig.xml", pScene);
 
 	CSceneVis::getInstance()->displayScene(pScene);
+	CSceneVis::getInstance()->pause();
+
+	delete pScene;
 
 	return 0;
 }

@@ -1,4 +1,8 @@
 #include "CDFPredictionStrategy.h"
+#include "common/ProductFactory.h"
+#include "StrategyConfig.h"
+
+hiveOO::CProductFactory<CCDFPredictionStrategy> theCreator(KEY_WORDS::CDF_STRATEGY);
 
 void CCDFPredictionStrategy::init()
 {

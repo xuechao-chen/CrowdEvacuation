@@ -1,11 +1,16 @@
 #include "CrowdSimulationInterface.h"
-#include "ShortestStrategy.h"
-#include "common/HiveCommonMicro.h"
+#include "common/ConfigInterface.h"
+#include "StrategyConfig.h"
+#include "BaseStrategy.h"
+#include "common/ProductFactoryData.h"
 
 void simulation(const std::string & vConfig)
 {
-	//IEvacuationStrategy* pStrategy = new CShortestStrategy();
-	//pStrategy->run();
+	hiveConfig::hiveParseConfig(vConfig, hiveConfig::EConfigType::XML, CStrategyConfig::getInstance());
+	auto StrategySig = CStrategyConfig::getInstance()->getAttribute<std::string>(KEY_WORDS::STRATEGY);
 	
-	//_SAFE_DELETE(pStrategy);
+	IEvacuationStrategy* pStrategy = dynamic_cast<IEvacuationStrategy*>(hiveOO::CProductFactoryData::getInstance()->createProduct(StrategySig));
+	pStrategy->init();
+	pStrategy->run();
+	delete pStrategy;
 }
