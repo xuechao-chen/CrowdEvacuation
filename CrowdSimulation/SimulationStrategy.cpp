@@ -7,7 +7,7 @@ hiveOO::CProductFactory<CSimulationStrategy> theCreator(KEY_WORDS::SIMULATION_ST
 
 bool CSimulationStrategy::__isFinish()
 {
-	return m_IterationNum >= 10 && _isAllAgentReachExit();
+	return m_IterationNum >= 10;
 }
 
 void CSimulationStrategy::__afterSimulationDoStep()
@@ -103,7 +103,7 @@ void CSimulationStrategy::__updateAgentsNavigation()
 					AccumulatedRatio += Ratio;
 					if (Rand <= AccumulatedRatio)
 					{
-						NextNavNode = SimNode->getNavNodeAt(i);
+						NextNavNode = SimNode->getNavNodeAt(i); break;
 					}
 				}
 				break;
@@ -159,7 +159,7 @@ void CSimulationStrategy::__updateDivideNode(CSimNode* pSimNode)
 	auto UpdatedDivideRatio = (T2 - T1 + Beta) / (Alpha + Beta);
 	auto Graph = m_pScene->getGraph();
 	if (isnan(UpdatedDivideRatio)) UpdatedDivideRatio = 0.5f;
-	if (UpdatedDivideRatio <= 0.05)
+	if (UpdatedDivideRatio <= 0.2)
 	{
 		// NavNode1成为分流点
 		auto pSimNode = m_RoadMap[NavNode1];
@@ -177,7 +177,7 @@ void CSimulationStrategy::__updateDivideNode(CSimNode* pSimNode)
 		Graph->removeNode(DividePos);
 		Graph->addEdge(NavNode1, NavNode2, glm::distance(NavNode1, NavNode2));
 	}
-	else if (UpdatedDivideRatio >= 0.95)
+	else if (UpdatedDivideRatio >= 0.8)
 	{
 		// NavNode2成为分流点
 		auto pSimNode = m_RoadMap[NavNode2];
@@ -222,6 +222,7 @@ void CSimulationStrategy::__updateDistributionNode(CSimNode* pSimNode)
 		auto MaxTime = __calMaxEvacuationTime4Agents(Agents);
 		TimeSet.push_back(1/MaxTime);
 	}
+
 	float Total = std::accumulate(TimeSet.begin(), TimeSet.end(), 0.0f);
 	for (size_t i = 0; i < pSimNode->getNavNodeNum(); i++)
 	{

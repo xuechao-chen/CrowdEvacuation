@@ -54,7 +54,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 	for (auto& Agent : Agents)
 	{
 		if (Agent->isReachNavNode())
-		{
+		{ //TODO: 优化，到达导航点之后不需要判断
 			const auto& CurNavNode = Agent->getNavNode();
 			glm::vec2 NextNavNode;
 

@@ -64,13 +64,29 @@ std::vector<IAgent*> CEvacuationScene::dumpAgentsInEdge(const glm::vec2 & vNode1
 {
 	if (vNode1.x == vNode2.x)
 	{
-		return dumpAgentsInRegion(glm::vec2(vNode1.x - CSceneGraph::ROAD_WIDTH / 2, vNode1.y), 
-			                      glm::vec2(vNode2.x + CSceneGraph::ROAD_WIDTH / 2, vNode2.y));
+		if (vNode1.y < vNode2.y)
+		{
+			return dumpAgentsInRegion(glm::vec2(vNode1.x - CSceneGraph::ROAD_WIDTH / 2, vNode1.y),
+									  glm::vec2(vNode2.x + CSceneGraph::ROAD_WIDTH / 2, vNode2.y));
+		}
+		else
+		{
+			return dumpAgentsInRegion(glm::vec2(vNode2.x - CSceneGraph::ROAD_WIDTH / 2, vNode2.y),
+									  glm::vec2(vNode1.x + CSceneGraph::ROAD_WIDTH / 2, vNode1.y));
+		}
 	}
 	else
 	{
-		return dumpAgentsInRegion(glm::vec2(vNode1.x, vNode1.y - CSceneGraph::ROAD_WIDTH / 2),
-								  glm::vec2(vNode2.x, vNode2.y + CSceneGraph::ROAD_WIDTH / 2));
+		if (vNode1.x < vNode2.x)
+		{
+			return dumpAgentsInRegion(glm::vec2(vNode1.x, vNode1.y - CSceneGraph::ROAD_WIDTH / 2),
+									  glm::vec2(vNode2.x, vNode2.y + CSceneGraph::ROAD_WIDTH / 2));
+		}
+		else
+		{
+			return dumpAgentsInRegion(glm::vec2(vNode2.x, vNode2.y - CSceneGraph::ROAD_WIDTH / 2),
+									  glm::vec2(vNode1.x, vNode1.y + CSceneGraph::ROAD_WIDTH / 2));
+		}
 	}
 }
 
