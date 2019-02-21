@@ -116,6 +116,23 @@ void CSimulationStrategy::__updateAgentsNavigation()
 			//NOTE: 当前导航点为出口，则下个导航点仍为出口
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
+			// avoid collison
+			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
+			for (auto AgentInCurNavNode : AgentsInCurNavNode)
+			{
+				if (AgentInCurNavNode->getNavNode() != NextNavNode)
+				{
+					float a = glm::dot(NextNavNode - Agent->getPosition(), AgentInCurNavNode->getPosition() - Agent->getPosition());
+					if (a > 0)
+					{
+						glm::vec2 SwapNavNode = AgentInCurNavNode->getNavNode();
+						AgentInCurNavNode->setNavNode(NextNavNode);
+						NextNavNode = SwapNavNode;
+						break;
+					}
+				}
+			}
+
 			Agent->setNavNode(NextNavNode);
 		}
 	}

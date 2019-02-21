@@ -27,9 +27,9 @@ public:
 	void setSimulator(RVO::RVOSimulator* pSimulator) { m_pRVOSimulator = pSimulator; }
 	RVO::RVOSimulator* getSimulator() const { return m_pRVOSimulator; }
 
-	std::vector<IAgent*> dumpAgentsInRegion(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom);
-	std::vector<IAgent*> dumpAgentsInNode(const glm::vec2& vNode);
-	std::vector<IAgent*> dumpAgentsInEdge(const glm::vec2& vNode1, const glm::vec2& vNode2);
+	std::vector<IAgent*> dumpAgentsInRegion(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom, bool vIsInitPosition=true);
+	std::vector<IAgent*> dumpAgentsInNode(const glm::vec2& vNode, bool vIsInitPosition = true);
+	std::vector<IAgent*> dumpAgentsInEdge(const glm::vec2& vNode1, const glm::vec2& vNode2, bool vIsInitPosition = true);
 	int dumpAgentNeighborNum(IAgent* vAgent);
 
 private:
