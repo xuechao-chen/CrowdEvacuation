@@ -80,7 +80,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 				for (auto& AdjNode : AdjNodeSet)
 				{
 					auto Angle = glm::dot(glm::normalize(AdjNode.first - Agent->getPosition()), glm::normalize(CurNavNode - Agent->getPosition()));
-					if (Angle < -0.82) continue;
+					if (Angle < -0.8) continue;
 
 					auto t1 = w1 * AdjNode.second;
 					auto AdjIntersection = m_Intersections[AdjNode.first];
