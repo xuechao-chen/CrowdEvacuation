@@ -79,8 +79,10 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 				auto MinCost = FLT_MAX;
 				for (auto& AdjNode : AdjNodeSet)
 				{
-					auto Angle = glm::dot(glm::normalize(AdjNode.first - Agent->getPosition()), glm::normalize(CurNavNode - Agent->getPosition()));
+					/*auto Angle = glm::dot(glm::normalize(AdjNode.first - Agent->getPosition()), glm::normalize(CurNavNode - Agent->getPosition()));
 					if (Angle < -0.8) continue;
+*/
+					if (AdjNode.first == Agent->getLastNavNode()) continue;
 
 					auto t1 = w1 * AdjNode.second;
 					auto AdjIntersection = m_Intersections[AdjNode.first];
@@ -102,7 +104,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			}
 
 			// avoid collison
-			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
+			/*const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
 			for (auto AgentInCurNavNode : AgentsInCurNavNode)
 			{
 				if (AgentInCurNavNode->getNavNode() != NextNavNode)
@@ -116,8 +118,9 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 						break;
 					}
 				}
-			}
+			}*/
 
+			Agent->setLastNavNode(Agent->getNavNode());
 			Agent->setNavNode(NextNavNode);
 		}
 	}

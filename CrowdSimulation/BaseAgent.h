@@ -17,6 +17,8 @@ public:
 
 	void setNavNode(const glm::vec2& vNavNode) { m_NavNode = vNavNode; }
 	glm::vec2 getNavNode() const { return m_NavNode; }
+	void setLastNavNode(const glm::vec2& vLastNavNode) { m_LastNavNode = vLastNavNode; }
+	glm::vec2 getLastNavNode() const { return m_LastNavNode; }
 	bool isReachNavNode() const;
 	bool isReachExit(const std::vector<glm::vec2>& vExits) const;
 	void tagIsReachExit(bool vIsReachExit) { m_IsReachExit = vIsReachExit; }
@@ -40,6 +42,7 @@ private:
 
 	RVO::Agent* m_pRVOAgent = nullptr;
 	glm::vec2 m_NavNode;
+	glm::vec2 m_LastNavNode;
 	glm::vec2 m_InitPos;
 	int m_EvacuationTime = 0;
 };
