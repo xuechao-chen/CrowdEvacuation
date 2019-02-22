@@ -38,10 +38,10 @@ bool IAgent::isReachExit(const std::vector<glm::vec2>& vExits) const
 	{
 		auto Pos = getPosition();
 		auto Distance = glm::distance(Pos, Exit);
-		if (Distance > 10) return false; //TODO: 暂定半径为10
+		if (Distance < 10) return true; //TODO: 暂定半径为10
 	}
 
-	return true;
+	return false;
 }
 
 void IAgent::reset()
