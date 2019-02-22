@@ -37,11 +37,20 @@ void CCDFPredictionStrategy::__updateIntersections()
 		{
 			auto NavNode = Agent->getNavNode();
 			auto Speed = Agent->getSpeed();
-			auto Distance = glm::distance(Agent->getPosition(), NavNode);
-			auto ArrivalTime = Distance / Speed;
+			auto Distance2NavNode = glm::distance(Agent->getPosition(), NavNode);
+			auto ArrivalTime2NavNode = Distance2NavNode / Speed;
 
 			auto Intersection = m_Intersections[NavNode];
-			Intersection->addArriveMoment(ArrivalTime, 1.0f); //TODO: 考虑Agent跨边的影响
+			Intersection->addArriveMoment(ArrivalTime2NavNode, 1.0f); //TODO: 考虑Agent跨边的影响
+
+			auto NextNavNode = m_RoadMap[NavNode].first;
+			if (NextNavNode != glm::vec2(FLT_MAX, FLT_MAX))
+			{
+				auto Distance2NextNavNode = Distance2NavNode + glm::distance(NavNode, NextNavNode);
+				auto ArrivalTime2NextNavNode = Distance2NextNavNode / Speed;
+				auto NextIntersection = m_Intersections[NextNavNode];
+				NextIntersection->addArriveMoment(ArrivalTime2NextNavNode, 1.0f);
+			}
 		}
 	}
 }
@@ -59,16 +68,20 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			glm::vec2 NextNavNode;
 
 			//NOTE: 当前导航点为出口，则下个导航点仍为出口
-			if (m_RoadMap[CurNavNode] == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
+			if (m_RoadMap[CurNavNode].first == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 			else
 			{
-				const auto& AgentsInCurIntersection = m_pScene->dumpAgentsInNode(CurNavNode);
+				const auto& AgentsInCurIntersection = m_pScene->dumpAgentsInNode(CurNavNode, false);
 				auto w1 = __CDF2Factor(AgentsInCurIntersection.size());
+				if (w1 > 1.1) w1 = 1.1;
 
 				const auto& AdjNodeSet = Graph->dumpAdjNodeSet(CurNavNode);
 				auto MinCost = FLT_MAX;
 				for (auto& AdjNode : AdjNodeSet)
 				{
+					auto Angle = glm::dot(glm::normalize(AdjNode.first - Agent->getPosition()), glm::normalize(CurNavNode - Agent->getPosition()));
+					if (Angle < -0.82) continue;
+
 					auto t1 = w1 * AdjNode.second;
 					auto AdjIntersection = m_Intersections[AdjNode.first];
 					auto CDF = AdjIntersection->calCDF(t1);
@@ -76,6 +89,10 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 					const auto& ShortestPath = __findShortestPathToExit(AdjNode.first, Exits, Graph);
 					auto t2 = w2 * ShortestPath.second;
 					auto Cost = t1 + t2;
+					if (CurNavNode == glm::vec2(450, 210))
+					{
+						std::cout << t1 << " " << w1 << " " << t2 << " " << w2 << " " << Cost << std::endl;
+					}
 					if (Cost < MinCost)
 					{
 						MinCost = Cost;
@@ -108,5 +125,8 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 
 float __CDF2Factor(float vCDF)
 {
-	return pow(2, vCDF / 60);
+	auto MaxFactor = CStrategyConfig::getInstance()->getAttribute<float>(KEY_WORDS::MAX_FACTOR);
+	auto MaxAgent  = CStrategyConfig::getInstance()->getAttribute<float>(KEY_WORDS::MAX_AGENT);
+
+	return pow(MaxFactor, vCDF / MaxAgent);
 }

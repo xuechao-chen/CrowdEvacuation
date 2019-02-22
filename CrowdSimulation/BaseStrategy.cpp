@@ -53,7 +53,7 @@ void IEvacuationStrategy::__constructRoadMap()
 
 		const auto& ShortestPath = __findShortestPathToExit(Node, Exits, pGraph);
 		for (auto& NavNode : ShortestPath.first) VisitedNodeSet.push_back(NavNode);
-		__addPath2RoadMap(ShortestPath.first);
+		__addPath2RoadMap(ShortestPath);
 	}
 }
 
@@ -64,16 +64,16 @@ void IEvacuationStrategy::__assignNavNode2Agent()
 	for (auto& Agent : Agents)
 	{
 		const auto& NavNodes = Graph->dumpNavNodes(Agent->getPosition());
-		if (NavNodes.size() == 1) Agent->setNavNode(m_RoadMap[NavNodes[0]]);
+		if (NavNodes.size() == 1) Agent->setNavNode(m_RoadMap[NavNodes[0]].first);
 		if (NavNodes.size() == 2)
 		{
 			auto& Node1 = NavNodes[0]; auto& Node2 = NavNodes[1];
-			if (m_RoadMap[Node1] == Node2)      Agent->setNavNode(Node2);
-			else if (m_RoadMap[Node2] == Node1) Agent->setNavNode(Node1);
+			if (m_RoadMap[Node1].first == Node2)      Agent->setNavNode(Node2);
+			else if (m_RoadMap[Node2].first == Node1) Agent->setNavNode(Node1);
 			else {
 				auto Distance1 = glm::distance(Agent->getPosition(), Node1);
 				auto Distance2 = glm::distance(Agent->getPosition(), Node2);
-				if (Distance1 < Distance2) Agent->setNavNode(Node1);
+				if (m_RoadMap[Node1].second + Distance1 < m_RoadMap[Node2].second + Distance2) Agent->setNavNode(Node1);
 				else Agent->setNavNode(Node2);
 			}
 		}
@@ -101,16 +101,21 @@ void IEvacuationStrategy::__updateVisualization()
 	CSceneVis::getInstance()->displayScene(m_pScene);
 }
 
-void IEvacuationStrategy::__addPath2RoadMap(const std::vector<glm::vec2>& vPath)
+void IEvacuationStrategy::__addPath2RoadMap(const std::pair<std::vector<glm::vec2>, float>& vPath)
 {
-	auto PathSize = vPath.size();
+	auto& NavNodeSet = vPath.first;
+	auto Distance = vPath.second;
+	auto PathSize = NavNodeSet.size();
 	for (size_t i = 0; i < PathSize - 1; i++)
 	{
-		auto& CurNavNode = vPath[i];
-		auto& NextNavNode = vPath[i + 1];
-		m_RoadMap[CurNavNode] = NextNavNode;
+		auto& CurNavNode = NavNodeSet[i];
+		auto& NextNavNode = NavNodeSet[i + 1];
+		m_RoadMap[CurNavNode].first = NextNavNode;
+		m_RoadMap[CurNavNode].second = Distance;
+		Distance -= glm::distance(NextNavNode, CurNavNode);
 	}
-	m_RoadMap[vPath[PathSize - 1]] = glm::vec2(FLT_MAX, FLT_MAX);//NOTE: 出口的下一个导航点默认为无限远
+	m_RoadMap[NavNodeSet[PathSize - 1]].first = glm::vec2(FLT_MAX, FLT_MAX);//NOTE: 出口的下一个导航点默认为无限远
+	m_RoadMap[NavNodeSet[PathSize - 1]].second = 0;
 }
 
 void IEvacuationStrategy::__updateAgentVelocity()
@@ -121,7 +126,8 @@ void IEvacuationStrategy::__updateAgentVelocity()
 		if (!Agent->isReachExit(Exits))
 		{
 			auto NeighborNum = m_pScene->dumpAgentNeighborNum(Agent);
-			auto Factor = 1 - (NeighborNum / 100.0f);
+			auto Factor = 1 - (NeighborNum / 80.0f);
+			if (Factor < 0.4) Factor = 0.4;
 			glm::vec2 Direction = Agent->getNavNode() - Agent->getPosition();
 			Agent->setPrefVelocity(glm::normalize(Direction)*Factor);
 		}

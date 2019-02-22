@@ -1,4 +1,5 @@
 #include "Intersection.h"
+#include "StrategyConfig.h"
 
 //const float NUM_A = pow(2.0f, 1.0f / 50.0f);
 
@@ -21,10 +22,10 @@ void CIntersection::clear()
 float CIntersection::calCDF(float vArriveTime)
 {
 	auto CDF = 0.0f;
-	auto NeighborSize = 5.0f;
+	auto NeighborSize = CStrategyConfig::getInstance()->getAttribute<float>(KEY_WORDS::NEIGHBOR_SIZE);
 	for (auto ArriveMoment : m_TimeLine)
 	{
-		auto Integral = ArriveMoment->cdf(vArriveTime + NeighborSize) - ArriveMoment->cdf(vArriveTime - NeighborSize);
+		auto Integral = ArriveMoment->cdf(vArriveTime + NeighborSize*3) - ArriveMoment->cdf(vArriveTime - NeighborSize*3);
 		CDF += Integral;
 	}
 	return CDF;

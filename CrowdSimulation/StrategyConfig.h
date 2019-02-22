@@ -7,6 +7,11 @@ namespace KEY_WORDS
 	const std::string SHORTEST_STRATEGY   = "SHORTEST_STRATEGY";
 	const std::string SIMULATION_STRATEGY = "SIMULATION_STRATEGY";
 	const std::string CDF_STRATEGY		  = "CDF_STRATEGY";
+
+	//CDF params
+	const std::string MAX_FACTOR		  = "MAX_FACTOR";
+	const std::string NEIGHBOR_SIZE		  = "NEIGHBOR_SIZE";
+	const std::string MAX_AGENT			  = "MAX_AGENT";
 }
 
 class CStrategyConfig : public hiveConfig::CHiveConfig, public hiveOO::CSingleton<CStrategyConfig>
@@ -22,6 +27,9 @@ private:
 		defineAttribute(KEY_WORDS::SHORTEST_STRATEGY,   hiveConfig::ATTRIBUTE_STRING);
 		defineAttribute(KEY_WORDS::SIMULATION_STRATEGY, hiveConfig::ATTRIBUTE_STRING);
 		defineAttribute(KEY_WORDS::CDF_STRATEGY,        hiveConfig::ATTRIBUTE_STRING);
+		defineAttribute(KEY_WORDS::MAX_FACTOR,          hiveConfig::ATTRIBUTE_FLOAT);
+		defineAttribute(KEY_WORDS::NEIGHBOR_SIZE,       hiveConfig::ATTRIBUTE_FLOAT);
+		defineAttribute(KEY_WORDS::MAX_AGENT,			hiveConfig::ATTRIBUTE_FLOAT);
 	}
 
 	friend class hiveOO::CSingleton<CStrategyConfig>;

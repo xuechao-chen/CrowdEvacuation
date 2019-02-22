@@ -28,7 +28,7 @@ private:
 
 	void __constructEvacuationScene();
 	void __updateVisualization();
-	void __addPath2RoadMap(const std::vector<glm::vec2>& vPath);
+	void __addPath2RoadMap(const std::pair<std::vector<glm::vec2>, float>& vPath);
 	void __updateAgentVelocity();
 
 protected:
@@ -36,7 +36,7 @@ protected:
 
 	int m_EvacuationTimeCost = 0;
 	CEvacuationScene* m_pScene = nullptr;
-	std::unordered_map<glm::vec2, glm::vec2, HashFunc4Node> m_RoadMap;
+	std::unordered_map<glm::vec2, std::pair<glm::vec2, float>, HashFunc4Node> m_RoadMap;
 };
 
 bool __isVisited(const glm::vec2& vNode, const std::vector<glm::vec2>& vVisitedNodeSet);

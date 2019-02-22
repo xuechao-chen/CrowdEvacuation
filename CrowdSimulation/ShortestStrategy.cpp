@@ -13,7 +13,7 @@ void CShortestStrategy::__afterSimulationDoStep()
 		if (Agent->isReachNavNode())
 		{
 			const auto& CurNavNode = Agent->getNavNode();
-			auto NextNavNode = m_RoadMap[CurNavNode];
+			auto NextNavNode = m_RoadMap[CurNavNode].first;
 
 			//NOTE: 当前导航点为出口，则下个导航点仍为出口
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
