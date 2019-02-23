@@ -22,8 +22,10 @@ void CCDFPredictionStrategy::__initIntersections()
 
 void CCDFPredictionStrategy::__afterSimulationDoStep()
 {
-	//TODO: 考虑边上人的密度影响 updateEdgeWeight()
-	__updateEdgeWeight();
+	if (CStrategyConfig::getInstance()->getAttribute<bool>(KEY_WORDS::UPDATE_DENSITY))
+	{
+		__updateEdgeWeight();
+	}
 	__updateIntersections();
 	__updateAgentsNavigation();
 }
@@ -42,7 +44,7 @@ void CCDFPredictionStrategy::__updateIntersections()
 			auto ArrivalTime2NavNode = Distance2NavNode / Speed;
 
 			auto Intersection = m_Intersections[NavNode];
-			Intersection->addArriveMoment(ArrivalTime2NavNode, 1.0f); //TODO: 考虑Agent跨边的影响
+			Intersection->addArriveMoment(ArrivalTime2NavNode, 1.0f);
 
 			auto NextNavNode = m_RoadMap[NavNode].first;
 			if (NextNavNode != glm::vec2(FLT_MAX, FLT_MAX))
@@ -80,9 +82,6 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 				auto MinCost = FLT_MAX;
 				for (auto& AdjNode : AdjNodeSet)
 				{
-					/*auto Angle = glm::dot(glm::normalize(AdjNode.first - Agent->getPosition()), glm::normalize(CurNavNode - Agent->getPosition()));
-					if (Angle < -0.8) continue;
-*/
 					if (AdjNode.first == Agent->getLastNavNode()) continue;
 
 					auto t1 = w1 * AdjNode.second;
@@ -95,7 +94,6 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 					if (CurNavNode == glm::vec2(450, 210))
 					{
 						std::cout << t1 << " " << w1 << " " << t2 << " " << w2 << " " << Cost << std::endl;
-						//std::cout << AdjNode.second << " " << ShortestPath.second << " " << Cost<< std::endl;
 					}
 					if (Cost < MinCost)
 					{
@@ -141,7 +139,6 @@ void CCDFPredictionStrategy::__updateEdgeWeight()
 		}
 		else
 		{
-			//TODO compute velocity
 			auto TotalSpeed = 0.0f;
 			for (auto Agent : AgentsInEdge)
 			{
