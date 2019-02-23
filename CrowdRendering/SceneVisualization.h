@@ -18,6 +18,7 @@ namespace hiveCrowdRendering
 		void display();
 		void pause();
 		void clear();
+		void saveImage(const char* vPath);
 
 	private:
 		CSceneVisualization() {}

@@ -17,41 +17,46 @@ void CSceneVisualization::init(const std::string& vConfig)
 
 void CSceneVisualization::drawAgent(const glm::vec2& vPos)
 {
-    auto CenterPos = cv::Point(vPos.x, vPos.y);
+    auto CenterPos = cv::Point(vPos.x*2, vPos.y*2);
 	int r, g, b;
 	std::tie(r, g, b) = m_AgentColor;
-	cv::circle(m_Scene, CenterPos, m_AgentRadius, cv::Scalar(r, g, b), CV_FILLED);
+	cv::circle(m_Scene, CenterPos, m_AgentRadius*2, cv::Scalar(r, g, b), CV_FILLED);
 }
 
 void CSceneVisualization::drawObstacle(const glm::vec2& vLeftTop, const glm::vec2& vRightBottom)
 {
 	auto w = abs(vRightBottom.x - vLeftTop.x);
 	auto h = abs(vRightBottom.y - vLeftTop.y);
-	auto Rect = cv::Rect(vLeftTop.x, vLeftTop.y, w, h);
+	auto Rect = cv::Rect(vLeftTop.x*2, vLeftTop.y*2, w*2, h*2);
 	int r, g, b; 
 	std::tie(r, g, b) = m_ObstacleColor;
 	cv::rectangle(m_Scene, Rect, cv::Scalar(r, g, b), CV_FILLED);
+	//cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), 1);
 }
 
 void hiveCrowdRendering::CSceneVisualization::drawNode(const glm::vec2 & vPos)
 {
-	auto CenterPos = cv::Point(vPos.x, vPos.y);
+	/*auto CenterPos = cv::Point(vPos.x, vPos.y);
 	int r, g, b;
 	std::tie(r, g, b) = m_AgentColor;
-	cv::circle(m_Scene, CenterPos, m_AgentRadius, cv::Scalar(r, g, b));
+	cv::circle(m_Scene, CenterPos, m_AgentRadius, cv::Scalar(r, g, b));*/
 }
 
 void hiveCrowdRendering::CSceneVisualization::drawEdge(const glm::vec2 & vNode1, const glm::vec2 & vNode2)
 {
-	auto Point1 = cv::Point(vNode1.x, vNode1.y);
+	/*auto Point1 = cv::Point(vNode1.x, vNode1.y);
 	auto Point2 = cv::Point(vNode2.x, vNode2.y);
 	int r, g, b;
-	std::tie(r, g, b) = m_AgentColor;
-	cv::line(m_Scene, Point1, Point2, cv::Scalar(r,g,b));
+	std::tie(r, g, b) = m_AgentColor;*/
+	//cv::line(m_Scene, Point1, Point2, cv::Scalar(r,g,b));
+	//cv::line(m_Scene, Point1, Point2, cv::Scalar(180,180,180));
 }
 
 void CSceneVisualization::display()
 {
+	auto Rect = cv::Rect(0, 0, m_Width*2, m_Height*2);
+
+	cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), 1);
 	cv::imshow("Scene", m_Scene);
 	cv::waitKey(1);
 }
@@ -65,7 +70,12 @@ void hiveCrowdRendering::CSceneVisualization::clear()
 {
 	int r, g, b;
 	std::tie(r, g, b) = m_BgColor;
-	m_Scene = cv::Mat(m_Height, m_Width, CV_8SC3, cv::Scalar(r, g, b));
+	m_Scene = cv::Mat(m_Height*2, m_Width*2, CV_8UC3, cv::Scalar(r, g, b));
+}
+
+void CSceneVisualization::saveImage(const char* vPath)
+{
+	cv::imwrite(vPath, m_Scene);
 }
 
 void CSceneVisualization::__parseConfig(const std::string& vConfig)
@@ -96,5 +106,5 @@ void CSceneVisualization::__initScene()
 {
 	int r, g, b;
 	std::tie(r, g, b) = m_BgColor;
-	m_Scene = cv::Mat(m_Height, m_Width, CV_8SC3, cv::Scalar(r, g, b));
+	m_Scene = cv::Mat(m_Height*2, m_Width*2, CV_8UC3, cv::Scalar(r, g, b));
 }

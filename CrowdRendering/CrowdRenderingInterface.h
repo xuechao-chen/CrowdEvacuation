@@ -14,4 +14,6 @@ namespace hiveCrowdRendering
 	CROWD_RENDERING_DLL_EXPORT void drawEdges(const std::vector<std::pair<glm::vec2, glm::vec2>>& vEdges);
 	CROWD_RENDERING_DLL_EXPORT void display();
 	CROWD_RENDERING_DLL_EXPORT void clear();
+
+	CROWD_RENDERING_DLL_EXPORT void saveImage(const char* vPath);
 }

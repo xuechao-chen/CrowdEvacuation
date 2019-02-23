@@ -2,6 +2,8 @@
 #include "EvacuationScene.h"
 #include "../RVO/RVOSimulator.h"
 #include "common/BaseProduct.h"
+#include "SceneVis.h"
+#include <boost/format.hpp>
 
 //NOTE: FOR UNIT TEST
 #ifdef _DEBUG
@@ -24,6 +26,7 @@ private:
 	virtual bool __isFinish();
 	virtual void __constructRoadMap();
 	virtual void __assignNavNode2Agent();
+	virtual void __saveImage();
 	virtual void __afterSimulationDoStep() = 0;
 
 	void __constructEvacuationScene();

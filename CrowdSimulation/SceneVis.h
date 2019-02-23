@@ -11,6 +11,7 @@ public:
 
 	void displayScene(const CEvacuationScene* pScene);
 	void pause();
+	void saveImage(const char* vPath);
 
 private:
 	friend class hiveOO::CSingleton<CSceneVis>;

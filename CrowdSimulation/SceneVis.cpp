@@ -34,3 +34,8 @@ void CSceneVis::pause()
 {
 	hiveCrowdRendering::pause();
 }
+
+void CSceneVis::saveImage(const char * vPath)
+{
+	hiveCrowdRendering::saveImage(vPath);
+}

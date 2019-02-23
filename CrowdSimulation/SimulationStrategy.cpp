@@ -343,3 +343,9 @@ void CSimulationStrategy::__assignNavNode2Agent()
 		Agent->setPrefVelocity(glm::normalize(Direction));
 	}
 }
+
+void CSimulationStrategy::__saveImage()
+{
+	auto PathStr = (boost::format("%1%_%2%.jpg") % m_IterationNum % m_EvacuationTimeCost).str();
+	CSceneVis::getInstance()->saveImage(PathStr.data());
+}

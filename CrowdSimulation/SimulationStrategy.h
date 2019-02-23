@@ -13,6 +13,7 @@ private:
 	void __afterSimulationDoStep() override;
 	void __constructRoadMap() override;
 	void __assignNavNode2Agent() override;
+	void __saveImage() override;
 
 	void __addShortestPath2RoadMap(const std::vector<glm::vec2>& ShortestPath);
 	void __updateAgentsNavigation();

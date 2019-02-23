@@ -1,6 +1,5 @@
 #include "BaseStrategy.h"
 #include "ConfigParser.h"
-#include "SceneVis.h"
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
@@ -22,6 +21,8 @@ void IEvacuationStrategy::run()
   		pSim->doStep();
 		__afterSimulationDoStep();
 		__updateAgentVelocity();
+		__saveImage();
+
 	} while (!__isFinish());
 
 	std::cout << "Evacuation End" << std::endl;
@@ -80,6 +81,12 @@ void IEvacuationStrategy::__assignNavNode2Agent()
 		auto Direction = Agent->getNavNode() - Agent->getPosition();
 		Agent->setPrefVelocity(glm::normalize(Direction));
 	}
+}
+
+void IEvacuationStrategy::__saveImage()
+{
+	auto PathStr = (boost::format("%1%.jpg") % m_EvacuationTimeCost).str();
+	CSceneVis::getInstance()->saveImage(PathStr.data());
 }
 
 void IEvacuationStrategy::__constructEvacuationScene()
