@@ -23,6 +23,7 @@ void CCDFPredictionStrategy::__initIntersections()
 void CCDFPredictionStrategy::__afterSimulationDoStep()
 {
 	//TODO: 考虑边上人的密度影响 updateEdgeWeight()
+	__updateEdgeWeight();
 	__updateIntersections();
 	__updateAgentsNavigation();
 }
@@ -94,6 +95,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 					if (CurNavNode == glm::vec2(450, 210))
 					{
 						std::cout << t1 << " " << w1 << " " << t2 << " " << w2 << " " << Cost << std::endl;
+						//std::cout << AdjNode.second << " " << ShortestPath.second << " " << Cost<< std::endl;
 					}
 					if (Cost < MinCost)
 					{
@@ -104,7 +106,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			}
 
 			// avoid collison
-			/*const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
+			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
 			for (auto AgentInCurNavNode : AgentsInCurNavNode)
 			{
 				if (AgentInCurNavNode->getNavNode() != NextNavNode)
@@ -118,10 +120,36 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 						break;
 					}
 				}
-			}*/
+			}
 
 			Agent->setLastNavNode(Agent->getNavNode());
 			Agent->setNavNode(NextNavNode);
+		}
+	}
+}
+
+void CCDFPredictionStrategy::__updateEdgeWeight()
+{
+	auto Graph = m_pScene->getGraph();
+	for (auto& Edge : Graph->dumpAllEdges())
+	{
+		const auto& AgentsInEdge = m_pScene->dumpAgentsInEdge(Edge.first, Edge.second, false);
+
+		if (AgentsInEdge.size() == 0)
+		{
+			Graph->updateEdgeWeight(Edge.first, Edge.second, glm::distance(Edge.first, Edge.second));
+		}
+		else
+		{
+			//TODO compute velocity
+			auto TotalSpeed = 0.0f;
+			for (auto Agent : AgentsInEdge)
+			{
+				auto Speed = Agent->getSpeed();
+				TotalSpeed += Speed;
+			}
+			auto UpdatedWeight = glm::distance(Edge.first, Edge.second) / (TotalSpeed / AgentsInEdge.size());
+			Graph->updateEdgeWeight(Edge.first, Edge.second, UpdatedWeight);
 		}
 	}
 }

@@ -197,7 +197,8 @@ std::pair<std::vector<glm::vec2>, float> CSceneGraph::findShortestPath(const glm
 			auto Distance = 0.0f;
 			for (size_t i = 0; i < Path.size() - 1; i++)
 			{
-				Distance += glm::distance(Path[i], Path[i+1]);
+				//Distance += glm::distance(Path[i], Path[i+1]);
+				Distance += getEdgeWeight(Path[i], Path[i + 1]);
 			}//TODO: 最短路径的距离根据给定的weight来计算
 			return std::make_pair(Path, Distance);
 		}
