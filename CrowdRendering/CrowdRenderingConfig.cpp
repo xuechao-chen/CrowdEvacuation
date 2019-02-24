@@ -20,4 +20,6 @@ void CCrowdRenderingConfig::__defineAttributes()
 	defineAttribute(KEY_WORDS::COLOR_OF_AGENT, hiveConfig::ATTRIBUTE_STRING);
 	defineAttribute(KEY_WORDS::COLOR_OF_OBSTACLE, hiveConfig::ATTRIBUTE_STRING);
 	defineAttribute(KEY_WORDS::BG_COLOR_OF_SCENE, hiveConfig::ATTRIBUTE_STRING);
+	defineAttribute(KEY_WORDS::SCALE, hiveConfig::ATTRIBUTE_INT);
+	defineAttribute(KEY_WORDS::OUTPUT_DIR, hiveConfig::ATTRIBUTE_STRING);
 }

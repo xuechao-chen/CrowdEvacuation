@@ -16,6 +16,8 @@ void CSimulationStrategy::__afterSimulationDoStep()
 
 	if (_isAllAgentReachExit())
 	{
+		__updateVisualization();
+		__saveImage();
 		m_IterationNum++;
 		__updateScene();
 		std::cout << "Evacuation Iteration " << m_IterationNum << " : " << m_EvacuationTimeCost << std::endl;
@@ -117,7 +119,7 @@ void CSimulationStrategy::__updateAgentsNavigation()
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
 			// avoid collison
-			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
+			/*const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
 			for (auto AgentInCurNavNode : AgentsInCurNavNode)
 			{
 				if (AgentInCurNavNode->getNavNode() != NextNavNode)
@@ -130,6 +132,31 @@ void CSimulationStrategy::__updateAgentsNavigation()
 						NextNavNode = SwapNavNode;
 						break;
 					}
+				}
+			}*/
+			auto Distance2NextNavNode = glm::distance(Agent->getPosition(), NextNavNode);
+			auto MinDistance = FLT_MAX;
+			IAgent* pSwapAgent = nullptr;
+			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
+			for (auto AgentInCurNavNode : AgentsInCurNavNode)
+			{
+				if (AgentInCurNavNode->getNavNode() != NextNavNode)
+				{
+					auto Distance = glm::distance(AgentInCurNavNode->getPosition(), NextNavNode);
+					if (Distance < MinDistance)
+					{
+						MinDistance = Distance;
+						pSwapAgent = AgentInCurNavNode;
+					}
+				}
+			}
+			if (MinDistance < Distance2NextNavNode)
+			{
+				glm::vec2 SwapNavNode = pSwapAgent->getNavNode();
+				if (glm::distance(SwapNavNode, pSwapAgent->getPosition()) > glm::distance(SwapNavNode, Agent->getPosition()))
+				{
+					pSwapAgent->setNavNode(NextNavNode);
+					NextNavNode = SwapNavNode;
 				}
 			}
 
@@ -172,6 +199,8 @@ void CSimulationStrategy::__updateDivideNode(CSimNode* pSimNode)
 	auto DeltaT2 = __calMaxEvacuationTime4Agents(AgentsInEdge2);
 	auto Alpha = DeltaT1 / pSimNode->getDivideRatio();
 	auto Beta = DeltaT2 / (1 - pSimNode->getDivideRatio());
+
+	//std::cout << boost::format("%1%,%2%,%3%,%4%,%5%,%6%")%T1%T2%DeltaT1%DeltaT2%T6 << std::endl;
 
 	auto UpdatedDivideRatio = (T2 - T1 + Beta) / (Alpha + Beta);
 	auto Graph = m_pScene->getGraph();
@@ -348,4 +377,5 @@ void CSimulationStrategy::__saveImage()
 {
 	auto PathStr = (boost::format("%1%_%2%.jpg") % m_IterationNum % m_EvacuationTimeCost).str();
 	CSceneVis::getInstance()->saveImage(PathStr.data());
+	CSceneVis::getInstance()->saveVideo();
 }

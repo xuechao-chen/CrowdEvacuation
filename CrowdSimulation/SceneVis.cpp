@@ -39,3 +39,8 @@ void CSceneVis::saveImage(const char * vPath)
 {
 	hiveCrowdRendering::saveImage(vPath);
 }
+
+void CSceneVis::saveVideo()
+{
+	hiveCrowdRendering::saveVideo();
+}

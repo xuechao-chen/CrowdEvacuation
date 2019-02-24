@@ -71,3 +71,9 @@ void hiveCrowdRendering::saveImage(const char * vPath)
 	auto SceneVis = CSceneVisualization::getInstance();
 	SceneVis->saveImage(vPath);
 }
+
+void hiveCrowdRendering::saveVideo()
+{
+	auto SceneVis = CSceneVisualization::getInstance();
+	SceneVis->saveVideo();
+}

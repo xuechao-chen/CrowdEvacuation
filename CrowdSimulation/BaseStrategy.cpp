@@ -17,13 +17,15 @@ void IEvacuationStrategy::run()
 	std::cout << "Evacuation Begin" << std::endl;
 	do {
 		m_EvacuationTimeCost++;
-		__updateVisualization();
   		pSim->doStep();
 		__afterSimulationDoStep();
 		__updateAgentVelocity();
-		__saveImage();
-
+		__updateVisualization();
+		//__saveImage();
 	} while (!__isFinish());
+
+	__updateVisualization();
+	//__saveImage();
 
 	std::cout << "Evacuation End" << std::endl;
 	std::cout << "Evacuation time cost: " << m_EvacuationTimeCost << std::endl;
@@ -87,6 +89,7 @@ void IEvacuationStrategy::__saveImage()
 {
 	auto PathStr = (boost::format("%1%.jpg") % m_EvacuationTimeCost).str();
 	CSceneVis::getInstance()->saveImage(PathStr.data());
+	CSceneVis::getInstance()->saveVideo();
 }
 
 void IEvacuationStrategy::__constructEvacuationScene()

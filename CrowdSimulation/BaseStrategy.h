@@ -22,7 +22,7 @@ public:
 	void setEvacuationScene(CEvacuationScene* pScene) { m_pScene = pScene; }
 	CEvacuationScene* getEvacuationScene() const { return m_pScene; }
 
-private:
+protected:
 	virtual bool __isFinish();
 	virtual void __constructRoadMap();
 	virtual void __assignNavNode2Agent();

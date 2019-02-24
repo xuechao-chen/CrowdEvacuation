@@ -91,10 +91,7 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 					const auto& ShortestPath = __findShortestPathToExit(AdjNode.first, Exits, Graph);
 					auto t2 = w2 * ShortestPath.second;
 					auto Cost = t1 + t2;
-					if (CurNavNode == glm::vec2(450, 210))
-					{
-						std::cout << t1 << " " << w1 << " " << t2 << " " << w2 << " " << Cost << std::endl;
-					}
+					
 					if (Cost < MinCost)
 					{
 						MinCost = Cost;

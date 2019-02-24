@@ -11,6 +11,8 @@ namespace hiveCrowdRendering
 		const std::string BG_COLOR_OF_SCENE = "BG_COLOR_OF_SCENE";
 		const std::string WIDTH_OF_SCENE    = "WIDTH_OF_SCENE";
 		const std::string HEIGHT_OF_SCENE   = "HEIGHT_OF_SCENE";
+		const std::string SCALE			    = "SCALE";
+		const std::string OUTPUT_DIR		= "OUTPUT_DIR";
 	}
 
 	class CCrowdRenderingConfig : public hiveConfig::CHiveConfig, public hiveOO::CSingleton<CCrowdRenderingConfig>

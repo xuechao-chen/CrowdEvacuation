@@ -16,4 +16,5 @@ namespace hiveCrowdRendering
 	CROWD_RENDERING_DLL_EXPORT void clear();
 
 	CROWD_RENDERING_DLL_EXPORT void saveImage(const char* vPath);
+	CROWD_RENDERING_DLL_EXPORT void saveVideo();
 }

@@ -59,14 +59,14 @@
     <ClInclude Include="SceneConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="SceneVis.h">
-      <Filter>EvacuationScene</Filter>
-    </ClInclude>
     <ClInclude Include="Intersection.h">
       <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
     </ClInclude>
     <ClInclude Include="StrategyConfig.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneVis.h">
+      <Filter>EvacuationScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,11 +95,11 @@
     <ClCompile Include="SceneGraph.cpp">
       <Filter>EvacuationScene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneVis.cpp">
-      <Filter>EvacuationScene</Filter>
-    </ClCompile>
     <ClCompile Include="Intersection.cpp">
       <Filter>EvacuationStrategy\CDFPredictionStratedy</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneVis.cpp">
+      <Filter>EvacuationScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
