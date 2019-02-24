@@ -33,6 +33,7 @@ namespace hiveCrowdRendering
 		int m_Height = 0;
 		int m_AgentRadius = 0;
 		int m_Scale = 1;
+		std::vector<glm::vec2> m_Exits;
 		std::tuple<int,int,int> m_BgColor;
 		std::tuple<int,int,int> m_AgentColor;
 		std::tuple<int, int, int> m_ObstacleColor;

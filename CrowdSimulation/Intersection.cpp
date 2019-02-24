@@ -1,8 +1,6 @@
 #include "Intersection.h"
 #include "StrategyConfig.h"
 
-//const float NUM_A = pow(2.0f, 1.0f / 50.0f);
-
 bool AgentArriveMoment_comp(SAgentArriveMoment* a, SAgentArriveMoment* b) 
 {
 	return (a->arriveMoment() < b->arriveMoment());

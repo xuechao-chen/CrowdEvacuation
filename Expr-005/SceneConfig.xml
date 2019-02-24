@@ -17,7 +17,7 @@
 
 <EXIT_NUM> 1 </EXIT_NUM>
 <EXIT>
-  450 30
+  450 -30
 </EXIT>
 
 <GROUP>
@@ -41,5 +41,5 @@
 <GROUP>
   4
   <REGION> 600 0 660 420 </REGION>
-  <AMOUNT> 330 </AMOUNT>
+  <AMOUNT> 330 </AMOUNT><!--330-->
 </GROUP>

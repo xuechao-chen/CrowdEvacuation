@@ -18,6 +18,8 @@ void CSimulationStrategy::__afterSimulationDoStep()
 	{
 		__updateVisualization();
 		__saveImage();
+		auto FileName = (boost::format("RESULT%1%.CSV") % m_IterationNum).str();
+		__saveEvacuationTime(FileName);
 		m_IterationNum++;
 		__updateScene();
 		std::cout << "Evacuation Iteration " << m_IterationNum << " : " << m_EvacuationTimeCost << std::endl;
@@ -119,21 +121,6 @@ void CSimulationStrategy::__updateAgentsNavigation()
 			if (NextNavNode == glm::vec2(FLT_MAX, FLT_MAX)) NextNavNode = CurNavNode;
 
 			// avoid collison
-			/*const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
-			for (auto AgentInCurNavNode : AgentsInCurNavNode)
-			{
-				if (AgentInCurNavNode->getNavNode() != NextNavNode)
-				{
-					float a = glm::dot(NextNavNode - Agent->getPosition(), AgentInCurNavNode->getPosition() - Agent->getPosition());
-					if (a > 0)
-					{
-						glm::vec2 SwapNavNode = AgentInCurNavNode->getNavNode();
-						AgentInCurNavNode->setNavNode(NextNavNode);
-						NextNavNode = SwapNavNode;
-						break;
-					}
-				}
-			}*/
 			auto Distance2NextNavNode = glm::distance(Agent->getPosition(), NextNavNode);
 			auto MinDistance = FLT_MAX;
 			IAgent* pSwapAgent = nullptr;

@@ -31,7 +31,6 @@ void CSceneVisualization::drawObstacle(const glm::vec2& vLeftTop, const glm::vec
 	int r, g, b; 
 	std::tie(r, g, b) = m_ObstacleColor;
 	cv::rectangle(m_Scene, Rect, cv::Scalar(r, g, b), CV_FILLED);
-	//cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), 1);
 }
 
 void hiveCrowdRendering::CSceneVisualization::drawNode(const glm::vec2 & vPos)
@@ -49,14 +48,24 @@ void hiveCrowdRendering::CSceneVisualization::drawEdge(const glm::vec2 & vNode1,
 	int r, g, b;
 	std::tie(r, g, b) = m_AgentColor;
 	cv::line(m_Scene, Point1, Point2, cv::Scalar(r,g,b));
-	//cv::line(m_Scene, Point1, Point2, cv::Scalar(180,180,180));
 }
 
 void CSceneVisualization::display()
 {
+
 	auto Rect = cv::Rect(0, 0, m_Width*m_Scale, m_Height*m_Scale);
 
 	cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), m_Scale);
+	for (auto& Exit : m_Exits)
+	{
+		auto Point1 = cv::Point((Exit.x - 30)*m_Scale, (Exit.y + 30)*m_Scale);
+		auto Point2 = cv::Point((Exit.x + 30)*m_Scale, (Exit.y + 30)*m_Scale);
+		cv::line(m_Scene, Point1, Point2, cv::Scalar(255,255,255),m_Scale);
+	}
+	
+	auto IsDisplay = CCrowdRenderingConfig::getInstance()->getAttribute<bool>(KEY_WORDS::DISPLAY);
+	if (!IsDisplay) return;
+
 	cv::imshow("Scene", m_Scene);
 	cv::waitKey(1);
 }
@@ -75,17 +84,33 @@ void hiveCrowdRendering::CSceneVisualization::clear()
 
 void CSceneVisualization::saveImage(const char* vPath)
 {
+	auto IsSave = CCrowdRenderingConfig::getInstance()->getAttribute<bool>(KEY_WORDS::SAVE);
+	if (!IsSave) return;
+
 	cv::imwrite((m_OutputDir + vPath).data(), m_Scene);
 }
 
 void CSceneVisualization::saveVideo()
 {
+	auto IsSave = CCrowdRenderingConfig::getInstance()->getAttribute<bool>(KEY_WORDS::SAVE);
+	if (!IsSave) return;
+
 	m_Writer << m_Scene;
 }
 
 void CSceneVisualization::__parseConfig(const std::string& vConfig)
 {
 	hiveConfig::hiveParseConfig(vConfig, hiveConfig::EConfigType::XML, CCrowdRenderingConfig::getInstance());
+
+	auto NumExits = CCrowdRenderingConfig::getInstance()->getAttribute<int>(KEY_WORDS::EXIT_NUM);
+	std::string ExitSetStr = CCrowdRenderingConfig::getInstance()->getAttribute<std::string>(KEY_WORDS::EXIT);
+
+	int* ExitSetPos = new int[NumExits * 2];
+	hiveCommon::hiveSplitLine2IntArray(ExitSetStr, " ", NumExits * 2, ExitSetPos);
+	for (size_t i = 0; i < NumExits; i++)
+	{
+		m_Exits.push_back({ ExitSetPos[2 * i], ExitSetPos[2 * i + 1] });
+	}
 
 	m_Scale = CCrowdRenderingConfig::getInstance()->getAttribute<int>(KEY_WORDS::SCALE);
 

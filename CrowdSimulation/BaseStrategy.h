@@ -27,6 +27,7 @@ protected:
 	virtual void __constructRoadMap();
 	virtual void __assignNavNode2Agent();
 	virtual void __saveImage();
+	virtual void __saveEvacuationTime(const std::string& vFileName);
 	virtual void __afterSimulationDoStep() = 0;
 
 	void __constructEvacuationScene();

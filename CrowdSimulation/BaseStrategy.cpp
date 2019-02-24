@@ -1,5 +1,6 @@
 #include "BaseStrategy.h"
 #include "ConfigParser.h"
+#include <fstream>
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
@@ -21,11 +22,12 @@ void IEvacuationStrategy::run()
 		__afterSimulationDoStep();
 		__updateAgentVelocity();
 		__updateVisualization();
-		//__saveImage();
+		__saveImage();
 	} while (!__isFinish());
 
+	__saveEvacuationTime("./RESULT.CSV");
 	__updateVisualization();
-	//__saveImage();
+	__saveImage();
 
 	std::cout << "Evacuation End" << std::endl;
 	std::cout << "Evacuation time cost: " << m_EvacuationTimeCost << std::endl;
@@ -90,6 +92,47 @@ void IEvacuationStrategy::__saveImage()
 	auto PathStr = (boost::format("%1%.jpg") % m_EvacuationTimeCost).str();
 	CSceneVis::getInstance()->saveImage(PathStr.data());
 	CSceneVis::getInstance()->saveVideo();
+}
+
+void IEvacuationStrategy::__saveEvacuationTime(const std::string& vFileName)
+{
+	std::fstream OutFile;
+	OutFile.open(vFileName, std::ios::app);
+	auto AvgTime = 0.0f;
+	for (auto Agent : m_pScene->getAgents())
+	{
+		OutFile << Agent->getEvacuationTime() << "\n";
+		AvgTime += Agent->getEvacuationTime();
+	}
+	OutFile << "\n";
+
+	for (size_t i = 1; i <= m_EvacuationTimeCost; i++)
+	{
+		auto EscapeNum = 0;
+		for (auto Agent : m_pScene->getAgents())
+		{
+			if (Agent->getEvacuationTime() <= i)
+			{
+				EscapeNum++;
+			}
+		}
+		OutFile << m_pScene->getAgents().size() - EscapeNum << "\n";
+	}
+	OutFile << "\n";
+
+	AvgTime = AvgTime / m_pScene->getAgents().size();
+
+	auto Variance = 0.0f;
+	for (auto Agent : m_pScene->getAgents())
+	{
+		Variance += pow(Agent->getEvacuationTime()-AvgTime,2);
+	}
+	Variance /= m_pScene->getAgents().size();
+
+	OutFile << m_EvacuationTimeCost << "\n";
+	OutFile << AvgTime << "\n";
+	OutFile << Variance << "\n";
+	OutFile.close();
 }
 
 void IEvacuationStrategy::__constructEvacuationScene()

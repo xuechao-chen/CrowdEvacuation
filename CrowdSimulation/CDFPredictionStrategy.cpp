@@ -101,20 +101,30 @@ void CCDFPredictionStrategy::__updateAgentsNavigation()
 			}
 
 			// avoid collison
+			auto Distance2NextNavNode = glm::distance(Agent->getPosition(), NextNavNode);
+			auto MinDistance = FLT_MAX;
+			IAgent* pSwapAgent = nullptr;
 			const auto& AgentsInCurNavNode = m_pScene->dumpAgentsInNode(CurNavNode, false);
 			for (auto AgentInCurNavNode : AgentsInCurNavNode)
 			{
 				if (AgentInCurNavNode->getNavNode() != NextNavNode)
 				{
-					float a = glm::dot(NextNavNode - Agent->getPosition(), AgentInCurNavNode->getPosition() - Agent->getPosition());
-					if (a > 0)
+					auto Distance = glm::distance(AgentInCurNavNode->getPosition(), NextNavNode);
+					if (Distance < MinDistance)
 					{
-						glm::vec2 SwapNavNode = AgentInCurNavNode->getNavNode();
-						AgentInCurNavNode->setNavNode(NextNavNode);
-						NextNavNode = SwapNavNode;
-						break;
+						MinDistance = Distance;
+						pSwapAgent = AgentInCurNavNode;
 					}
 				}
+			}
+			if (MinDistance < Distance2NextNavNode)
+			{
+				glm::vec2 SwapNavNode = pSwapAgent->getNavNode();
+				//if (glm::distance(SwapNavNode, pSwapAgent->getPosition()) > glm::distance(SwapNavNode, Agent->getPosition()))
+				//{
+					pSwapAgent->setNavNode(NextNavNode);
+					NextNavNode = SwapNavNode;
+				//}
 			}
 
 			Agent->setLastNavNode(Agent->getNavNode());

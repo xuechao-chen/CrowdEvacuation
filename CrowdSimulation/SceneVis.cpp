@@ -25,8 +25,8 @@ void CSceneVis::displayScene(const CEvacuationScene* pScene)
 	hiveCrowdRendering::clear();
 	hiveCrowdRendering::drawAgents(AgentsPos);
 	hiveCrowdRendering::drawObstacles(Obstacles);
-	hiveCrowdRendering::drawNodes(Graph->dumpAllNodes());
-	hiveCrowdRendering::drawEdges(Graph->dumpAllEdges());
+	//hiveCrowdRendering::drawNodes(Graph->dumpAllNodes());
+	//hiveCrowdRendering::drawEdges(Graph->dumpAllEdges());
 	hiveCrowdRendering::display();
 }
 

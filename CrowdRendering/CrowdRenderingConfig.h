@@ -13,6 +13,10 @@ namespace hiveCrowdRendering
 		const std::string HEIGHT_OF_SCENE   = "HEIGHT_OF_SCENE";
 		const std::string SCALE			    = "SCALE";
 		const std::string OUTPUT_DIR		= "OUTPUT_DIR";
+		const std::string EXIT_NUM			= "EXIT_NUM";
+		const std::string EXIT			    = "EXIT";
+		const std::string DISPLAY			= "DISPLAY";
+		const std::string SAVE				= "SAVE";
 	}
 
 	class CCrowdRenderingConfig : public hiveConfig::CHiveConfig, public hiveOO::CSingleton<CCrowdRenderingConfig>
