@@ -9,5 +9,5 @@
 
 <SCALE> 2 </SCALE>
 <DISPLAY> false </DISPLAY>
-<SAVE> true </SAVE>
+<SAVE> false </SAVE>
 <OUTPUT_DIR> ./SIMULATION/ </OUTPUT_DIR>

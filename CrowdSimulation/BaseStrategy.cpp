@@ -1,6 +1,7 @@
 #include "BaseStrategy.h"
 #include "ConfigParser.h"
 #include <fstream>
+#include <ctime>
 
 IEvacuationStrategy::IEvacuationStrategy()
 {
@@ -16,14 +17,22 @@ void IEvacuationStrategy::run()
 	auto pSim = m_pScene->getSimulator();
 
 	std::cout << "Evacuation Begin" << std::endl;
+	
+	//std::fstream OutFile;
+	//OutFile.open("COST.CSV", std::ios::app);
+	//auto StartTime = clock();
 	do {
 		m_EvacuationTimeCost++;
   		pSim->doStep();
+		auto CurTime = clock();
+		//OutFile << CurTime - StartTime << "\n";
+		//StartTime = CurTime;
 		__afterSimulationDoStep();
 		__updateAgentVelocity();
 		__updateVisualization();
 		__saveImage();
 	} while (!__isFinish());
+	//OutFile.close();
 
 	__saveEvacuationTime("./RESULT.CSV");
 	__updateVisualization();
@@ -35,9 +44,11 @@ void IEvacuationStrategy::run()
 
 void IEvacuationStrategy::init()
 {
+	//auto StartTime = clock();
 	__constructEvacuationScene();
 	__constructRoadMap();
 	__assignNavNode2Agent();
+	//std::cout << clock() - StartTime << std::endl;
 }
 
 bool IEvacuationStrategy::__isFinish()
