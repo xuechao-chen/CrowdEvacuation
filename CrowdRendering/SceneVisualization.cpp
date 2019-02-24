@@ -55,12 +55,12 @@ void CSceneVisualization::display()
 
 	auto Rect = cv::Rect(0, 0, m_Width*m_Scale, m_Height*m_Scale);
 
-	cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), m_Scale);
+	cv::rectangle(m_Scene, Rect, cv::Scalar(0,0,0), m_Scale*3);
 	for (auto& Exit : m_Exits)
 	{
 		auto Point1 = cv::Point((Exit.x - 30)*m_Scale, (Exit.y + 30)*m_Scale);
 		auto Point2 = cv::Point((Exit.x + 30)*m_Scale, (Exit.y + 30)*m_Scale);
-		cv::line(m_Scene, Point1, Point2, cv::Scalar(255,255,255),m_Scale);
+		cv::line(m_Scene, Point1, Point2, cv::Scalar(255,255,255),m_Scale*3);
 	}
 	
 	auto IsDisplay = CCrowdRenderingConfig::getInstance()->getAttribute<bool>(KEY_WORDS::DISPLAY);
